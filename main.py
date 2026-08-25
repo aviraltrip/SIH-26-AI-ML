@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 app = FastAPI(
     title="SIH 26 AI-ML Stuff",
-    description="Mock API for AI/ML Stuff",
+    description="Mock API",
     version="1.0.0"
 )
 
