@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.routes.jargon import router as jargon_router
+from app.routes.chat import router as chat_router
 
 app = FastAPI(
     title="SIH 26 AI-ML Stuff",
@@ -80,6 +81,7 @@ async def generic_exception_handler(request: Request, exc: Exception):
 
 
 app.include_router(jargon_router)
+app.include_router(chat_router)
 
 
 @app.get("/")
