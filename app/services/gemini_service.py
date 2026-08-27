@@ -6,7 +6,6 @@ from app.config import get_settings
 
 logger = logging.getLogger(__name__)
 
-# ISO language code to human-readable name mapping
 LANGUAGE_MAP = {
     "en": "English",
     "hi": "Hindi",
@@ -38,7 +37,6 @@ SYSTEM_PROMPT_TEMPLATE = (
     "7. Return ONLY the plain explanation text."
 )
 
-
 def _get_language_label(language_code: str) -> str:
     code_clean = (language_code or "en").strip().lower()
     return LANGUAGE_MAP.get(code_clean, code_clean)
@@ -47,7 +45,6 @@ def _get_language_label(language_code: str) -> str:
 def _clean_explanation(text: str) -> str:
     if not text:
         return ""
-    # Strip markdown bolding / headers / code blocks if any
     cleaned = text.strip()
     cleaned = re.sub(r"^```[a-zA-Z]*\n?", "", cleaned)
     cleaned = re.sub(r"\n?```$", "", cleaned)
@@ -114,7 +111,6 @@ def simplify_term(term: str, language: str = "en") -> str:
         return _clean_explanation(response.text)
 
     except Exception as exc:
-        # Sanitize exception message — never log or expose raw key/secrets
         raw_msg = str(exc)
         safe_msg = _redact_secrets(raw_msg, api_key)
         logger.error("Gemini LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
