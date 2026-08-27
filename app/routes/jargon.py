@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
 from app.models.schemas import JargonRequest, JargonResponse
-from app.services.langchain_service import simplify_term
+from app.services.gemini_service import simplify_term
 
 router = APIRouter(tags=["Jargon Simplification"])
 
@@ -32,12 +32,6 @@ router = APIRouter(tags=["Jargon Simplification"])
 )
 def simplify_term_endpoint(request: JargonRequest) -> JargonResponse:
     """Endpoint to simplify financial, banking, and government-scheme terminology."""
-    if not request.term or not request.term.strip():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Term cannot be empty or whitespace only.",
-        )
-
     try:
         explanation = simplify_term(term=request.term, language=request.language)
         return JargonResponse(explanation=explanation)

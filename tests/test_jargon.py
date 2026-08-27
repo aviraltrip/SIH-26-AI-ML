@@ -20,7 +20,7 @@ def test_health_endpoint():
     assert response.json() == {"status": "healthy"}
 
 
-@patch("app.services.langchain_service.genai.Client")
+@patch("app.services.gemini_service.genai.Client")
 def test_simplify_term_english_moratorium(mock_genai_client):
     """Test simplify-term with Moratorium Period in English."""
     mock_instance = MagicMock()
@@ -43,7 +43,7 @@ def test_simplify_term_english_moratorium(mock_genai_client):
     assert "moratorium" in data["explanation"].lower() or "payment holiday" in data["explanation"].lower()
 
 
-@patch("app.services.langchain_service.genai.Client")
+@patch("app.services.gemini_service.genai.Client")
 def test_simplify_term_hindi_moratorium(mock_genai_client):
     """Test simplify-term with Moratorium Period in Hindi."""
     mock_instance = MagicMock()
@@ -66,7 +66,7 @@ def test_simplify_term_hindi_moratorium(mock_genai_client):
     assert len(data["explanation"]) > 10
 
 
-@patch("app.services.langchain_service.genai.Client")
+@patch("app.services.gemini_service.genai.Client")
 def test_simplify_term_marathi_collateral(mock_genai_client):
     """Test simplify-term with Collateral in Marathi."""
     mock_instance = MagicMock()
@@ -89,7 +89,7 @@ def test_simplify_term_marathi_collateral(mock_genai_client):
     assert len(data["explanation"]) > 10
 
 
-@patch("app.services.langchain_service.genai.Client")
+@patch("app.services.gemini_service.genai.Client")
 def test_simplify_term_promoter_margin_default_language(mock_genai_client):
     """Test simplify-term with default language (omitted language parameter defaults to 'en')."""
     mock_instance = MagicMock()
@@ -119,7 +119,9 @@ def test_simplify_term_empty_term_bad_request():
     }
     response = client.post("/simplify-term", json=payload)
     assert response.status_code == 400
-    assert "empty" in response.json().get("detail", "").lower()
+    err = response.json().get("error", {})
+    assert err.get("code") == "BAD_REQUEST"
+    assert "empty" in err.get("message", "").lower()
 
 
 def test_simplify_term_whitespace_term_bad_request():
@@ -130,7 +132,9 @@ def test_simplify_term_whitespace_term_bad_request():
     }
     response = client.post("/simplify-term", json=payload)
     assert response.status_code == 400
-    assert "empty" in response.json().get("detail", "").lower()
+    err = response.json().get("error", {})
+    assert err.get("code") == "BAD_REQUEST"
+    assert "empty" in err.get("message", "").lower()
 
 
 def test_simplify_term_missing_term_unprocessable_entity():
@@ -140,6 +144,9 @@ def test_simplify_term_missing_term_unprocessable_entity():
     }
     response = client.post("/simplify-term", json=payload)
     assert response.status_code == 422
+    err = response.json().get("error", {})
+    assert err.get("code") == "VALIDATION_ERROR"
+    assert "required" in err.get("details", "").lower()
 
 
 def test_simplify_term_invalid_type_unprocessable_entity():
@@ -150,9 +157,12 @@ def test_simplify_term_invalid_type_unprocessable_entity():
     }
     response = client.post("/simplify-term", json=payload)
     assert response.status_code == 422
+    err = response.json().get("error", {})
+    assert err.get("code") == "VALIDATION_ERROR"
+    assert "string" in err.get("details", "").lower()
 
 
-@patch("app.services.langchain_service.genai.Client")
+@patch("app.services.gemini_service.genai.Client")
 def test_simplify_term_provider_failure_returns_500(mock_genai_client):
     """Test that downstream LLM provider failure returns 500 without leaking secrets."""
     mock_instance = MagicMock()
@@ -165,6 +175,8 @@ def test_simplify_term_provider_failure_returns_500(mock_genai_client):
     }
     response = client.post("/simplify-term", json=payload)
     assert response.status_code == 500
-    detail = response.json().get("detail", "")
-    assert "API_KEY" not in detail
-    assert "timed out" not in detail or "LLM" in detail
+    err = response.json().get("error", {})
+    assert err.get("code") == "INTERNAL_SERVER_ERROR"
+    assert "API_KEY" not in err.get("message", "")
+    assert "API_KEY" not in (err.get("details") or "")
+    assert "failed" in err.get("message", "").lower()
