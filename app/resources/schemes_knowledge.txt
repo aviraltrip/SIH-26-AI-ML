@@ -21,7 +21,7 @@ OFFICIAL GOVERNMENT SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
 - Pattern of Financing: NBCFDC provides loan assistance of up to 90% of the project cost. The channel partner or the beneficiary must contribute the remaining 10%.
 - Interest Rate: 5% per annum (fixed rate for the beneficiary). Note: The local matching portal evaluates candidate schemes up to a 6% limit.
 - Repayment Period: The loan must be repaid in quarterly installments within 4 years, which includes a principal moratorium period of 6 months.
-- Target Beneficiaries: Micro-entrepreneurs (both male and female) belonging to Backward Classes (as notified by Central or State Governments) whose annual family income is up to ₹3,00,000.
+- Target Beneficiaries: Micro-entrepreneurs (both male and female) belonging to Backward Classes (as notified by Central or State Governments) whose annual family income is up to ₹3,0,000.
 - Typical Trades: Small shops, local trading, repair services, carpentry, weaving.
 
 3. PM VISHWAKARMA SCHEME
@@ -82,3 +82,34 @@ OFFICIAL GOVERNMENT SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
   * Restrictions: Only new enterprises/projects are eligible for the PMEGP subsidy. Existing units or units that have already availed of government subsidies under state or central schemes are not eligible.
   * There is no household income ceiling to apply for this assistance.
   * Applications must be submitted online via the official PMEGP e-Portal managed by KVIC.
+
+5. PRADHAN MANTRI MUDRA YOJANA (PMMY)
+- Description: A flagship scheme launched to provide collateral-free micro-loans to non-corporate, non-farm small/micro enterprises engaged in manufacturing, trading, services, and allied agricultural activities.
+- Loan Categories & Limits:
+  * Shishu: Loans up to ₹50,000 (for start-ups and initial stage ventures).
+  * Kishor: Loans from ₹50,001 to ₹5,00,000 (for mid-stage enterprises seeking expansion).
+  * Tarun: Loans from ₹5,00,001 to ₹10,00,000 (for established small businesses requiring larger capital).
+  * Tarun Plus: Loans from ₹10,00,001 to ₹20,00,000 (available for successful Tarun borrowers seeking further scaling).
+- Interest Rate: Variable rates. Set individually by the lending institutions (banks, NBFCs, MFIs) based on credit risk profile and RBI guidelines.
+- Collateral: No collateral or third-party guarantee is required.
+- Repayment Period: Typically between 3 to 5 years, as determined by the loan sanctioning bank.
+
+6. STAND-UP INDIA SCHEME
+- Description: Central government scheme designed specifically to promote entrepreneurship at the grassroots level among women and Scheduled Caste (SC) or Scheduled Tribe (ST) communities.
+- Loan Limits: Composite loans (term loan and working capital) between ₹10,00,000 and ₹1,00,00,000 (₹10 Lakhs to ₹1 Crore).
+- Eligible Projects: Setup of greenfield enterprises (first-time business ventures) in manufacturing, services, trading, or agricultural allied activities.
+- Shareholding Constraint: In case of non-individual enterprises, at least 51% of the shareholding and controlling stake must be held by an SC, ST, or woman entrepreneur.
+- Funding Structure: The loan covers up to 85% of the project cost. The beneficiary contribution is a minimum of 10% (margin money requirement is capped at 15%).
+- Repayment Period: Repayable in up to 7 years with a maximum moratorium period of 18 months.
+- Interest Rate: Linked to the bank's base lending rate (MCLR) plus a concessional premium.
+
+7. PM STREET VENDOR'S ATMANIRBHAR NIDHI (PM SVANIDHI)
+- Description: A special micro-credit facility scheme to provide affordable working capital loans to street vendors to resume their livelihoods post-pandemic.
+- Loan Limits (Tranches):
+  * 1st Tranche: Up to ₹15,000 (repayable within a 12-month tenure).
+  * 2nd Tranche: Up to ₹25,000 (repayable within an 18-month tenure, available after timely repayment of the 1st tranche).
+  * 3rd Tranche: Up to ₹50,000 (repayable within a 36-month tenure, available after timely repayment of the 2nd tranche).
+- Interest Subsidy: Eligible for an interest subsidy of 7% per annum. The subsidy is credited directly to the borrower's bank account on a quarterly basis (contingent on keeping the loan account standard).
+- Collateral: Completely collateral-free working capital loan.
+- Prepayment Penalty: No prepayment charges or penalties for early repayment.
+- Digital Cashback: Monthly cashback incentives up to ₹100 for vendors performing digital transactions.
