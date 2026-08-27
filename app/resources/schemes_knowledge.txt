@@ -1,34 +1,43 @@
 ================================================================================
-OFFICIAL SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
+OFFICIAL GOVERNMENT SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
 ================================================================================
 
-1. MAHILA SAMRIDDHI YOJANA
-- Description: A micro-finance scheme targeting women entrepreneurs belonging to Backward Classes to start or expand small businesses.
-- Loan Limit: Maximum loan amount is ₹1,40,000.
-- Coverage: Up to 95% of the total project cost is covered by the scheme. The beneficiary contribution is 5%.
-- Interest Rate: 4% per annum interest rate.
-- Target Beneficiaries: Women entrepreneurs from Backward Classes (as defined by government lists) living below or near the poverty line.
+1. MAHILA SAMRIDDHI YOJANA (MSY) - NBCFDC
+- Description: A micro-finance scheme implemented by the National Backward Classes Finance and Development Corporation (NBCFDC) to provide credit assistance to women entrepreneurs belonging to Backward Classes to start or expand small businesses.
+- Loan Limits:
+  * Maximum loan limit per individual beneficiary is ₹1,25,000 (the local matching portal supports up to ₹1,40,000).
+  * Maximum loan limit per Self-Help Group (SHG) is ₹15,00,000.
+- Pattern of Financing: NBCFDC provides loan assistance of up to 95% of the project cost. The remaining 5% is contributed by the State Channelizing Agency (SCA) or the beneficiary.
+- Interest Rate: 4% per annum (fixed concessional rate for the beneficiary).
+- Repayment Period: The loan must be repaid in quarterly installments within 4 years. This includes a moratorium period of 6 months on recovery of the principal.
+- Target Beneficiaries: Women entrepreneurs belonging to Backward Classes (as notified by Central or State Governments) living below or near the poverty line (annual family income limit is up to ₹3,00,000).
 - Typical Trades: Tailoring, boutique, small grocery, dairy, beauty parlor, handicrafts.
-- Moratorium Period: A repayment holiday of up to 3 to 6 months depending on the trade and bank discretion.
 
-2. MICRO CREDIT SCHEME
-- Description: Micro-finance credit for individual self-employment projects for persons belonging to Backward Classes.
-- Loan Limit: Maximum loan amount is ₹1,50,000.
-- Coverage: Up to 90% of the project cost. The beneficiary contribution is 10%.
-- Interest Rate: 6% per annum interest rate.
-- Target Beneficiaries: Entrepreneurs belonging to Backward Classes (both male and female) whose family income is within eligibility limits.
+2. MICRO CREDIT SCHEME (MCS) - NBCFDC
+- Description: A micro-finance scheme implemented by the National Backward Classes Finance and Development Corporation (NBCFDC) to provide small, self-employment loans for individual projects or Self-Help Groups (SHGs).
+- Loan Limits:
+  * Maximum loan limit per individual beneficiary is ₹1,25,000 (the local matching portal supports up to ₹1,50,000).
+  * Maximum loan limit per Self-Help Group (SHG) is ₹15,00,000.
+- Pattern of Financing: NBCFDC provides loan assistance of up to 90% of the project cost. The channel partner or the beneficiary must contribute the remaining 10%.
+- Interest Rate: 5% per annum (fixed rate for the beneficiary). Note: The local matching portal evaluates candidate schemes up to a 6% limit.
+- Repayment Period: The loan must be repaid in quarterly installments within 4 years, which includes a principal moratorium period of 6 months.
+- Target Beneficiaries: Micro-entrepreneurs (both male and female) belonging to Backward Classes (as notified by Central or State Governments) whose annual family income is up to ₹3,00,000.
 - Typical Trades: Small shops, local trading, repair services, carpentry, weaving.
 
 3. PM VISHWAKARMA SCHEME
-- Description: Central government scheme to support traditional artisans and craftspeople who work with their hands and tools.
-- Benefits:
-  - Collateral-free enterprise development loans of up to ₹3,00,000.
-  - The loan is provided in two tranches: Tranche 1 of up to ₹1,00,000 with a repayment period of 18 months, and Tranche 2 of up to ₹2,00,000 with a repayment period of 30 months.
-  - Concessional Interest Rate: 5% per annum.
-  - Skill Training: Basic training (5-7 days) and Advanced training (15 days or more) with a stipend of ₹500 per day.
-  - Toolkit Incentive: A grant/incentive of ₹15,000 for purchasing tools.
-  - Marketing Support: Assistance in quality certification, branding, and e-commerce onboarding.
-- Eligible Trades: 18 traditional trades are covered, including:
+- Description: A Central Sector Scheme launched by the Ministry of MSME to support traditional artisans and craftspeople who work with their hands and tools, providing them end-to-end support, recognition, and credit.
+- Credit Support (Enterprise Development Loan):
+  * Total Credit Limit: Up to ₹3,00,000.
+  * The loan is collateral-free and provided in two separate tranches:
+    - Tranche 1: Up to ₹1,00,000 with a repayment period of 18 months.
+    - Tranche 2: Up to ₹2,00,000 with a repayment period of 30 months (available after fully repaying Tranche 1).
+  * Concessional Interest Rate: A fixed rate of 5% per annum is charged to the beneficiary. The Government of India provides an interest subvention of up to 8% to the banks.
+- Toolkit Incentive: A grant/incentive of ₹15,000 is provided via e-RUPI/e-vouchers for purchasing modern, improved tools after the artisan completes skill verification and starts basic training.
+- Skill Training & Stipend:
+  * Basic Training: 5 to 7 days of training with skill verification.
+  * Advanced Training: 15 days or more of advanced skill development.
+  * Daily Stipend: Beneficiaries receive a stipend of ₹500 per day during training, transferred directly to their Aadhaar-linked bank accounts.
+- Eligible Traditional Trades (18 Trades):
   1. Tailor (Darzi)
   2. Barber (Naayi)
   3. Welder
@@ -37,34 +46,39 @@ OFFICIAL SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
   6. Potter (Kumhaar)
   7. Cobbler (Charmakar/Shoemaker)
   8. Mason (Rajmistri)
-  9. Basket/Mat/Broom Maker
+  9. Basket/Mat/Broom Maker & Coir Weaver
   10. Doll & Toy Maker (Traditional)
-  11. Sculptor (Murtiakar, Stone carver)
+  11. Sculptor (Murtiakar, Stone carver) / Stone Breaker
   12. Goldsmith (Sunar)
   13. Locksmith
-  14. Armor maker
+  14. Armourer
   15. Hammer and Tool Kit Maker
-  16. Stone breaker
-  17. Boat Maker
-  18. Fishing Net Maker
+  16. Boat Maker
+  17. Fishing Net Maker
+  18. Garland maker (Malakaar)
 - Eligibility Criteria:
-  - An artisan or craftsperson working in one of the 18 family-based traditional trades.
-  - Minimum age of 18 years on the date of registration.
-  - The benefit is restricted to one member of a family (family defined as husband, wife, and unmarried children).
-  - Persons in government service and their family members are not eligible.
+  * An artisan or craftsperson working in one of the 18 family-based traditional trades.
+  * Minimum age of 18 years on the date of registration.
+  * Restricted to one member per family (family defined as husband, wife, and unmarried children).
+  * Persons in government service and their family members are not eligible.
+  * Registration is conducted through Common Service Centres (CSCs) using Aadhaar authentication.
 
 4. PRIME MINISTER'S EMPLOYMENT GENERATION PROGRAMME (PMEGP)
-- Description: A credit-linked subsidy program for setting up new micro-enterprises in manufacturing, services, or trading sectors.
-- Maximum Project Cost:
-  - Manufacturing Sector: Up to ₹50,00,000 (₹50 Lakhs).
-  - Service or Trading Sector: Up to ₹20,00,000 (₹20 Lakhs).
-- Subsidy Rates (Margin Money):
-  - General Category: 15% subsidy in Urban areas, 25% subsidy in Rural areas. Beneficiary contribution is 10% of project cost.
-  - Special Category (SC, ST, OBC, Minorities, Women, Ex-servicemen, Physically Handicapped, NER, Hill and Border areas): 25% subsidy in Urban areas, 35% subsidy in Rural areas. Beneficiary contribution is 5% of project cost.
-- Funding Partner: Public sector banks, regional rural banks, and cooperative banks.
-- Loan Details: The bank sanctions a term loan for the project. The interest rate is at normal bank lending rates.
+- Description: A credit-linked subsidy programme administered by the Ministry of MSME, with KVIC acting as the national-level nodal agency, designed to establish new micro-enterprises in manufacturing, services, or trading.
+- Project Cost Ceilings (New Projects):
+  * Manufacturing Sector: Maximum project cost is ₹50,00,000 (₹50 Lakhs).
+  * Service or Business/Trading Sector: Maximum project cost is ₹20,00,000 (₹20 Lakhs).
+- Margin Money Subsidy Rates & Contributions:
+  * General Category:
+    - Urban areas: 15% subsidy. Beneficiary contribution is 10% of the project cost.
+    - Rural areas: 25% subsidy. Beneficiary contribution is 10% of the project cost.
+  * Special Category (includes SC, ST, OBC, Women, Minorities, Ex-servicemen, Physically Handicapped, NER, Hill/Border areas):
+    - Urban areas: 25% subsidy. Beneficiary contribution is 5% of the project cost.
+    - Rural areas: 35% subsidy. Beneficiary contribution is 5% of the project cost.
+- Loan Details: The funding banks (public, cooperative, or rural banks) sanction a term loan for the remaining balance. Interest is charged at normal commercial bank lending rates.
 - Eligibility Criteria:
-  - Any individual above 18 years of age.
-  - For projects costing above ₹10 Lakhs in manufacturing and above ₹5 Lakhs in service/trading, the beneficiary must have passed at least VIII standard (8th grade).
-  - Only new projects are eligible for assistance under PMEGP. Existing units or units already receiving subsidy under other schemes are not eligible.
-  - Self-Help Groups (SHGs) and Cooperative Societies are also eligible.
+  * Any individual above 18 years of age.
+  * Educational Qualification: Minimum 8th standard pass is mandatory for manufacturing projects costing above ₹10,00,000 and service/trading projects costing above ₹5,00,000.
+  * Restrictions: Only new enterprises/projects are eligible for the PMEGP subsidy. Existing units or units that have already availed of government subsidies under state or central schemes are not eligible.
+  * There is no household income ceiling to apply for this assistance.
+  * Applications must be submitted online via the official PMEGP e-Portal managed by KVIC.
