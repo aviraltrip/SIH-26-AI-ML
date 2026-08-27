@@ -27,6 +27,7 @@ graph TD
         F -->|Multipart| OCR[PaddleOCR/Tesseract Pipeline]
         F -->|JSON| JS[Jargon Simplification Agent]
         F -->|JSON| SE[Scheme Recommendation Explainer]
+        F -->|JSON| QA[Scheme Q&A Chatbot Agent]
     end
 
     %% Interactions
@@ -36,6 +37,7 @@ graph TD
     B -->|POST /ocr-certificate| F
     B -->|POST /simplify-term| F
     B -->|POST /recommend-scheme-explainer| F
+    B -->|POST /scheme-chat| F
 ```
 
 ### Core Separation of Concerns
@@ -47,6 +49,7 @@ graph TD
 | **Entity Extraction** | Captures audio/text and acts as a gateway proxy. | Extracts parameters from raw voice transcriptions into structured JSON. |
 | **Document Processing** | Stores documents, manages metadata, and generates PDF dossiers. | Performs optical character recognition (OCR) and parses fields. |
 | **Natural Language** | Serves static translation/localization. | Generates contextual, localized explanations of terminology and scheme fit. |
+| **Scheme Advisory Chat** | Manages conversation state, stores chat transcripts, and proxies user messages. | Runs retrieval-augmented generation (RAG) using consolidated policy guidelines. |
 
 ---
 
@@ -79,12 +82,15 @@ SIH-26-AI-ML/
 │   ├── models/
 │   │   ├── __init__.py
 │   │   └── schemas.py          # Pydantic request/response schemas
+│   ├── resources/
+│   │   └── schemes_knowledge.txt # Consolidated scheme facts & guidelines
 │   ├── routes/
 │   │   ├── __init__.py
 │   │   ├── intent.py           # Route: /extract-applicant-intent
 │   │   ├── ocr.py              # Route: /ocr-certificate
 │   │   ├── jargon.py           # Route: /simplify-term
-│   │   └── explainer.py        # Route: /recommend-scheme-explainer
+│   │   ├── explainer.py        # Route: /recommend-scheme-explainer
+│   │   └── chat.py             # Route: /scheme-chat
 │   └── services/
 │       ├── __init__.py
 │       ├── langchain_service.py # LangChain wrappers and prompt configs
