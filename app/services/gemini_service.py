@@ -1,7 +1,9 @@
 import logging
 import re
+
 from google import genai
 from google.genai import types
+
 from app.config import get_settings
 
 logger = logging.getLogger(__name__)
@@ -49,7 +51,7 @@ def _clean_explanation(text: str) -> str:
     cleaned = re.sub(r"^```[a-zA-Z]*\n?", "", cleaned)
     cleaned = re.sub(r"\n?```$", "", cleaned)
     cleaned = re.sub(r"^(Explanation|सरल व्याख्या|स्पष्टीकरण)\s*:\s*", "", cleaned, flags=re.IGNORECASE)
-    cleaned = cleaned.strip('"\'  \n\r\t')
+    cleaned = cleaned.strip('"\'  \n\r\t')  
     return cleaned
 
 
@@ -110,7 +112,7 @@ def simplify_term(term: str, language: str = "en") -> str:
 
         return _clean_explanation(response.text)
 
-    except Exception as exc:
+    except Exception as exc:  
         raw_msg = str(exc)
         safe_msg = _redact_secrets(raw_msg, api_key)
         logger.error("Gemini LLM call failed [%s]: %s", type(exc).__name__, safe_msg)

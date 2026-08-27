@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
+
 from app.models.schemas import JargonRequest, JargonResponse
 from app.services.gemini_service import simplify_term
 

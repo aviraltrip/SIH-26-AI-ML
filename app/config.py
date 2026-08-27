@@ -3,7 +3,6 @@ from pathlib import Path
 from functools import lru_cache
 from dotenv import load_dotenv
 
-# Load environment variables from .env if available; fallback to .env.example if .env is missing
 env_path = Path(__file__).resolve().parent.parent / ".env"
 env_example_path = Path(__file__).resolve().parent.parent / ".env.example"
 
