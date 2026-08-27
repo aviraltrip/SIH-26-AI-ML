@@ -6,7 +6,7 @@ from google import genai
 from google.genai import types
 
 from app.config import get_settings
-from app.models.schemas import ChatMessage
+from app.models.schemas import ChatMessage, IntentResponse
 
 logger = logging.getLogger(__name__)
 
@@ -241,3 +241,91 @@ def chat_with_knowledge(message: str, history: list[ChatMessage], language: str 
         ):
             raise RuntimeError("Authentication failed with LLM provider.") from None
         raise RuntimeError("Failed to generate chat response from LLM provider.") from None
+
+
+INTENT_SYSTEM_PROMPT = (
+    "You are an expert financial counselor specializing in government social schemes.\n"
+    "Your task is to analyze the unstructured user transcription text and extract the applicant's profile details.\n\n"
+    "Extract the following fields:\n"
+    "1. project_category: Must strictly be one of [\"Manufacturing\", \"Service\", \"Trading\"]\n"
+    "2. requested_amount: Extract the numeric loan amount requested in INR. Default to 0.0 if not mentioned.\n"
+    "3. annual_income: Extract the numeric annual family income of the applicant in INR. Default to 0.0 if not mentioned.\n"
+    "4. trade: Extract the specific trade or occupation (e.g., Kirana, Tailoring, Barber, Welding, Dairy).\n"
+    "5. gender: Extrapolate or extract gender (e.g., \"Male\", \"Female\", \"Other\"). Default to \"Male\" if unknown.\n"
+    "6. confidence: Assess your overall extraction confidence as a float value between 0.0 and 1.0.\n\n"
+    "Rules:\n"
+    "1. If the input transcription is in an Indian regional language (e.g., Hindi, Marathi, Tamil, etc.), "
+    "translate the trade, project_category, and gender values to English in the structured output.\n"
+    "2. If requested_amount or annual_income are missing or not detected, set them to 0.0.\n"
+    "3. Strict adherence to output JSON schema format is mandatory."
+)
+
+
+def extract_applicant_intent(transcript: str, language: str = "en") -> IntentResponse:
+    """Extracts structured applicant parameters from conversational speech transcriptions.
+
+    Args:
+        transcript: Raw text or transcription.
+        language: ISO language code (e.g. 'en', 'hi', 'mr').
+
+    Returns:
+        Structured IntentResponse containing profile details and confidence score.
+
+    Raises:
+        ValueError: If transcript is empty.
+        RuntimeError: If Gemini API fails.
+    """
+    transcript_clean = (transcript or "").strip()
+    if not transcript_clean:
+        raise ValueError("Transcript must not be empty or whitespace only.")
+
+    settings = get_settings()
+    api_key = settings.gemini_api_key
+    if not api_key:
+        logger.error("GEMINI_API_KEY is not configured in environment.")
+        raise RuntimeError("LLM service is not configured. Please set GEMINI_API_KEY.")
+
+    target_lang = _get_language_label(language)
+    user_content = (
+        f"Transcription: {transcript_clean}\n"
+        f"Input Language: {target_lang}"
+    )
+
+    try:
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model=settings.gemini_model,
+            contents=user_content,
+            config=types.GenerateContentConfig(
+                system_instruction=INTENT_SYSTEM_PROMPT,
+                response_mime_type="application/json",
+                response_schema=IntentResponse,
+                temperature=0.0,
+            ),
+        )
+
+        if not response.text:
+            raise RuntimeError("Empty response received from LLM provider.")
+
+        return IntentResponse.model_validate_json(response.text)
+
+    except Exception as exc:
+        raw_msg = str(exc)
+        safe_msg = _redact_secrets(raw_msg, api_key)
+        logger.error("Gemini Intent LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
+
+        if (
+            "API_KEY" in raw_msg
+            or "api key" in raw_msg.lower()
+            or "auth" in raw_msg.lower()
+            or "suspended" in raw_msg.lower()
+            or "PERMISSION_DENIED" in raw_msg
+            or "400" in raw_msg
+            or "403" in raw_msg
+        ):
+            raise RuntimeError("Authentication failed with LLM provider.") from None
+
+        if "validation" in raw_msg.lower() or "validate" in raw_msg.lower():
+            raise RuntimeError("Extracted data did not match the required response schema constraints.") from None
+
+        raise RuntimeError("Failed to extract applicant intent from LLM provider.") from None
