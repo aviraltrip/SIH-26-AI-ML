@@ -1,0 +1,70 @@
+================================================================================
+OFFICIAL SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
+================================================================================
+
+1. MAHILA SAMRIDDHI YOJANA
+- Description: A micro-finance scheme targeting women entrepreneurs belonging to Backward Classes to start or expand small businesses.
+- Loan Limit: Maximum loan amount is ₹1,40,000.
+- Coverage: Up to 95% of the total project cost is covered by the scheme. The beneficiary contribution is 5%.
+- Interest Rate: 4% per annum interest rate.
+- Target Beneficiaries: Women entrepreneurs from Backward Classes (as defined by government lists) living below or near the poverty line.
+- Typical Trades: Tailoring, boutique, small grocery, dairy, beauty parlor, handicrafts.
+- Moratorium Period: A repayment holiday of up to 3 to 6 months depending on the trade and bank discretion.
+
+2. MICRO CREDIT SCHEME
+- Description: Micro-finance credit for individual self-employment projects for persons belonging to Backward Classes.
+- Loan Limit: Maximum loan amount is ₹1,50,000.
+- Coverage: Up to 90% of the project cost. The beneficiary contribution is 10%.
+- Interest Rate: 6% per annum interest rate.
+- Target Beneficiaries: Entrepreneurs belonging to Backward Classes (both male and female) whose family income is within eligibility limits.
+- Typical Trades: Small shops, local trading, repair services, carpentry, weaving.
+
+3. PM VISHWAKARMA SCHEME
+- Description: Central government scheme to support traditional artisans and craftspeople who work with their hands and tools.
+- Benefits:
+  - Collateral-free enterprise development loans of up to ₹3,00,000.
+  - The loan is provided in two tranches: Tranche 1 of up to ₹1,00,000 with a repayment period of 18 months, and Tranche 2 of up to ₹2,00,000 with a repayment period of 30 months.
+  - Concessional Interest Rate: 5% per annum.
+  - Skill Training: Basic training (5-7 days) and Advanced training (15 days or more) with a stipend of ₹500 per day.
+  - Toolkit Incentive: A grant/incentive of ₹15,000 for purchasing tools.
+  - Marketing Support: Assistance in quality certification, branding, and e-commerce onboarding.
+- Eligible Trades: 18 traditional trades are covered, including:
+  1. Tailor (Darzi)
+  2. Barber (Naayi)
+  3. Welder
+  4. Carpenter (Suthar/Badhai)
+  5. Blacksmith (Lohar)
+  6. Potter (Kumhaar)
+  7. Cobbler (Charmakar/Shoemaker)
+  8. Mason (Rajmistri)
+  9. Basket/Mat/Broom Maker
+  10. Doll & Toy Maker (Traditional)
+  11. Sculptor (Murtiakar, Stone carver)
+  12. Goldsmith (Sunar)
+  13. Locksmith
+  14. Armor maker
+  15. Hammer and Tool Kit Maker
+  16. Stone breaker
+  17. Boat Maker
+  18. Fishing Net Maker
+- Eligibility Criteria:
+  - An artisan or craftsperson working in one of the 18 family-based traditional trades.
+  - Minimum age of 18 years on the date of registration.
+  - The benefit is restricted to one member of a family (family defined as husband, wife, and unmarried children).
+  - Persons in government service and their family members are not eligible.
+
+4. PRIME MINISTER'S EMPLOYMENT GENERATION PROGRAMME (PMEGP)
+- Description: A credit-linked subsidy program for setting up new micro-enterprises in manufacturing, services, or trading sectors.
+- Maximum Project Cost:
+  - Manufacturing Sector: Up to ₹50,00,000 (₹50 Lakhs).
+  - Service or Trading Sector: Up to ₹20,00,000 (₹20 Lakhs).
+- Subsidy Rates (Margin Money):
+  - General Category: 15% subsidy in Urban areas, 25% subsidy in Rural areas. Beneficiary contribution is 10% of project cost.
+  - Special Category (SC, ST, OBC, Minorities, Women, Ex-servicemen, Physically Handicapped, NER, Hill and Border areas): 25% subsidy in Urban areas, 35% subsidy in Rural areas. Beneficiary contribution is 5% of project cost.
+- Funding Partner: Public sector banks, regional rural banks, and cooperative banks.
+- Loan Details: The bank sanctions a term loan for the project. The interest rate is at normal bank lending rates.
+- Eligibility Criteria:
+  - Any individual above 18 years of age.
+  - For projects costing above ₹10 Lakhs in manufacturing and above ₹5 Lakhs in service/trading, the beneficiary must have passed at least VIII standard (8th grade).
+  - Only new projects are eligible for assistance under PMEGP. Existing units or units already receiving subsidy under other schemes are not eligible.
+  - Self-Help Groups (SHGs) and Cooperative Societies are also eligible.
