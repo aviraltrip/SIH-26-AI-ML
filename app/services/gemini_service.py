@@ -1,10 +1,12 @@
 import logging
+import os
 import re
 
 from google import genai
 from google.genai import types
 
 from app.config import get_settings
+from app.models.schemas import ChatMessage
 
 logger = logging.getLogger(__name__)
 
@@ -128,3 +130,114 @@ def simplify_term(term: str, language: str = "en") -> str:
         ):
             raise RuntimeError("Authentication failed with LLM provider.") from None
         raise RuntimeError("Failed to generate simplified explanation from LLM provider.") from None
+
+
+_cached_knowledge = None
+
+def _load_knowledge_base() -> str:
+    global _cached_knowledge
+    if _cached_knowledge is not None:
+        return _cached_knowledge
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    kb_path = os.path.join(os.path.dirname(current_dir), "resources", "schemes_knowledge.txt")
+    
+    try:
+        with open(kb_path, "r", encoding="utf-8") as f:
+            _cached_knowledge = f.read()
+        return _cached_knowledge
+    except Exception as exc:
+        logger.error("Failed to load schemes_knowledge.txt from %s: %s", kb_path, exc)
+        raise RuntimeError("Failed to load local scheme knowledge base resource.")
+
+
+CHAT_SYSTEM_PROMPT_TEMPLATE = (
+    "You are an expert government policy advisor helping rural micro-entrepreneurs and applicants understand banking and social welfare schemes.\n"
+    "Answer the user's question accurately using ONLY the reference facts provided below.\n"
+    "If the answer cannot be found in the reference facts, state clearly: "
+    "\"I apologize, but I do not have official guidelines for that specific detail. Please consult the nearest branch or nodal officer.\"\n"
+    "Do not invent eligibility criteria, benefits, or loan terms under any circumstances.\n"
+    "Keep responses helpful, simple, and direct. Keep the length within 3-4 sentences where possible.\n\n"
+    "--- REFERENCE FACTS ---\n"
+    "{knowledge_base}\n"
+    "------------------------"
+)
+
+
+def chat_with_knowledge(message: str, history: list[ChatMessage], language: str = "en") -> str:
+    """Answers a user question grounded on official scheme policy guidelines.
+
+    Args:
+        message: Current user message/question.
+        history: List of past ChatMessage elements.
+        language: ISO target language code or name.
+
+    Returns:
+        Grounded response text from Gemini.
+    """
+    msg_clean = (message or "").strip()
+    if not msg_clean:
+        raise ValueError("Message must not be empty or whitespace only.")
+
+    settings = get_settings()
+    api_key = settings.gemini_api_key
+    if not api_key:
+        logger.error("GEMINI_API_KEY is not configured in environment.")
+        raise RuntimeError("LLM service is not configured. Please set GEMINI_API_KEY.")
+
+    kb_content = _load_knowledge_base()
+    target_lang = _get_language_label(language)
+    system_instruction = CHAT_SYSTEM_PROMPT_TEMPLATE.format(knowledge_base=kb_content)
+
+    contents = []
+    for turn in history:
+        role = turn.role.strip().lower()
+        if role not in ("user", "model"):
+            role = "user"
+        contents.append(
+            types.Content(
+                role=role,
+                parts=[types.Part.from_text(text=turn.parts)]
+            )
+        )
+
+    user_prompt = f"User Question: {msg_clean}\nPlease respond in the language: {target_lang}."
+    contents.append(
+        types.Content(
+            role="user",
+            parts=[types.Part.from_text(text=user_prompt)]
+        )
+    )
+
+    try:
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model=settings.gemini_model,
+            contents=contents,
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction,
+                temperature=0.2,
+            ),
+        )
+
+        if not response.text:
+            raise RuntimeError("Empty response received from LLM provider.")
+
+        return _clean_explanation(response.text)
+
+    except Exception as exc:
+        raw_msg = str(exc)
+        safe_msg = _redact_secrets(raw_msg, api_key)
+        logger.error("Gemini Chat LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
+
+        if (
+            "API_KEY" in raw_msg
+            or "api key" in raw_msg.lower()
+            or "auth" in raw_msg.lower()
+            or "suspended" in raw_msg.lower()
+            or "PERMISSION_DENIED" in raw_msg
+            or "400" in raw_msg
+            or "403" in raw_msg
+        ):
+            raise RuntimeError("Authentication failed with LLM provider.") from None
+        raise RuntimeError("Failed to generate chat response from LLM provider.") from None
