@@ -127,7 +127,7 @@ def test_recommend_scheme_explainer_missing_applicant_field_unprocessable_entity
             "project_category": "Manufacturing",
             "requested_amount": 80000.0,
             "annual_income": 120000.0,
-            # 'trade' and 'gender' missing
+            
         },
         "candidate_schemes": [
             {
@@ -159,7 +159,7 @@ def test_recommend_scheme_explainer_missing_candidate_field_unprocessable_entity
         "candidate_schemes": [
             {
                 "scheme_name": "Mahila Samriddhi Yojana",
-                # 'max_coverage_pct', 'interest_rate', 'eligibility_score' missing
+                
             }
         ],
         "language": "en",
