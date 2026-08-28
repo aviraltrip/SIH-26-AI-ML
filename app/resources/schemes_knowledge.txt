@@ -113,3 +113,42 @@ OFFICIAL GOVERNMENT SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
 - Collateral: Completely collateral-free working capital loan.
 - Prepayment Penalty: No prepayment charges or penalties for early repayment.
 - Digital Cashback: Monthly cashback incentives up to ₹100 for vendors performing digital transactions.
+
+8. MICRO CREDIT FINANCE (MCF) - NSFDC
+- Description: A micro-finance scheme implemented by the National Scheduled Castes Finance and Development Corporation (NSFDC) under the Ministry of Social Justice & Empowerment to provide small loans to individuals and Self-Help Groups (SHGs) from Scheduled Caste communities for income-generating activities.
+- Loan Limits:
+  * NSFDC finances up to 90% of the project cost, subject to a maximum of ₹1,25,000 to ₹1,40,000 per beneficiary.
+  * Maximum funding per Self-Help Group (SHG) is up to ₹15,00,000.
+- Interest Rate: Concessional interest rate of 6.5% per annum for the ultimate beneficiary (charged through State Channelizing Agencies / MFIs).
+- Repayment Period: Repayable in quarterly installments within 3 years from disbursement, including a 3-month moratorium.
+- Target Beneficiaries: Individuals belonging to Scheduled Caste (SC) communities with annual family income up to ₹3,00,000 (both rural and urban). For SHGs, all members must satisfy eligibility criteria.
+- Typical Trades: Small grocery/kirana, tailoring, betel leaf shop, bakery, candle making, cycle repair, goat rearing, beauty parlor, vegetable vending, agarbatti making, tea stall, and micro-enterprises.
+
+9. NHFDC TERM LOAN SCHEME (DIVYANGJAN SELF-EMPLOYMENT)
+- Description: A concessional credit scheme administered by the National Handicapped Finance and Development Corporation (NHFDC), Ministry of Social Justice & Empowerment, providing financial assistance to Persons with Disabilities (Divyangjan) to establish self-employment ventures.
+- Loan Limits: Concessional loans up to ₹50,00,000 per beneficiary depending on project viability and category.
+- Pattern of Financing: Covers up to 90% of the project cost; the remaining 10% is contributed by the State Channelizing Agency and/or the beneficiary.
+- Interest Rate: Concessional rates between 5% and 9% per annum based on loan slab (lower rates for loans up to ₹5,00,000). A special 0.5%–1.0% interest rebate is provided to women with disabilities.
+- Repayment Period: Typically up to 3 to 7 years depending on project scale, with an initial moratorium period.
+- Target Beneficiaries: Indian citizens with 40% or more disability (certified under the RPwD Act, 2016) aged 18 years and above.
+- Associated Sub-Schemes: Also provides educational loans (up to ₹10 Lakhs in India / ₹20 Lakhs abroad) and assistive device loans.
+
+10. UDYOGINI SCHEME (WOMEN ENTREPRENEURS)
+- Description: A dedicated self-employment loan and subsidy scheme specifically designed for women entrepreneurs across rural and semi-urban areas to start micro-enterprises in trade, service, and manufacturing.
+- Loan Limits: Loans ranging from ₹1,00,000 up to ₹3,00,000 based on project type.
+- Government Subsidy: Up to 30% government subsidy on the project cost for general category women, and up to 50% subsidy (or interest-free terms) for SC/ST women, widows, destitute women, and women with disabilities.
+- Eligibility Criteria:
+  * Applicant must be a woman entrepreneur aged between 18 and 55 years.
+  * Annual family income ceiling is typically up to ₹1,50,000–₹2,00,000 (waived or relaxed for widows and destitute applicants).
+  * No prior default history on loans with any bank or financial institution.
+- Typical Trades: Covers 88+ small business categories including tailoring, food catering/canteen, grocery shops, handicrafts, beauty clinics, and dairy products.
+
+11. NMDFC TERM LOAN & MICRO FINANCE SCHEMES (MINORITY COMMUNITIES)
+- Description: Concessional credit schemes implemented by the National Minorities Development & Finance Corporation (NMDFC), Ministry of Minority Affairs, for self-employment and micro-enterprise development among notified minority communities (Muslims, Christians, Sikhs, Buddhists, Parsis, Jains).
+- Term Loan Scheme:
+  * Credit Line-1: Loans up to ₹20,00,000 at 6% interest p.a. for applicants with annual family income up to ₹98,000 (rural) / ₹1,20,000 (urban).
+  * Credit Line-2: Loans up to ₹30,00,000 at 8% interest p.a. (6% for female beneficiaries) for applicants with annual family income up to ₹8,00,000.
+- Micro Credit / SHG Finance: Loans up to ₹1,00,000–₹1,50,000 per SHG member and up to ₹30,00,000 per SHG of women beneficiaries.
+- Artisan Support (Virasat Scheme): Concessional working capital and tool/machinery financing up to ₹10,00,000 at 5% p.a. interest for traditional minority craftspersons.
+- Target Beneficiaries: Individuals and SHGs belonging to the six notified National Minority communities satisfying the respective income criteria.
+
