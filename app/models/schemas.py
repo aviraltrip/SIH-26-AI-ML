@@ -55,3 +55,30 @@ class IntentResponse(BaseModel):
     gender: str = Field(..., description="Gender (e.g. Male, Female, Other). Defaults to Male if unknown.")
     confidence: float = Field(..., ge=0.0, le=1.0, description="Confidence score of extraction between 0.0 and 1.0")
 
+
+class ApplicantProfile(BaseModel):
+    project_category: str
+    requested_amount: float
+    annual_income: float
+    trade: str
+    gender: str
+
+
+class CandidateScheme(BaseModel):
+    scheme_name: str
+    max_coverage_pct: float
+    interest_rate: float
+    eligibility_score: float
+
+
+class ExplainerRequest(BaseModel):
+    applicant: ApplicantProfile
+    candidate_schemes: list[CandidateScheme]
+    language: str = Field("en", description="Target language of the narrative")
+
+
+class ExplainerResponse(BaseModel):
+    top_scheme: str = Field(..., description="Name of the best-matching scheme")
+    explanation: str = Field(..., description="A localized justification explaining why this scheme fits the applicant's profile")
+    runner_up_note: str = Field(..., description="Brief note on other candidate options or why they ranked lower")
+
