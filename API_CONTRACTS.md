@@ -1,20 +1,44 @@
 # API Contract Specifications
 
-This document defines the strict API contracts, data schemas, validation constraints, and error formats for the FastAPI AI/ML microservice. All responses are returned in JSON format.
+This document defines the strict API contracts, Pydantic schemas, validation constraints, and error response formats for the FastAPI AI/ML microservice.
 
 ---
 
-## Endpoint 1: Extract Applicant Intent
+## Global Error Response Format
 
-Parses conversational transcriptions or text statements to extract structured applicant parameters.
+All standard HTTP exceptions, validation errors, and runtime failures return a consistent JSON schema:
 
-*   **URL**: `/extract-applicant-intent`
-*   **Method**: `POST`
-*   **Content-Type**: `application/json`
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Schema validation failed or request payload is invalid.",
+    "details": "body -> transcript: Field required"
+  }
+}
+```
+
+### Standard Error Codes
+* `BAD_REQUEST` (400): Missing required parameters or empty payload.
+* `VALIDATION_ERROR` (422): JSON schema validation failed or type constraints violated.
+* `UNAUTHORIZED` / `FORBIDDEN` (401 / 403): Auth failure with upstream providers.
+* `NOT_FOUND` (404): Route or resource not found.
+* `INTERNAL_SERVER_ERROR` (500): Downstream LLM provider timeout or processing error.
+
+---
+
+## 1. Extract Applicant Intent
+
+Parses conversational speech transcriptions or text statements into structured applicant profiles.
+
+* **URL**: `/extract-applicant-intent`
+* **Method**: `POST`
+* **Content-Type**: `application/json`
 
 ### Pydantic Models
 
 ```python
+from typing import Literal
 from pydantic import BaseModel, Field
 
 class IntentRequest(BaseModel):
@@ -22,23 +46,29 @@ class IntentRequest(BaseModel):
     language: str = Field("en", description="ISO language code of transcription (e.g., 'en', 'hi', 'mr')")
 
 class IntentResponse(BaseModel):
-    project_category: str = Field(..., description="Categorized project type (e.g., Manufacturing, Service, Trading)")
-    requested_amount: float = Field(..., description="Requested loan amount in INR")
-    annual_income: float = Field(..., description="Applicant's household annual income in INR")
-    trade: str = Field(..., description="Specific trade name (e.g., Tailoring, Dairy, Kirana, Barber)")
-    gender: str = Field(..., description="Gender (e.g., Male, Female, Other)")
-    confidence: float = Field(..., description="Confidence score of extraction between 0.0 and 1.0")
+    project_category: Literal["Manufacturing", "Service", "Trading"] = Field(
+        ..., description="Categorized project type (Manufacturing, Service, or Trading)"
+    )
+    requested_amount: float = Field(
+        ..., ge=0.0, description="Requested loan amount in INR. Defaults to 0.0 if not detected."
+    )
+    annual_income: float = Field(
+        ..., ge=0.0, description="Applicant's household annual income in INR. Defaults to 0.0 if not detected."
+    )
+    trade: str = Field(..., description="Specific trade name in English (e.g. Tailoring, Dairy, Barber)")
+    gender: str = Field(..., description="Gender (e.g. Male, Female, Other). Defaults to Male if unknown.")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Confidence score of extraction between 0.0 and 1.0")
 ```
 
-### JSON Request Payload
+### Example Request
 ```json
 {
-  "transcript": "नमस्ते, मैं एक सिलाई की दुकान शुरू करने के लिए 80,000 रुपये का ऋण चाहता हूँ। मेरी वार्षिक पारिवारिक आय 1,20,000 रुपये है।",
+  "transcript": "नमस्ते, मैं एक सिलाई की दुकान शुरू करने के लिए 80,000 रुपये का ऋण चाहती हूँ। मेरी वार्षिक पारिवारिक आय 1,20,000 रुपये है।",
   "language": "hi"
 }
 ```
 
-### JSON Response Payload (200 OK)
+### Example Response (200 OK)
 ```json
 {
   "project_category": "Manufacturing",
@@ -46,36 +76,32 @@ class IntentResponse(BaseModel):
   "annual_income": 120000.0,
   "trade": "Tailoring",
   "gender": "Female",
-  "confidence": 0.94
+  "confidence": 0.95
 }
 ```
 
-### Validation Constraints
-*   `confidence` must be a float constraint `0.0 <= confidence <= 1.0`.
-*   `requested_amount` and `annual_income` must be non-negative values. If undetected in the text, they should default to `0.0`.
-
 ---
 
-## Endpoint 2: OCR Certificate
+## 2. OCR Certificate
 
 Extracts applicant information from uploaded certificates (Caste or Income) to verify eligibility.
 
-*   **URL**: `/ocr-certificate`
-*   **Method**: `POST`
-*   **Content-Type**: `multipart/form-data`
+* **URL**: `/ocr-certificate`
+* **Method**: `POST`
+* **Content-Type**: `multipart/form-data`
 
-### Request Parameters
+### Request Parameters (Form Data)
 
-| Parameter Name | Data Type | Requirement | Description / Allowed Values |
-| :--- | :--- | :--- | :--- |
-| **file** | Binary (File) | Required | Uploaded document in `image/jpeg`, `image/png`, or `application/pdf` format. |
-| **doc_type** | String | Required | Type of certificate: `"caste"` or `"income"`. |
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `file` | `UploadFile` (Binary) | Yes | Uploaded file (`application/pdf`, `image/jpeg`, `image/png`, `image/webp`). |
+| `doc_type` | `str` | Yes | Type of certificate: `"caste"` or `"income"`. |
 
 ### Pydantic Models
 
 ```python
-from pydantic import BaseModel, Field
 from typing import Optional
+from pydantic import BaseModel, Field
 
 class ExtractedFields(BaseModel):
     name: str = Field(..., description="Name of the applicant printed on the document")
@@ -90,7 +116,7 @@ class OCRResponse(BaseModel):
     raw_confidence: float = Field(..., description="Average OCR engine extraction confidence (0.0 to 1.0)")
 ```
 
-### JSON Response Payload (200 OK - Income Certificate)
+### Example Response (200 OK - Income Certificate)
 ```json
 {
   "doc_type": "income",
@@ -101,23 +127,19 @@ class OCRResponse(BaseModel):
     "valid_until": "2027-03-31"
   },
   "income_verified": true,
-  "raw_confidence": 0.89
+  "raw_confidence": 0.92
 }
 ```
 
-### Verification Logic
-*   **Caste Categories**: SC, ST, OBC, EWS, Gen.
-*   **income_verified Criteria**: Evaluated as `True` if `doc_type == "income"` and `extracted_fields.annual_income <= 500000.00`. If `doc_type == "caste"`, `income_verified` defaults to `false`.
-
 ---
 
-## Endpoint 3: Simplify Term
+## 3. Simplify Term (Jargon Simplifier)
 
-Rephrases financial, structural, and regulatory jargon (e.g., *moratorium*, *collateral*) into plain language localized to regional dialects.
+Rephrases financial, structural, and regulatory jargon (e.g., *moratorium*, *collateral*, *promoter margin*) into plain, conversational regional language.
 
-*   **URL**: `/simplify-term`
-*   **Method**: `POST`
-*   **Content-Type**: `application/json`
+* **URL**: `/simplify-term`
+* **Method**: `POST`
+* **Content-Type**: `application/json`
 
 ### Pydantic Models
 
@@ -130,7 +152,7 @@ class JargonResponse(BaseModel):
     explanation: str = Field(..., description="Simplified explanation of the term in the target language")
 ```
 
-### JSON Request Payload
+### Example Request
 ```json
 {
   "term": "Moratorium Period",
@@ -138,22 +160,22 @@ class JargonResponse(BaseModel):
 }
 ```
 
-### JSON Response Payload (200 OK)
+### Example Response (200 OK)
 ```json
 {
-  "explanation": "मोरेटोरियम अवधि (ऋण स्थगन अवधि) वह समय है जिसके दौरान आपको बैंक को कोई भी ईएमआई (EMI) या किस्त चुकाने की आवश्यकता नहीं होती है। यह एक भुगतान छुट्टी की तरह है जो आपको अपना व्यवसाय शुरू करने और स्थिर होने के लिए दी जाती है।"
+  "explanation": "मोरेटोरियम अवधि एक प्रकार की भुगतान छूट की अवधि है जिसमें आपको ऋण लेने के तुरंत बाद मासिक किस्त (EMI) चुकाने की जरूरत नहीं होती। यह आपको अपना व्यवसाय शुरू करके कमाई करने के लिए आवश्यक समय देती है।"
 }
 ```
 
 ---
 
-## Endpoint 4: Recommend Scheme Explainer
+## 4. Recommend Scheme Explainer
 
-Generates a tailored natural-language narrative describing why the shortlisted schemes fit the applicant's profile and explaining any alternatives.
+Generates a localized natural-language narrative describing why the shortlisted schemes fit the applicant's profile and explaining any alternatives.
 
-*   **URL**: `/recommend-scheme-explainer`
-*   **Method**: `POST`
-*   **Content-Type**: `application/json`
+* **URL**: `/recommend-scheme-explainer`
+* **Method**: `POST`
+* **Content-Type**: `application/json`
 
 ### Pydantic Models
 
@@ -182,7 +204,7 @@ class ExplainerResponse(BaseModel):
     runner_up_note: str = Field(..., description="Brief note on other candidate options or why they ranked lower")
 ```
 
-### JSON Request Payload
+### Example Request
 ```json
 {
   "applicant": {
@@ -201,39 +223,37 @@ class ExplainerResponse(BaseModel):
     },
     {
       "scheme_name": "Micro Credit Scheme",
-      "max_coverage_pct": 90.0,
+      "max_coverage_pct": 80.0,
       "interest_rate": 6.0,
-      "eligibility_score": 0.85
+      "eligibility_score": 0.82
     }
   ],
-  "language": "hi"
+  "language": "en"
 }
 ```
 
-### JSON Response Payload (200 OK)
+### Example Response (200 OK)
 ```json
 {
   "top_scheme": "Mahila Samriddhi Yojana",
-  "explanation": "यह योजना आपकी आवश्यकताओं के लिए सबसे उपयुक्त है क्योंकि यह विशेष रूप से महिला उद्यमियों (दर्जी व्यवसाय के लिए) को लक्षित करती है। आपको आवश्यक ₹80,000 की राशि का 90% कवरेज मिलेगा और ब्याज दर केवल 4% वार्षिक है, जो सबसे कम है।",
-  "runner_up_note": "माइक्रो क्रेडिट योजना भी एक विकल्प है, लेकिन इसकी ब्याज दर 6% है, जो महिला समृद्धि योजना की तुलना में 2% अधिक है।"
+  "explanation": "Mahila Samriddhi Yojana is the most suitable scheme for you because it offers the highest financial coverage (90%) and the lowest interest rate (4.0%) specifically tailored for female entrepreneurs in tailoring.",
+  "runner_up_note": "Micro Credit Scheme is also a viable option but offers slightly lower project coverage (80%) with a higher interest rate (6.0%)."
 }
 ```
 
 ---
 
-## Endpoint 5: Scheme Q&A Chatbot
+## 5. Scheme Q&A Chatbot
 
-Provides conversational, multi-turn questions and answers grounded on official scheme policy guidelines.
+Conversational, multi-turn questions and answers grounded in official scheme policy guidelines.
 
-*   **URL**: `/scheme-chat`
-*   **Method**: `POST`
-*   **Content-Type**: `application/json`
+* **URL**: `/scheme-chat`
+* **Method**: `POST`
+* **Content-Type**: `application/json`
 
 ### Pydantic Models
 
 ```python
-from pydantic import BaseModel, Field
-
 class ChatMessage(BaseModel):
     role: str = Field(..., description="The role of the message author (e.g. 'user' or 'model')")
     parts: str = Field(..., description="The text content of the message")
@@ -247,49 +267,18 @@ class ChatResponse(BaseModel):
     response: str = Field(..., description="The grounded, localized response generated by the AI advisor")
 ```
 
-### JSON Request Payload
+### Example Request
 ```json
 {
-  "message": "What is the interest rate for the Mahila Samriddhi scheme?",
-  "history": [
-    {
-      "role": "user",
-      "parts": "Hello"
-    },
-    {
-      "role": "model",
-      "parts": "Namaste! I am your scheme advisor. How can I help you today?"
-    }
-  ],
-  "language": "hi"
+  "message": "What is the maximum loan limit and interest rate for Mahila Samriddhi Yojana?",
+  "history": [],
+  "language": "en"
 }
 ```
 
-### JSON Response Payload (200 OK)
+### Example Response (200 OK)
 ```json
 {
-  "response": "महिला समृद्धि योजना के लिए ब्याज दर केवल 4% वार्षिक है, जो महिला लाभार्थियों के लिए बेहद अनुकूल है।"
-}
-```
-
----
-
-
-## Standardized HTTP Error States
-
-To ensure stability in Repo 1 integration, Repo 2 returns standard HTTP response status codes:
-
-*   **400 Bad Request**: Invalid format, missing required files, or unsupported languages.
-*   **422 Unprocessable Entity**: JSON schema validation fails or types do not match expectations.
-*   **500 Internal Server Error**: Downstream LLM api calls timed out or PaddleOCR failed to initialize.
-
-### Error Response Schema
-```json
-{
-  "error": {
-    "code": "ENTITY_EXTRACTION_FAILURE",
-    "message": "Failed to parse text: transcription is blank or noisy.",
-    "details": "Language 'xyz' is not supported."
-  }
+  "response": "Under the Mahila Samriddhi Yojana, female beneficiaries can avail loans up to ₹1,40,000 with a subsidized interest rate of 4% per annum. The scheme covers up to 90% of the project cost."
 }
 ```
