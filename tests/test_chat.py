@@ -101,3 +101,95 @@ def test_scheme_chat_provider_failure_returns_500(mock_genai_client):
     err = response.json().get("error", {})
     assert err.get("code") == "INTERNAL_SERVER_ERROR"
     assert "failed" in err.get("message", "").lower()
+
+
+def test_tool_retrieve_scheme_guidelines():
+    """Test retrieve_scheme_guidelines tool directly with queries."""
+    from app.services.gemini_service import retrieve_scheme_guidelines
+    res = retrieve_scheme_guidelines("tell me about vishwakarma scheme")
+    assert "VISHWAKARMA" in res
+    assert "collateral-free" in res
+    res = retrieve_scheme_guidelines("what is MSY or mahila samriddhi?")
+    assert "MAHILA SAMRIDDHI" in res
+    assert "NBCFDC" in res
+    res = retrieve_scheme_guidelines("random gibberish search terms")
+    assert "No specific guidelines" in res
+
+
+@patch("app.services.gemini_service.simplify_term")
+def test_tool_simplify_jargon(mock_simplify):
+    """Test simplify_financial_jargon tool wraps simplify_term."""
+    from app.services.gemini_service import simplify_financial_jargon
+
+    mock_simplify.return_value = "Easy moratorium explanation"
+    res = simplify_financial_jargon("moratorium", "en")
+    assert res == "Easy moratorium explanation"
+    mock_simplify.assert_called_once_with(term="moratorium", language="en")
+
+
+@patch("app.services.gemini_service.recommend_scheme_explainer")
+def test_tool_explain_recommendations(mock_explainer):
+    """Test explain_scheme_recommendations tool correctly validates and calls recommend_scheme_explainer."""
+    from app.services.gemini_service import explain_scheme_recommendations
+    from app.models.schemas import ExplainerResponse
+
+    mock_explainer.return_value = ExplainerResponse(
+        top_scheme="PMEGP",
+        explanation="fits profile perfectly",
+        runner_up_note="others are ok"
+    )
+
+    res = explain_scheme_recommendations(
+        project_category="Manufacturing",
+        trade="Tailoring",
+        requested_amount=100000.0,
+        annual_income=200000.0,
+        gender="Female",
+        candidate_schemes=[
+            {
+                "scheme_name": "PMEGP",
+                "max_coverage_pct": 35.0,
+                "interest_rate": 8.5,
+                "eligibility_score": 0.9
+            }
+        ],
+        language="en"
+    )
+
+    assert res["top_scheme"] == "PMEGP"
+    assert res["explanation"] == "fits profile perfectly"
+    assert res["runner_up_note"] == "others are ok"
+    mock_explainer.assert_called_once()
+
+
+@patch("app.services.gemini_service.genai.Client")
+def test_scheme_chat_passes_tools_and_config(mock_genai_client):
+    """Test that chat_with_knowledge sets up the tools, system instructions, and target language correctly."""
+    mock_instance = MagicMock()
+    mock_genai_client.return_value = mock_instance
+    mock_response = MagicMock()
+    mock_response.text = "Hello! Sure, let me answer that."
+    mock_instance.models.generate_content.return_value = mock_response
+
+    payload = {
+        "message": "Is there a scheme for women?",
+        "history": [],
+        "language": "mr",
+    }
+    response = client.post("/scheme-chat", json=payload)
+    assert response.status_code == 200
+
+    mock_instance.models.generate_content.assert_called_once()
+    call_args = mock_instance.models.generate_content.call_args
+    config = call_args.kwargs.get("config")
+    
+    assert config is not None
+    assert len(config.tools) == 3
+    tool_names = [tool.__name__ for tool in config.tools]
+    assert "retrieve_scheme_guidelines" in tool_names
+    assert "simplify_financial_jargon" in tool_names
+    assert "explain_scheme_recommendations" in tool_names
+    assert "Qualifying Conversation Memory" in config.system_instruction
+    assert "Grounding & Citations" in config.system_instruction
+    assert "Confidence / Strict Abstention" in config.system_instruction
+
