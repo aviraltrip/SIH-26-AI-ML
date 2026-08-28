@@ -138,6 +138,7 @@ def simplify_term(term: str, language: str = "en") -> str:
         raise RuntimeError("Failed to generate simplified explanation from LLM provider.") from None
 
 
+
 _cached_knowledge = None
 
 def _load_knowledge_base() -> str:
@@ -157,21 +158,161 @@ def _load_knowledge_base() -> str:
         raise RuntimeError("Failed to load local scheme knowledge base resource.")
 
 
+def retrieve_scheme_guidelines(query: str) -> str:
+    """Retrieves relevant official government scheme policy guidelines and FAQs based on a search query.
+
+    Args:
+        query: The search terms (e.g., 'PM Vishwakarma eligibility', 'Mudra loan limits').
+
+    Returns:
+        Matching sections from the official guidelines knowledge base.
+    """
+    try:
+        content = _load_knowledge_base()
+    except Exception as exc:
+        logger.error("Failed to load knowledge base for tool: %s", exc)
+        return "Error: Could not load the official schemes knowledge base."
+
+    sections = re.split(r'\n(?=\d+\.\s+)', content)
+    matched_sections = []
+    query_lower = (query or "").lower()
+
+    for section in sections:
+        lines = section.strip().split('\n')
+        if not lines:
+            continue
+        title = lines[0].lower()
+        score = 0
+        keywords = []
+        if "mahila" in title or "msy" in title:
+            keywords.extend(["mahila", "msy", "samriddhi", "women", "nbcfdc"])
+        if "micro credit" in title or "mcs" in title:
+            keywords.extend(["micro credit", "mcs", "nbcfdc"])
+        if "vishwakarma" in title:
+            keywords.extend(["vishwakarma", "artisan", "toolkit", "stipend", "traditional"])
+        if "pmegp" in title or "employment generation" in title:
+            keywords.extend(["pmegp", "subsidy", "kvic", "manufacturing", "service", "trading"])
+        if "mudra" in title or "pmmy" in title:
+            keywords.extend(["mudra", "pmmy", "shishu", "kishor", "tarun"])
+        if "stand-up" in title or "standup" in title:
+            keywords.extend(["stand-up", "standup", "sc", "st", "greenfield"])
+        if "svanidhi" in title or "street vendor" in title:
+            keywords.extend(["svanidhi", "street vendor", "working capital", "tranche"])
+
+        for kw in keywords:
+            if kw in query_lower:
+                score += 5
+        words = [w for w in re.split(r'\W+', query_lower) if len(w) > 3]
+        for word in words:
+            if word in section.lower():
+                score += 1
+
+        if score > 0:
+            matched_sections.append((score, section))
+
+    if not matched_sections:
+        return "No specific guidelines matching this query were found in the knowledge base."
+
+    matched_sections.sort(key=lambda x: x[0], reverse=True)
+    return "\n\n=========================================\n".join(sec[1] for sec in matched_sections[:2])
+
+
+def simplify_financial_jargon(term: str, language: str = "en") -> str:
+    """Simplifies a financial, banking, or government-scheme jargon term into conversational language.
+
+    Args:
+        term: The financial jargon term to simplify (e.g., 'moratorium', 'collateral').
+        language: Target ISO language code or name (e.g., 'en', 'hi', 'mr').
+
+    Returns:
+        A simplified explanation with analogies in the target language.
+    """
+    try:
+        return simplify_term(term=term, language=language)
+    except Exception as exc:
+        logger.error("Failed to simplify jargon in tool: %s", exc)
+        return f"Error: Could not simplify term '{term}'."
+
+
+def explain_scheme_recommendations(
+    project_category: str,
+    trade: str,
+    requested_amount: float,
+    annual_income: float,
+    gender: str,
+    candidate_schemes: list[dict],
+    language: str = "en",
+) -> dict:
+    """Generates a tailored explanation describing why shortlisted schemes fit an applicant's profile.
+
+    Args:
+        project_category: Categorized project type ('Manufacturing', 'Service', or 'Trading').
+        trade: Specific trade name (e.g., Tailoring, Dairy, Kirana).
+        requested_amount: Requested loan amount in INR.
+        annual_income: Household annual income in INR.
+        gender: Gender (e.g., Male, Female, Other).
+        candidate_schemes: List of candidates containing 'scheme_name', 'max_coverage_pct', 'interest_rate', and 'eligibility_score'.
+        language: Target ISO language code (e.g., 'en', 'hi', 'mr').
+
+    Returns:
+        A dictionary with 'top_scheme', 'explanation', and 'runner_up_note'.
+    """
+    try:
+        applicant_obj = ApplicantProfile(
+            project_category=project_category,
+            trade=trade,
+            requested_amount=requested_amount,
+            annual_income=annual_income,
+            gender=gender,
+        )
+        candidates_list = []
+        for s in candidate_schemes:
+            candidates_list.append(
+                CandidateScheme(
+                    scheme_name=s.get("scheme_name", ""),
+                    max_coverage_pct=float(s.get("max_coverage_pct", 0.0)),
+                    interest_rate=float(s.get("interest_rate", 0.0)),
+                    eligibility_score=float(s.get("eligibility_score", 0.0)),
+                )
+            )
+        res = recommend_scheme_explainer(
+            applicant=applicant_obj,
+            candidate_schemes=candidates_list,
+            language=language,
+        )
+        return {
+            "top_scheme": res.top_scheme,
+            "explanation": res.explanation,
+            "runner_up_note": res.runner_up_note,
+        }
+    except Exception as exc:
+        logger.error("Failed to generate scheme explanation in tool: %s", exc)
+        return {
+            "top_scheme": "",
+            "explanation": "Error: Could not generate fitment explanation.",
+            "runner_up_note": "",
+        }
+
+
 CHAT_SYSTEM_PROMPT_TEMPLATE = (
     "You are an expert government policy advisor helping rural micro-entrepreneurs and applicants understand banking and social welfare schemes.\n"
-    "Answer the user's question accurately using ONLY the reference facts provided below.\n"
-    "If the answer cannot be found in the reference facts, state clearly: "
+    "Your goal is to answer the user's questions truthfully and help them qualify for the correct government schemes.\n\n"
+    "You have access to the following tools to fulfill your role:\n"
+    "1. `retrieve_scheme_guidelines`: Searches the official knowledge base. You MUST call this tool when answering questions about a scheme's eligibility, rules, interest rates, or features.\n"
+    "2. `simplify_financial_jargon`: Explains complex terminology using simple words and real-life analogies. Call this whenever the user asks about jargon like 'moratorium', 'collateral', 'subsidy', etc.\n"
+    "3. `explain_scheme_recommendations`: Explains scheme recommendations and fitment. Call this when users want to know why a scheme matches their profile or which schemes they fit.\n\n"
+    "CRITICAL RULES:\n"
+    "1. Grounding & Citations: When you answer using scheme guidelines, you MUST append inline citations in markdown format referring to the scheme name and section (e.g., '[Source: PM Vishwakarma Scheme - Credit Support]'). Do not cite general knowledge.\n"
+    "2. Confidence / Strict Abstention: If the tools do not return relevant information, or if you cannot find the answer in the retrieved facts, you MUST state exactly: "
     "\"I apologize, but I do not have official guidelines for that specific detail. Please consult the nearest branch or nodal officer.\"\n"
-    "Do not invent eligibility criteria, benefits, or loan terms under any circumstances.\n"
-    "Keep responses helpful, simple, and direct. Keep the length within 3-4 sentences where possible.\n\n"
-    "--- REFERENCE FACTS ---\n"
-    "{knowledge_base}\n"
-    "------------------------"
+    "Do not invent facts, numbers, or rules.\n"
+    "3. Qualifying Conversation Memory: Keep track of applicant details mentioned in the conversation history (e.g., gender, income, trade). If the user asks if they are eligible for a scheme but you are missing key details to qualify them, do not answer with a generic yes/no; instead, ask friendly follow-up questions to obtain the missing details (e.g., trade, annual income) to qualify them.\n"
+    "4. Target Language: Respond in the requested target language."
 )
 
 
 def chat_with_knowledge(message: str, history: list[ChatMessage], language: str = "en") -> str:
-    """Answers a user question grounded on official scheme policy guidelines.
+    """Answers a user question grounded on official scheme policy guidelines using tools.
 
     Args:
         message: Current user message/question.
@@ -191,9 +332,8 @@ def chat_with_knowledge(message: str, history: list[ChatMessage], language: str 
         logger.error("GEMINI_API_KEY is not configured in environment.")
         raise RuntimeError("LLM service is not configured. Please set GEMINI_API_KEY.")
 
-    kb_content = _load_knowledge_base()
     target_lang = _get_language_label(language)
-    system_instruction = CHAT_SYSTEM_PROMPT_TEMPLATE.format(knowledge_base=kb_content)
+    system_instruction = CHAT_SYSTEM_PROMPT_TEMPLATE
 
     contents = []
     for turn in history:
@@ -223,6 +363,11 @@ def chat_with_knowledge(message: str, history: list[ChatMessage], language: str 
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
                 temperature=0.2,
+                tools=[
+                    retrieve_scheme_guidelines,
+                    simplify_financial_jargon,
+                    explain_scheme_recommendations,
+                ],
             ),
         )
 
@@ -247,6 +392,7 @@ def chat_with_knowledge(message: str, history: list[ChatMessage], language: str 
         ):
             raise RuntimeError("Authentication failed with LLM provider.") from None
         raise RuntimeError("Failed to generate chat response from LLM provider.") from None
+
 
 
 INTENT_SYSTEM_PROMPT = (
