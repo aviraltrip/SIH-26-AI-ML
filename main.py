@@ -7,6 +7,7 @@ from app.routes.jargon import router as jargon_router
 from app.routes.chat import router as chat_router
 from app.routes.intent import router as intent_router
 from app.routes.explainer import router as explainer_router
+from app.routes.ocr import router as ocr_router
 
 app = FastAPI(
     title="SIH 26 AI-ML Stuff",
@@ -86,6 +87,7 @@ app.include_router(jargon_router)
 app.include_router(chat_router)
 app.include_router(intent_router)
 app.include_router(explainer_router)
+app.include_router(ocr_router)
 
 
 @app.get("/")
