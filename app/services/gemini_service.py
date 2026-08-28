@@ -186,10 +186,10 @@ def retrieve_scheme_guidelines(query: str) -> str:
         keywords = []
         if "mahila" in title or "msy" in title:
             keywords.extend(["mahila", "msy", "samriddhi", "women", "nbcfdc"])
-        if "micro credit" in title or "mcs" in title:
-            keywords.extend(["micro credit", "mcs", "nbcfdc"])
+        if "micro credit" in title or "mcs" in title or "mcf" in title:
+            keywords.extend(["micro credit", "mcs", "mcf", "micro-credit", "nbcfdc", "nsfdc"])
         if "vishwakarma" in title:
-            keywords.extend(["vishwakarma", "artisan", "toolkit", "stipend", "traditional"])
+            keywords.extend(["vishwakarma", "artisan", "toolkit", "stipend", "traditional", "darzi", "tailor"])
         if "pmegp" in title or "employment generation" in title:
             keywords.extend(["pmegp", "subsidy", "kvic", "manufacturing", "service", "trading"])
         if "mudra" in title or "pmmy" in title:
@@ -198,6 +198,20 @@ def retrieve_scheme_guidelines(query: str) -> str:
             keywords.extend(["stand-up", "standup", "sc", "st", "greenfield"])
         if "svanidhi" in title or "street vendor" in title:
             keywords.extend(["svanidhi", "street vendor", "working capital", "tranche"])
+        if "nhfdc" in title or "divyangjan" in title or "disability" in title:
+            keywords.extend(["nhfdc", "divyangjan", "handicapped", "disability", "disabled", "assistive"])
+        if "udyogini" in title:
+            keywords.extend(["udyogini", "kswdc", "women subsidy", "widow"])
+        if "nmdfc" in title or "minority" in title:
+            keywords.extend(["nmdfc", "minority", "muslim", "christian", "sikh", "buddhist", "parsi", "jain", "virasat"])
+        if "education" in title or "elas" in title:
+            keywords.extend(["education", "elas", "study", "student", "college", "higher education", "abroad"])
+        if "general term loan" in title or "term loan" in title:
+            keywords.extend(["term loan", "general term loan", "50 lakh", "project loan"])
+        if "adivasi" in title or "amsy" in title or "nstfdc" in title:
+            keywords.extend(["adivasi", "amsy", "nstfdc", "tribal", "st women", "scheduled tribe"])
+        if "swachhta" in title or "suy" in title or "nskfdc" in title or "safai" in title:
+            keywords.extend(["swachhta", "suy", "nskfdc", "safai", "karamchari", "sanitation", "toilet", "manual scavenger"])
 
         for kw in keywords:
             if kw in query_lower:
@@ -214,7 +228,7 @@ def retrieve_scheme_guidelines(query: str) -> str:
         return "No specific guidelines matching this query were found in the knowledge base."
 
     matched_sections.sort(key=lambda x: x[0], reverse=True)
-    return "\n\n=========================================\n".join(sec[1] for sec in matched_sections[:2])
+    return "\n\n=========================================\n".join(sec[1] for sec in matched_sections[:3])
 
 
 def simplify_financial_jargon(term: str, language: str = "en") -> str:
