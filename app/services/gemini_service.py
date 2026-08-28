@@ -6,7 +6,13 @@ from google import genai
 from google.genai import types
 
 from app.config import get_settings
-from app.models.schemas import ChatMessage, IntentResponse
+from app.models.schemas import (
+    ApplicantProfile,
+    CandidateScheme,
+    ChatMessage,
+    ExplainerResponse,
+    IntentResponse,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -329,3 +335,113 @@ def extract_applicant_intent(transcript: str, language: str = "en") -> IntentRes
             raise RuntimeError("Extracted data did not match the required response schema constraints.") from None
 
         raise RuntimeError("Failed to extract applicant intent from LLM provider.") from None
+
+
+def recommend_scheme_explainer(
+    applicant: ApplicantProfile,
+    candidate_schemes: list[CandidateScheme],
+    language: str = "en",
+) -> ExplainerResponse:
+    """Generates a tailored natural-language narrative explaining why shortlisted schemes fit an applicant.
+
+    Args:
+        applicant: Applicant profile parameters.
+        candidate_schemes: List of shortlisted candidate schemes with scores.
+        language: Target ISO language code (e.g., 'en', 'hi', 'mr').
+
+    Returns:
+        Structured ExplainerResponse containing top_scheme, explanation, and runner_up_note.
+
+    Raises:
+        ValueError: If candidate_schemes is empty or language is unsupported.
+        RuntimeError: If LLM service fails or returns invalid structured output.
+    """
+    if not candidate_schemes:
+        raise ValueError("Candidate schemes list must not be empty.")
+
+    lang_code = (language or "en").strip().lower()
+    if lang_code not in LANGUAGE_MAP:
+        raise ValueError(
+            f"Unsupported language: '{language}'. Supported languages: {', '.join(sorted(LANGUAGE_MAP.keys()))}"
+        )
+
+    settings = get_settings()
+    api_key = settings.gemini_api_key
+    if not api_key:
+        logger.error("GEMINI_API_KEY is not configured in environment.")
+        raise RuntimeError("LLM service is not configured. Please set GEMINI_API_KEY.")
+
+    target_lang = LANGUAGE_MAP[lang_code]
+
+    candidate_schemes_text = "\n".join([
+        f"- Scheme: {s.scheme_name}, Max Coverage: {s.max_coverage_pct}%, Interest Rate: {s.interest_rate}%, Eligibility Score: {s.eligibility_score}"
+        for s in candidate_schemes
+    ])
+
+    user_content = (
+        f"Applicant Profile:\n"
+        f"- Category: {applicant.project_category}\n"
+        f"- Trade: {applicant.trade}\n"
+        f"- Requested Amount: {applicant.requested_amount}\n"
+        f"- Annual Income: {applicant.annual_income}\n"
+        f"- Gender: {applicant.gender}\n\n"
+        f"Shortlisted Candidates:\n"
+        f"{candidate_schemes_text}\n\n"
+        f"Target Language: {target_lang}"
+    )
+
+    system_instruction = (
+        "You are an empathetic social development officer helping an applicant understand their scheme recommendations.\n\n"
+        "Instructions:\n"
+        "1. Evaluate ALL shortlisted candidate schemes provided in the request.\n"
+        "2. Compare them against the supplied applicant profile.\n"
+        "3. Consider all supplied candidate attributes, including eligibility_score, interest_rate, max_coverage_pct, and scheme_name.\n"
+        "4. Select ONE scheme that you determine to be the best overall fit for the applicant.\n"
+        "5. Return the exact supplied scheme_name of that selected scheme as 'top_scheme'.\n"
+        f"6. Generate an 'explanation' in \"{target_lang}\" describing why the selected scheme is the best fit using ONLY the information provided in the request.\n"
+        f"7. Generate a 'runner_up_note' in \"{target_lang}\" explaining the other candidate scheme(s) and why they are slightly less optimal, or explaining that there are no alternative candidates if only one candidate is provided.\n"
+        "8. Do NOT invent eligibility rules, income limits, interest rates, coverage percentages, subsidies, benefits, government policies, approval guarantees, application requirements, or financial/legal advice.\n"
+        "9. Do NOT infer specific eligibility criteria that are not supplied in the request.\n"
+        "10. Do NOT use external knowledge to introduce facts about a scheme that were not supplied in the request.\n"
+        "11. Output your explanation strictly adhering to the JSON schema with fields 'top_scheme', 'explanation', and 'runner_up_note'. Do not output conversational preamble or markdown formatting."
+    )
+
+    try:
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model=settings.gemini_model,
+            contents=user_content,
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction,
+                response_mime_type="application/json",
+                response_schema=ExplainerResponse,
+                temperature=0.2,
+            ),
+        )
+
+        if not response.text:
+            raise RuntimeError("Empty response received from LLM provider.")
+
+        return ExplainerResponse.model_validate_json(response.text)
+
+    except Exception as exc:
+        raw_msg = str(exc)
+        safe_msg = _redact_secrets(raw_msg, api_key)
+        logger.error("Gemini Explainer LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
+
+        if (
+            "API_KEY" in raw_msg
+            or "api key" in raw_msg.lower()
+            or "auth" in raw_msg.lower()
+            or "suspended" in raw_msg.lower()
+            or "PERMISSION_DENIED" in raw_msg
+            or "400" in raw_msg
+            or "403" in raw_msg
+        ):
+            raise RuntimeError("Authentication failed with LLM provider.") from None
+
+        if "validation" in raw_msg.lower() or "validate" in raw_msg.lower():
+            raise RuntimeError("Generated explanation did not match the required response schema constraints.") from None
+
+        raise RuntimeError("Failed to generate scheme explanation from LLM provider.") from None
+
