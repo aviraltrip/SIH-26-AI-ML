@@ -299,8 +299,6 @@ def test_recommend_scheme_explainer_default_language_success(mock_genai_client):
     assert data["top_scheme"] == "Scheme A"
     assert data["explanation"] == "Scheme A provides 90% coverage at a low 4% interest rate."
     assert data["runner_up_note"] == "Scheme B has a higher interest rate of 6%."
-
-    # Verify Gemini was invoked with English target language
     call_args = mock_instance.models.generate_content.call_args
     assert "English" in call_args.kwargs.get("contents", "") or "English" in str(call_args)
 
@@ -311,7 +309,6 @@ def test_recommend_scheme_explainer_malformed_structured_output_returns_500(mock
     mock_instance = MagicMock()
     mock_genai_client.return_value = mock_instance
     mock_response = MagicMock()
-    # Missing required 'explanation' and 'runner_up_note' fields
     mock_response.text = json.dumps({
         "top_scheme": "Mahila Samriddhi Yojana"
     })
