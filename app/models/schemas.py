@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -81,4 +81,18 @@ class ExplainerResponse(BaseModel):
     top_scheme: str = Field(..., description="Name of the best-matching scheme")
     explanation: str = Field(..., description="A localized justification explaining why this scheme fits the applicant's profile")
     runner_up_note: str = Field(..., description="Brief note on other candidate options or why they ranked lower")
+
+
+class ExtractedFields(BaseModel):
+    name: str = Field(..., description="Name of the applicant printed on the document")
+    category: Optional[str] = Field(None, description="Caste category (SC, ST, OBC, General) extracted from Caste Certificate")
+    annual_income: Optional[float] = Field(None, description="Annual income in INR extracted from Income Certificate")
+    valid_until: Optional[str] = Field(None, description="Expiration date of document in YYYY-MM-DD format (if applicable)")
+
+
+class OCRResponse(BaseModel):
+    doc_type: str = Field(..., description="Type of certificate processed ('caste' or 'income')")
+    extracted_fields: ExtractedFields = Field(..., description="Structured fields extracted from certificate")
+    income_verified: bool = Field(..., description="True if document type is income and annual income is extracted and <= 500000.00")
+    raw_confidence: float = Field(..., description="Average OCR engine extraction confidence (0.0 to 1.0)")
 
