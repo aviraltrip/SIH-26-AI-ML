@@ -1,17 +1,24 @@
+import io
 import json
 from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
+from PIL import Image
 
 from main import app
 
 client = TestClient(app)
 
-DUMMY_PNG_BYTES = (
-    b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06"
-    b"\x00\x00\x00\x1f\x15c4\x00\x00\x00\rIDATx\x9cc`\x00\x00\x00\x02\x00\x01"
-    b"H\xaf\xa4q\x00\x00\x00\x00IEND\xaeB`\x82"
-)
+
+def _get_dummy_png_bytes() -> bytes:
+    buf = io.BytesIO()
+    img = Image.new("RGB", (10, 10), color="white")
+    img.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+DUMMY_PNG_BYTES = _get_dummy_png_bytes()
+
 
 
 @patch("app.services.ocr_service.genai.Client")
