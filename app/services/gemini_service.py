@@ -1,9 +1,11 @@
+import json
 import logging
 import os
 import re
 
 from google import genai
 from google.genai import types
+from openai import OpenAI
 
 from app.config import get_settings
 from app.models.schemas import (
@@ -47,6 +49,7 @@ SYSTEM_PROMPT_TEMPLATE = (
     "7. Return ONLY the plain explanation text."
 )
 
+
 def _get_language_label(language_code: str) -> str:
     code_clean = (language_code or "en").strip().lower()
     return LANGUAGE_MAP.get(code_clean, code_clean)
@@ -59,7 +62,7 @@ def _clean_explanation(text: str) -> str:
     cleaned = re.sub(r"^```[a-zA-Z]*\n?", "", cleaned)
     cleaned = re.sub(r"\n?```$", "", cleaned)
     cleaned = re.sub(r"^(Explanation|सरल व्याख्या|स्पष्टीकरण)\s*:\s*", "", cleaned, flags=re.IGNORECASE)
-    cleaned = cleaned.strip('"\'  \n\r\t')  
+    cleaned = cleaned.strip('"\'  \n\r\t')
     return cleaned
 
 
@@ -68,7 +71,7 @@ def _redact_secrets(text: str, api_key: str) -> str:
     safe = text
     if api_key:
         safe = safe.replace(api_key, "[REDACTED]")
-    safe = re.sub(r"(AIza[0-9A-Za-z\-_]{30,}|AQ\.[0-9A-Za-z\-_]{30,})", "[REDACTED]", safe)
+    safe = re.sub(r"(AIza[0-9A-Za-z\-_]{30,}|AQ\.[0-9A-Za-z\-_]{30,}|sk-or-[0-9A-Za-z\-_]{20,})", "[REDACTED]", safe)
     safe = re.sub(r"(Bearer\s+)[^\s,'\"<>]+", r"\1[REDACTED]", safe)
     return safe
 
@@ -85,7 +88,7 @@ def simplify_term(term: str, language: str = "en") -> str:
 
     Raises:
         ValueError: If term is empty.
-        RuntimeError: If Gemini API fails or is not configured.
+        RuntimeError: If LLM service fails or is not configured.
     """
     term_clean = (term or "").strip()
     if not term_clean:
@@ -98,32 +101,45 @@ def simplify_term(term: str, language: str = "en") -> str:
         raise RuntimeError("LLM service is not configured. Please set GEMINI_API_KEY.")
 
     target_lang = _get_language_label(language)
-
     user_content = (
         f"Financial jargon term: {term_clean}\n"
         f"Target language: {target_lang}"
     )
 
     try:
-        client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model=settings.gemini_model,
-            contents=user_content,
-            config=types.GenerateContentConfig(
-                system_instruction=SYSTEM_PROMPT_TEMPLATE,
+        if settings.is_openrouter:
+            client = OpenAI(base_url=settings.openrouter_base_url, api_key=api_key)
+            response = client.chat.completions.create(
+                model=settings.gemini_model,
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT_TEMPLATE},
+                    {"role": "user", "content": user_content},
+                ],
                 temperature=0.3,
-            ),
-        )
+                max_tokens=300,
+            )
+            raw_text = response.choices[0].message.content or ""
+            if not raw_text.strip():
+                raise RuntimeError("Empty response received from LLM provider.")
+            return _clean_explanation(raw_text)
+        else:
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model=settings.gemini_model,
+                contents=user_content,
+                config=types.GenerateContentConfig(
+                    system_instruction=SYSTEM_PROMPT_TEMPLATE,
+                    temperature=0.3,
+                ),
+            )
+            if not response.text:
+                raise RuntimeError("Empty response received from LLM provider.")
+            return _clean_explanation(response.text)
 
-        if not response.text:
-            raise RuntimeError("Empty response received from LLM provider.")
-
-        return _clean_explanation(response.text)
-
-    except Exception as exc:  
+    except Exception as exc:
         raw_msg = str(exc)
         safe_msg = _redact_secrets(raw_msg, api_key)
-        logger.error("Gemini LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
+        logger.error("LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
 
         if (
             "API_KEY" in raw_msg
@@ -131,15 +147,15 @@ def simplify_term(term: str, language: str = "en") -> str:
             or "auth" in raw_msg.lower()
             or "suspended" in raw_msg.lower()
             or "PERMISSION_DENIED" in raw_msg
-            or "400" in raw_msg
+            or "401" in raw_msg
             or "403" in raw_msg
         ):
             raise RuntimeError("Authentication failed with LLM provider.") from None
         raise RuntimeError(f"Failed to generate simplified explanation from LLM provider: {safe_msg}") from None
 
 
-
 _cached_knowledge = None
+
 
 def _load_knowledge_base() -> str:
     global _cached_knowledge
@@ -148,7 +164,7 @@ def _load_knowledge_base() -> str:
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
     kb_path = os.path.join(os.path.dirname(current_dir), "resources", "schemes_knowledge.txt")
-    
+
     try:
         with open(kb_path, "r", encoding="utf-8") as f:
             _cached_knowledge = f.read()
@@ -308,6 +324,79 @@ def explain_scheme_recommendations(
         }
 
 
+OPENROUTER_TOOLS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "retrieve_scheme_guidelines",
+            "description": "Retrieves relevant official government scheme policy guidelines and FAQs based on a search query.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "The search terms (e.g., 'PM Vishwakarma eligibility', 'Mudra loan limits').",
+                    }
+                },
+                "required": ["query"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "simplify_financial_jargon",
+            "description": "Simplifies a financial, banking, or government-scheme jargon term into conversational language.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "term": {
+                        "type": "string",
+                        "description": "The financial jargon term to simplify (e.g., 'moratorium', 'collateral').",
+                    },
+                    "language": {
+                        "type": "string",
+                        "description": "Target ISO language code or name (e.g., 'en', 'hi', 'mr').",
+                    },
+                },
+                "required": ["term"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "explain_scheme_recommendations",
+            "description": "Generates a tailored explanation describing why shortlisted schemes fit an applicant's profile.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "project_category": {"type": "string"},
+                    "trade": {"type": "string"},
+                    "requested_amount": {"type": "number"},
+                    "annual_income": {"type": "number"},
+                    "gender": {"type": "string"},
+                    "candidate_schemes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "scheme_name": {"type": "string"},
+                                "max_coverage_pct": {"type": "number"},
+                                "interest_rate": {"type": "number"},
+                                "eligibility_score": {"type": "number"},
+                            },
+                            "required": ["scheme_name", "max_coverage_pct", "interest_rate", "eligibility_score"],
+                        },
+                    },
+                    "language": {"type": "string"},
+                },
+                "required": ["project_category", "trade", "requested_amount", "annual_income", "gender", "candidate_schemes"],
+            },
+        },
+    },
+]
+
 CHAT_SYSTEM_PROMPT_TEMPLATE = (
     "You are an expert government policy advisor helping rural micro-entrepreneurs and applicants understand banking and social welfare schemes.\n"
     "Your goal is to answer the user's questions truthfully and help them qualify for the correct government schemes.\n\n"
@@ -348,52 +437,95 @@ def chat_with_knowledge(message: str, history: list[ChatMessage], language: str 
 
     target_lang = _get_language_label(language)
     system_instruction = CHAT_SYSTEM_PROMPT_TEMPLATE
-
-    contents = []
-    for turn in history:
-        role = turn.role.strip().lower()
-        if role not in ("user", "model"):
-            role = "user"
-        contents.append(
-            types.Content(
-                role=role,
-                parts=[types.Part.from_text(text=turn.parts)]
-            )
-        )
-
     user_prompt = f"User Question: {msg_clean}\nPlease respond in the language: {target_lang}."
-    contents.append(
-        types.Content(
-            role="user",
-            parts=[types.Part.from_text(text=user_prompt)]
-        )
-    )
 
     try:
-        client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model=settings.gemini_model,
-            contents=contents,
-            config=types.GenerateContentConfig(
-                system_instruction=system_instruction,
-                temperature=0.2,
-                tools=[
-                    retrieve_scheme_guidelines,
-                    simplify_financial_jargon,
-                    explain_scheme_recommendations,
-                ],
-            ),
-        )
+        if settings.is_openrouter:
+            client = OpenAI(base_url=settings.openrouter_base_url, api_key=api_key)
+            messages = [{"role": "system", "content": system_instruction}]
+            for turn in history:
+                role = "assistant" if turn.role.strip().lower() in ("model", "assistant") else "user"
+                messages.append({"role": role, "content": turn.parts})
+            messages.append({"role": "user", "content": user_prompt})
 
-        if not response.text:
-            raise RuntimeError("Empty response received from LLM provider.")
+            for _ in range(5):
+                response = client.chat.completions.create(
+                    model=settings.gemini_model,
+                    messages=messages,
+                    tools=OPENROUTER_TOOLS,
+                    temperature=0.2,
+                    max_tokens=600,
+                )
+                msg = response.choices[0].message
+                if not msg.tool_calls:
+                    if not msg.content:
+                        raise RuntimeError("Empty response received from LLM provider.")
+                    return _clean_explanation(msg.content)
 
-        return _clean_explanation(response.text)
+                messages.append(msg.model_dump())
+                for tool_call in msg.tool_calls:
+                    fn_name = tool_call.function.name
+                    fn_args = json.loads(tool_call.function.arguments or "{}")
+                    if fn_name == "retrieve_scheme_guidelines":
+                        tool_res = retrieve_scheme_guidelines(**fn_args)
+                    elif fn_name == "simplify_financial_jargon":
+                        tool_res = simplify_financial_jargon(**fn_args)
+                    elif fn_name == "explain_scheme_recommendations":
+                        tool_res = json.dumps(explain_scheme_recommendations(**fn_args))
+                    else:
+                        tool_res = f"Error: Unknown tool {fn_name}"
+
+                    messages.append({
+                        "role": "tool",
+                        "tool_call_id": tool_call.id,
+                        "content": str(tool_res),
+                    })
+
+            raise RuntimeError("Exceeded maximum tool execution turns.")
+        else:
+            contents = []
+            for turn in history:
+                role = turn.role.strip().lower()
+                if role not in ("user", "model"):
+                    role = "user"
+                contents.append(
+                    types.Content(
+                        role=role,
+                        parts=[types.Part.from_text(text=turn.parts)]
+                    )
+                )
+
+            contents.append(
+                types.Content(
+                    role="user",
+                    parts=[types.Part.from_text(text=user_prompt)]
+                )
+            )
+
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model=settings.gemini_model,
+                contents=contents,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    temperature=0.2,
+                    tools=[
+                        retrieve_scheme_guidelines,
+                        simplify_financial_jargon,
+                        explain_scheme_recommendations,
+                    ],
+                ),
+            )
+
+            if not response.text:
+                raise RuntimeError("Empty response received from LLM provider.")
+
+            return _clean_explanation(response.text)
 
     except Exception as exc:
         raw_msg = str(exc)
         safe_msg = _redact_secrets(raw_msg, api_key)
-        logger.error("Gemini Chat LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
+        logger.error("Chat LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
 
         if (
             "API_KEY" in raw_msg
@@ -401,12 +533,11 @@ def chat_with_knowledge(message: str, history: list[ChatMessage], language: str 
             or "auth" in raw_msg.lower()
             or "suspended" in raw_msg.lower()
             or "PERMISSION_DENIED" in raw_msg
-            or "400" in raw_msg
+            or "401" in raw_msg
             or "403" in raw_msg
         ):
             raise RuntimeError("Authentication failed with LLM provider.") from None
         raise RuntimeError("Failed to generate chat response from LLM provider.") from None
-
 
 
 INTENT_SYSTEM_PROMPT = (
@@ -458,27 +589,42 @@ def extract_applicant_intent(transcript: str, language: str = "en") -> IntentRes
     )
 
     try:
-        client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model=settings.gemini_model,
-            contents=user_content,
-            config=types.GenerateContentConfig(
-                system_instruction=INTENT_SYSTEM_PROMPT,
-                response_mime_type="application/json",
-                response_schema=IntentResponse,
+        if settings.is_openrouter:
+            client = OpenAI(base_url=settings.openrouter_base_url, api_key=api_key)
+            response = client.chat.completions.create(
+                model=settings.gemini_model,
+                messages=[
+                    {"role": "system", "content": INTENT_SYSTEM_PROMPT},
+                    {"role": "user", "content": user_content},
+                ],
+                response_format={"type": "json_object"},
                 temperature=0.0,
-            ),
-        )
-
-        if not response.text:
-            raise RuntimeError("Empty response received from LLM provider.")
-
-        return IntentResponse.model_validate_json(response.text)
+                max_tokens=400,
+            )
+            raw_text = response.choices[0].message.content or ""
+            if not raw_text.strip():
+                raise RuntimeError("Empty response received from LLM provider.")
+            return IntentResponse.model_validate_json(raw_text)
+        else:
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model=settings.gemini_model,
+                contents=user_content,
+                config=types.GenerateContentConfig(
+                    system_instruction=INTENT_SYSTEM_PROMPT,
+                    response_mime_type="application/json",
+                    response_schema=IntentResponse,
+                    temperature=0.0,
+                ),
+            )
+            if not response.text:
+                raise RuntimeError("Empty response received from LLM provider.")
+            return IntentResponse.model_validate_json(response.text)
 
     except Exception as exc:
         raw_msg = str(exc)
         safe_msg = _redact_secrets(raw_msg, api_key)
-        logger.error("Gemini Intent LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
+        logger.error("Intent LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
 
         if (
             "API_KEY" in raw_msg
@@ -486,7 +632,7 @@ def extract_applicant_intent(transcript: str, language: str = "en") -> IntentRes
             or "auth" in raw_msg.lower()
             or "suspended" in raw_msg.lower()
             or "PERMISSION_DENIED" in raw_msg
-            or "400" in raw_msg
+            or "401" in raw_msg
             or "403" in raw_msg
         ):
             raise RuntimeError("Authentication failed with LLM provider.") from None
@@ -567,27 +713,42 @@ def recommend_scheme_explainer(
     )
 
     try:
-        client = genai.Client(api_key=api_key)
-        response = client.models.generate_content(
-            model=settings.gemini_model,
-            contents=user_content,
-            config=types.GenerateContentConfig(
-                system_instruction=system_instruction,
-                response_mime_type="application/json",
-                response_schema=ExplainerResponse,
+        if settings.is_openrouter:
+            client = OpenAI(base_url=settings.openrouter_base_url, api_key=api_key)
+            response = client.chat.completions.create(
+                model=settings.gemini_model,
+                messages=[
+                    {"role": "system", "content": system_instruction},
+                    {"role": "user", "content": user_content},
+                ],
+                response_format={"type": "json_object"},
                 temperature=0.2,
-            ),
-        )
-
-        if not response.text:
-            raise RuntimeError("Empty response received from LLM provider.")
-
-        return ExplainerResponse.model_validate_json(response.text)
+                max_tokens=600,
+            )
+            raw_text = response.choices[0].message.content or ""
+            if not raw_text.strip():
+                raise RuntimeError("Empty response received from LLM provider.")
+            return ExplainerResponse.model_validate_json(raw_text)
+        else:
+            client = genai.Client(api_key=api_key)
+            response = client.models.generate_content(
+                model=settings.gemini_model,
+                contents=user_content,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_instruction,
+                    response_mime_type="application/json",
+                    response_schema=ExplainerResponse,
+                    temperature=0.2,
+                ),
+            )
+            if not response.text:
+                raise RuntimeError("Empty response received from LLM provider.")
+            return ExplainerResponse.model_validate_json(response.text)
 
     except Exception as exc:
         raw_msg = str(exc)
         safe_msg = _redact_secrets(raw_msg, api_key)
-        logger.error("Gemini Explainer LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
+        logger.error("Explainer LLM call failed [%s]: %s", type(exc).__name__, safe_msg)
 
         if (
             "API_KEY" in raw_msg
@@ -595,7 +756,7 @@ def recommend_scheme_explainer(
             or "auth" in raw_msg.lower()
             or "suspended" in raw_msg.lower()
             or "PERMISSION_DENIED" in raw_msg
-            or "400" in raw_msg
+            or "401" in raw_msg
             or "403" in raw_msg
         ):
             raise RuntimeError("Authentication failed with LLM provider.") from None
@@ -604,4 +765,3 @@ def recommend_scheme_explainer(
             raise RuntimeError("Generated explanation did not match the required response schema constraints.") from None
 
         raise RuntimeError("Failed to generate scheme explanation from LLM provider.") from None
-
