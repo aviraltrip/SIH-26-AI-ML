@@ -23,7 +23,7 @@ class Settings:
 
     @property
     def gemini_model(self) -> str:
-        return os.getenv("GEMINI_MODEL", "gemini-2.0-flash").strip()
+        return os.getenv("GEMINI_MODEL", "gemini-3.6-flash").strip()
 
     @property
     def port(self) -> int:
