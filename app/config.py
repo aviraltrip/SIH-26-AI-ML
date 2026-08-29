@@ -19,11 +19,25 @@ class Settings:
 
     @property
     def gemini_api_key(self) -> str:
-        return os.getenv("GEMINI_API_KEY", "").strip()
+        return os.getenv("GEMINI_API_KEY", os.getenv("OPENROUTER_API_KEY", "")).strip()
+
+    @property
+    def openrouter_api_key(self) -> str:
+        return os.getenv("OPENROUTER_API_KEY", os.getenv("GEMINI_API_KEY", "")).strip()
+
+    @property
+    def openrouter_base_url(self) -> str:
+        return os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1").strip()
+
+    @property
+    def is_openrouter(self) -> bool:
+        key = self.openrouter_api_key
+        return bool(key and key.startswith("sk-or-"))
 
     @property
     def gemini_model(self) -> str:
-        return os.getenv("GEMINI_MODEL", "gemini-3.6-flash").strip()
+        default_model = "google/gemini-2.5-flash" if self.is_openrouter else "gemini-2.5-flash"
+        return os.getenv("GEMINI_MODEL", default_model).strip()
 
     @property
     def port(self) -> int:
