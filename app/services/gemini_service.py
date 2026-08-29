@@ -135,7 +135,7 @@ def simplify_term(term: str, language: str = "en") -> str:
             or "403" in raw_msg
         ):
             raise RuntimeError("Authentication failed with LLM provider.") from None
-        raise RuntimeError("Failed to generate simplified explanation from LLM provider.") from None
+        raise RuntimeError(f"Failed to generate simplified explanation from LLM provider: {safe_msg}") from None
 
 
 
