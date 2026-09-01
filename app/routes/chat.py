@@ -17,11 +17,16 @@ router = APIRouter(tags=["Scheme Chatbot"])
     ),
     responses={
         200: {
-            "description": "Successful chat response.",
+            "description": "Successful chat response with grounded advice and follow-up suggestions.",
             "content": {
                 "application/json": {
                     "example": {
-                        "response": "महिला समृद्धि योजना के लिए ब्याज दर केवल 4% वार्षिक है, जो महिला लाभार्थियों के लिए बेहद अनुकूल है।"
+                        "response": "महिला समृद्धि योजना के लिए ब्याज दर केवल 4% वार्षिक है, जो महिला लाभार्थियों के लिए बेहद अनुकूल है।",
+                        "suggested_questions": [
+                            "इस योजना के तहत अधिकतम ऋण राशि कितनी है?",
+                            "आवेदन करने के लिए कौन-से दस्तावेज़ आवश्यक हैं?",
+                            "क्या इस योजना के लिए पारिवारिक आय की कोई सीमा है?"
+                        ]
                     }
                 }
             },
@@ -34,12 +39,12 @@ router = APIRouter(tags=["Scheme Chatbot"])
 def scheme_chat_endpoint(request: ChatRequest) -> ChatResponse:
     """Endpoint to interact with the scheme chatbot."""
     try:
-        response = chat_with_knowledge(
+        response_text, suggested_questions = chat_with_knowledge(
             message=request.message,
             history=request.history,
             language=request.language,
         )
-        return ChatResponse(response=response)
+        return ChatResponse(response=response_text, suggested_questions=suggested_questions)
     except ValueError as val_err:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

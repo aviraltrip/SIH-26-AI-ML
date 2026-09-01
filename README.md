@@ -178,7 +178,7 @@ alert(res.data.explanation);
 ---
 
 ### 5. 🤖 Grounded Scheme Advisory Chatbot (`/scheme-chat`)
-> **Use Case in App**: An interactive chatbot widget where users can ask any questions about government schemes (eligibility, documents required, loan limits, interest rates). The AI answers strictly from official policy guidelines (`schemes_knowledge.txt`).
+> **Use Case in App**: An interactive chatbot widget where users can ask any questions about government schemes (eligibility, documents required, loan limits, interest rates). The AI answers strictly from official policy guidelines (`schemes_knowledge.txt`) and dynamically returns 2–3 contextual follow-up questions for the frontend to render as quick-reply chips/pills.
 
 * **Endpoint**: `POST /scheme-chat`
 * **Content-Type**: `application/json`
@@ -204,7 +204,12 @@ alert(res.data.explanation);
 #### Response (200 OK)
 ```json
 {
-  "response": "Under the Mahila Samriddhi Yojana, eligible female beneficiaries can receive loans up to ₹1,40,000 with a subsidized interest rate of 4% per annum. The scheme covers up to 90% of the total project cost."
+  "response": "Under the Mahila Samriddhi Yojana, eligible female beneficiaries can receive loans up to ₹1,40,000 with a subsidized interest rate of 4% per annum. The scheme covers up to 90% of the total project cost.",
+  "suggested_questions": [
+    "What documents are required to apply for Mahila Samriddhi Yojana?",
+    "What is the annual income eligibility criteria?",
+    "How can I apply for this loan through a channel partner?"
+  ]
 }
 ```
 

@@ -230,7 +230,10 @@ def retrieve_scheme_guidelines(query: str) -> str:
             keywords.extend(["swachhta", "suy", "nskfdc", "safai", "karamchari", "sanitation", "toilet", "manual scavenger"])
 
         for kw in keywords:
-            if kw in query_lower:
+            if len(kw) <= 2:
+                if re.search(r'\b' + re.escape(kw) + r'\b', query_lower):
+                    score += 5
+            elif kw in query_lower:
                 score += 5
         words = [w for w in re.split(r'\W+', query_lower) if len(w) > 3]
         for word in words:
@@ -410,11 +413,55 @@ CHAT_SYSTEM_PROMPT_TEMPLATE = (
     "\"I apologize, but I do not have official guidelines for that specific detail. Please consult the nearest branch or nodal officer.\"\n"
     "Do not invent facts, numbers, or rules.\n"
     "3. Qualifying Conversation Memory: Keep track of applicant details mentioned in the conversation history (e.g., gender, income, trade). If the user asks if they are eligible for a scheme but you are missing key details to qualify them, do not answer with a generic yes/no; instead, ask friendly follow-up questions to obtain the missing details (e.g., trade, annual income) to qualify them.\n"
-    "4. Target Language: Respond in the requested target language."
+    "4. Target Language: Respond in the requested target language.\n"
+    "5. Structured Output & Suggested Follow-up Questions: Format your final response strictly as a JSON object with two fields:\n"
+    "   - \"response\": Your grounded, conversational advice with citations in the requested target language.\n"
+    "   - \"suggested_questions\": A list of 2 to 3 concise, relevant follow-up questions in the requested target language that the applicant might want to ask next (e.g. eligibility criteria, documents required, loan process, subsidy rates). Ensure questions are directly relevant to the current scheme or user context.\n"
+    "   Return ONLY the valid JSON object without markdown fences or additional conversational preambles."
 )
 
 
-def chat_with_knowledge(message: str, history: list[ChatMessage], language: str = "en") -> str:
+def _parse_chat_response(raw_text: str) -> tuple[str, list[str]]:
+    """Parses raw model output into response text and a list of suggested follow-up questions.
+
+    Handles valid JSON objects, fenced markdown JSON blocks, or raw fallback strings.
+    """
+    if not raw_text:
+        return "", []
+
+    cleaned = raw_text.strip()
+
+    # Check if there's markdown code block
+    json_match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", cleaned, flags=re.DOTALL)
+    if json_match:
+        cleaned_json = json_match.group(1).strip()
+    else:
+        # Or look for bare JSON object
+        json_obj_match = re.search(r"(\{.*\})", cleaned, flags=re.DOTALL)
+        cleaned_json = json_obj_match.group(1).strip() if json_obj_match else cleaned
+
+    try:
+        data = json.loads(cleaned_json)
+        if isinstance(data, dict) and "response" in data:
+            resp_val = data.get("response", "")
+            if not isinstance(resp_val, str):
+                resp_val = str(resp_val)
+
+            raw_suggestions = data.get("suggested_questions") or data.get("suggestedQuestions") or []
+            if isinstance(raw_suggestions, list):
+                suggestions = [str(q).strip() for q in raw_suggestions if str(q).strip()]
+            else:
+                suggestions = []
+
+            return _clean_explanation(resp_val), suggestions
+    except Exception:
+        pass
+
+    # Fallback: model returned plain text instead of JSON
+    return _clean_explanation(raw_text), []
+
+
+def chat_with_knowledge(message: str, history: list[ChatMessage], language: str = "en") -> tuple[str, list[str]]:
     """Answers a user question grounded on official scheme policy guidelines using tools.
 
     Args:
@@ -423,7 +470,7 @@ def chat_with_knowledge(message: str, history: list[ChatMessage], language: str 
         language: ISO target language code or name.
 
     Returns:
-        Grounded response text from Gemini.
+        A tuple of (grounded response text, list of 2-3 suggested follow-up questions).
     """
     msg_clean = (message or "").strip()
     if not msg_clean:
@@ -460,7 +507,7 @@ def chat_with_knowledge(message: str, history: list[ChatMessage], language: str 
                 if not msg.tool_calls:
                     if not msg.content:
                         raise RuntimeError("Empty response received from LLM provider.")
-                    return _clean_explanation(msg.content)
+                    return _parse_chat_response(msg.content)
 
                 messages.append(msg.model_dump())
                 for tool_call in msg.tool_calls:
@@ -520,7 +567,7 @@ def chat_with_knowledge(message: str, history: list[ChatMessage], language: str 
             if not response.text:
                 raise RuntimeError("Empty response received from LLM provider.")
 
-            return _clean_explanation(response.text)
+            return _parse_chat_response(response.text)
 
     except Exception as exc:
         raw_msg = str(exc)

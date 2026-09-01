@@ -143,26 +143,33 @@ Rules:
 
 ---
 
-## 5. Scheme Q&A Chatbot (Grounded Long-Context RAG)
+## 5. Scheme Q&A Chatbot (Grounded Long-Context RAG & Proactive Suggestions)
 
-Provides grounded, multi-turn conversational advisory based exclusively on consolidated government policy guidelines loaded from `app/resources/schemes_knowledge.txt`.
+Provides grounded, multi-turn conversational advisory based exclusively on consolidated government policy guidelines loaded from `app/resources/schemes_knowledge.txt`, and generates 2–3 contextual follow-up question suggestions for user discovery.
 
-### RAG System Prompt Template
+### Execution Flow
 
-```text
-You are an expert government policy advisor helping micro-entrepreneurs and applicants understand banking and social welfare schemes.
-Answer the user's question accurately using ONLY the reference facts provided below.
-If the answer cannot be found in the reference facts, state clearly: "I apologize, but I do not have official guidelines for that specific detail. Please consult the nearest branch or nodal officer."
-Do not invent eligibility criteria, benefits, or loan terms under any circumstances.
-
----
-REFERENCE FACTS:
-{schemes_knowledge_content}
----
-
-Conversation History:
-{chat_history}
-
-User Question: {message}
-Target Language: {target_language}
+```mermaid
+graph TD
+    UserQuery[User Question + Chat History] --> Router[POST /scheme-chat]
+    Router --> Tools[Gemini Agent + Scheme Knowledge Tools]
+    Tools --> Retrieve[retrieve_scheme_guidelines / simplify_financial_jargon]
+    Retrieve --> Model[Gemini 2.5 Flash Response Generation]
+    Model --> Parser[_parse_chat_response JSON Extractor]
+    Parser --> Output["ChatResponse: { response, suggested_questions }"]
 ```
+
+### Output Format Specification
+
+The model formats its output as structured JSON:
+```json
+{
+  "response": "Grounded answer text in the requested target language with citations.",
+  "suggested_questions": [
+    "Contextual follow-up question 1 in target language",
+    "Contextual follow-up question 2 in target language",
+    "Contextual follow-up question 3 in target language"
+  ]
+}
+```
+

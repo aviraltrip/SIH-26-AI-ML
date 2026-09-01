@@ -8,14 +8,20 @@ client = TestClient(app)
 
 
 @patch("app.services.gemini_service.genai.Client")
-def test_scheme_chat_english_basic(mock_genai_client):
-    """Test scheme-chat with basic question in English and empty history."""
+def test_scheme_chat_english_basic_structured_json(mock_genai_client):
+    """Test scheme-chat with structured JSON response containing answer and suggested follow-up questions."""
     mock_instance = MagicMock()
     mock_genai_client.return_value = mock_instance
     mock_response = MagicMock()
     mock_response.text = (
-        "Under the PM Vishwakarma scheme, traditional artisans can receive collateral-free credit support "
-        "up to ₹3,00,000. It is split into two tranches of ₹1,00,000 and ₹2,00,000."
+        '{\n'
+        '  "response": "Under the PM Vishwakarma scheme, traditional artisans can receive collateral-free credit support up to ₹3,00,000 in two tranches.",\n'
+        '  "suggested_questions": [\n'
+        '    "What is the interest rate for PM Vishwakarma loan?",\n'
+        '    "How can I get the ₹15,000 toolkit incentive?",\n'
+        '    "Which 18 traditional trades are eligible?"\n'
+        '  ]\n'
+        '}'
     )
     mock_instance.models.generate_content.return_value = mock_response
 
@@ -28,17 +34,53 @@ def test_scheme_chat_english_basic(mock_genai_client):
     assert response.status_code == 200
     data = response.json()
     assert "response" in data
-    assert "₹3,00,000" in data["response"] or "₹3 lakhs" in data["response"].lower() or "vishwakarma" in data["response"].lower()
+    assert "₹3,00,000" in data["response"] or "vishwakarma" in data["response"].lower()
+    assert "suggested_questions" in data
+    assert len(data["suggested_questions"]) == 3
+    assert "toolkit" in data["suggested_questions"][1].lower()
 
 
 @patch("app.services.gemini_service.genai.Client")
-def test_scheme_chat_hindi_with_history(mock_genai_client):
-    """Test scheme-chat in Hindi with existing conversation history."""
+def test_scheme_chat_plain_text_fallback(mock_genai_client):
+    """Test scheme-chat gracefully handles plain text without JSON formatting as fallback."""
     mock_instance = MagicMock()
     mock_genai_client.return_value = mock_instance
     mock_response = MagicMock()
     mock_response.text = (
-        "हाँ, इस योजना में टूलकिट खरीदने के लिए ₹15,000 की वित्तीय सहायता (ई-रुपी वाउचर के रूप में) दी जाती है।"
+        "Under the PM Vishwakarma scheme, traditional artisans can receive collateral-free credit support "
+        "up to ₹3,00,000."
+    )
+    mock_instance.models.generate_content.return_value = mock_response
+
+    payload = {
+        "message": "What is the loan limit for PM Vishwakarma?",
+        "history": [],
+        "language": "en",
+    }
+    response = client.post("/scheme-chat", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "response" in data
+    assert "₹3,00,000" in data["response"]
+    assert "suggested_questions" in data
+    assert data["suggested_questions"] == []
+
+
+@patch("app.services.gemini_service.genai.Client")
+def test_scheme_chat_hindi_with_history(mock_genai_client):
+    """Test scheme-chat in Hindi with conversation history and regional follow-up suggestions."""
+    mock_instance = MagicMock()
+    mock_genai_client.return_value = mock_instance
+    mock_response = MagicMock()
+    mock_response.text = (
+        '{\n'
+        '  "response": "हाँ, इस योजना में टूलकिट खरीदने के लिए ₹15,000 की वित्तीय सहायता (ई-रुपी वाउचर के रूप में) दी जाती है।",\n'
+        '  "suggested_questions": [\n'
+        '    "टूलकिट वाउचर प्राप्त करने के लिए क्या पात्रता है?",\n'
+        '    "क्या मुझे कौशल प्रशिक्षण के दौरान दैनिक भत्ता मिलेगा?",\n'
+        '    "ऋण के लिए आवेदन कैसे करें?"\n'
+        '  ]\n'
+        '}'
     )
     mock_instance.models.generate_content.return_value = mock_response
 
@@ -55,6 +97,9 @@ def test_scheme_chat_hindi_with_history(mock_genai_client):
     data = response.json()
     assert "response" in data
     assert "₹15,000" in data["response"] or "टूलकिट" in data["response"]
+    assert "suggested_questions" in data
+    assert len(data["suggested_questions"]) == 3
+    assert "पात्रता" in data["suggested_questions"][0]
 
 
 def test_scheme_chat_empty_message_bad_request():
@@ -112,7 +157,7 @@ def test_tool_retrieve_scheme_guidelines():
     res = retrieve_scheme_guidelines("what is MSY or mahila samriddhi?")
     assert "MAHILA SAMRIDDHI" in res
     assert "NBCFDC" in res
-    res = retrieve_scheme_guidelines("random gibberish search terms")
+    res = retrieve_scheme_guidelines("xyzabc12345 qwertynonexistent")
     assert "No specific guidelines" in res
 
 
