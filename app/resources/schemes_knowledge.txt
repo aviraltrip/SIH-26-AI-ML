@@ -190,4 +190,498 @@ OFFICIAL GOVERNMENT SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
 - Channel Partners: State Channelizing Agencies (SCAs), PSBs, and RRBs.
 - Target Beneficiaries: Safai Karamcharis, manual scavengers, and sanitation workers.
 
+16. PRADHAN MANTRI MUDRA YOJANA (PMMY) — SHISHU
+- Description: Provides collateral-free institutional credit to micro enterprises for non-agricultural activities, including specified allied-agriculture activities.
+- Loan Limits: Up to ₹50,000.
+- Pattern of Financing: Term loan and/or working capital; financing is provided by the lending institution subject to its appraisal.
+- Interest Rate: Rate is lender-determined and linked to the lender's applicable policy/rate; no single uniform scheme rate is prescribed.
+- Repayment Period: Repayment is lender-determined according to the sanctioned facility.
+- Channel Partners: Public Sector Banks, Private Sector Banks, Foreign Banks, Regional Rural Banks, Small Finance Banks, NBFCs, MFIs and NBFC-MFIs.
+- Target Beneficiaries: Micro enterprises and entrepreneurs requiring very small business loans.
+
+17. PRADHAN MANTRI MUDRA YOJANA (PMMY) — KISHOR
+- Description: Provides collateral-free institutional credit to micro enterprises whose funding requirement is above the Shishu category.
+- Loan Limits: Above ₹50,000 and up to ₹5,00,000.
+- Pattern of Financing: Term loan and/or working capital; financing is provided by the lending institution subject to its appraisal.
+- Interest Rate: Rate is lender-determined and linked to the lender's applicable policy/rate; no single uniform scheme rate is prescribed.
+- Repayment Period: Repayment is lender-determined according to the sanctioned facility.
+- Channel Partners: Public Sector Banks, Private Sector Banks, Foreign Banks, Regional Rural Banks, Small Finance Banks, NBFCs, MFIs and NBFC-MFIs.
+- Target Beneficiaries: Micro enterprises and entrepreneurs requiring loans in the Kishor range.
+
+18. PRADHAN MANTRI MUDRA YOJANA (PMMY) — TARUN
+- Description: Provides collateral-free institutional credit to established micro enterprises requiring larger business finance.
+- Loan Limits: Above ₹5,00,000 and up to ₹10,00,000.
+- Pattern of Financing: Term loan and/or working capital; financing is provided by the lending institution subject to its appraisal.
+- Interest Rate: Rate is lender-determined and linked to the lender's applicable policy/rate; no single uniform scheme rate is prescribed.
+- Repayment Period: Repayment is lender-determined according to the sanctioned facility.
+- Channel Partners: Public Sector Banks, Private Sector Banks, Foreign Banks, Regional Rural Banks, Small Finance Banks, NBFCs, MFIs and NBFC-MFIs.
+- Target Beneficiaries: Micro enterprises and entrepreneurs requiring loans in the Tarun range.
+
+19. PRADHAN MANTRI MUDRA YOJANA (PMMY) — TARUN PLUS
+- Description: Extends larger collateral-free institutional credit to eligible entrepreneurs who have successfully repaid a previous Tarun-category loan.
+- Loan Limits: Above ₹10,00,000 and up to ₹20,00,000.
+- Pattern of Financing: Term loan and/or working capital; financing is provided by the lending institution subject to its appraisal and eligibility conditions.
+- Interest Rate: Rate is lender-determined and linked to the lender's applicable policy/rate; no single uniform scheme rate is prescribed.
+- Repayment Period: Repayment is lender-determined according to the sanctioned facility.
+- Channel Partners: Public Sector Banks, Private Sector Banks, Foreign Banks, Regional Rural Banks, Small Finance Banks, NBFCs, MFIs and NBFC-MFIs.
+- Target Beneficiaries: Entrepreneurs who have availed and successfully repaid a previous PMMY Tarun-category loan.
+
+20. WEAVER MUDRA SCHEME (WMS)
+- Description: Provides concessional institutional credit support to eligible handloom weavers and handloom-sector enterprises.
+- Loan Limits: Credit limit is determined by the applicable Weaver MUDRA guidelines and lender appraisal; the commonly stated ₹5 lakh ceiling should not be treated as a universal current limit without scheme-specific sanction terms.
+- Pattern of Financing: Bank credit supported through the Weaver MUDRA framework, with applicable margin-money/interest-support provisions under handloom-sector guidelines.
+- Interest Rate: Concessional interest of 6% for eligible beneficiaries; applicable interest subvention is governed by current guidelines.
+- Repayment Period: Repayment is as per the sanctioned bank loan and applicable Weaver MUDRA guidelines.
+- Channel Partners: Scheduled banks and other eligible lending institutions through the Weaver MUDRA/handloom-sector framework and JanSamarth.
+- Target Beneficiaries: Individual handloom weavers, weaver entrepreneurs, SHGs, JLGs and eligible handloom organisations.
+
+21. PMEGP
+- Description: Credit-linked subsidy programme for generating self-employment and micro-enterprises through new viable projects.
+- Loan Limits: Maximum project cost eligible for margin-money subsidy: ₹50 lakh for manufacturing and ₹20 lakh for business/service activities.
+- Pattern of Financing: Bank finances the balance project cost after beneficiary contribution and eligible margin-money subsidy; subsidy is linked to project category/location and beneficiary category.
+- Interest Rate: Normal bank interest rate as applicable to the lending institution; PMEGP does not prescribe one uniform borrower rate.
+- Repayment Period: Normally 3–7 years, with applicable moratorium and repayment schedule decided by the financing bank.
+- Channel Partners: Scheduled Commercial Banks, Regional Rural Banks and other eligible PMEGP financing institutions through KVIC/KVIB/DIC implementation channels.
+- Target Beneficiaries: Individuals above 18 years and eligible institutions/groups meeting PMEGP guidelines; special-category beneficiaries receive higher subsidy support.
+
+22. PMEGP — MANUFACTURING PROJECT
+- Description: PMEGP component for eligible new manufacturing micro-enterprises.
+- Loan Limits: Maximum project cost for margin-money subsidy: ₹50,00,000.
+- Pattern of Financing: Bank loan plus beneficiary contribution and eligible PMEGP margin-money subsidy; working-capital component is subject to PMEGP norms.
+- Interest Rate: Normal bank interest rate as applicable to the lending institution.
+- Repayment Period: Normally 3–7 years, as sanctioned by the financing bank.
+- Channel Partners: Eligible PMEGP financing banks through KVIC/KVIB/DIC implementation channels.
+- Target Beneficiaries: Eligible individuals and other entities permitted under current PMEGP guidelines establishing new manufacturing units.
+
+23. PMEGP — SERVICE OR BUSINESS PROJECT
+- Description: PMEGP component for eligible new service and business micro-enterprises.
+- Loan Limits: Maximum project cost for margin-money subsidy: ₹20,00,000.
+- Pattern of Financing: Bank loan plus beneficiary contribution and eligible PMEGP margin-money subsidy.
+- Interest Rate: Normal bank interest rate as applicable to the lending institution.
+- Repayment Period: Normally 3–7 years, as sanctioned by the financing bank.
+- Channel Partners: Eligible PMEGP financing banks through KVIC/KVIB/DIC implementation channels.
+- Target Beneficiaries: Eligible individuals and other entities permitted under current PMEGP guidelines establishing new service/business units.
+
+24. PM SVANIDHI
+- Description: Micro-credit programme providing working-capital support and progressive credit access to eligible street vendors, with incentives for timely repayment and digital transactions.
+- Loan Limits: Current enhanced tranches: first loan up to ₹15,000; second up to ₹25,000; third up to ₹50,000.
+- Pattern of Financing: Collateral-free working-capital loan through participating lending institutions; higher tranches are linked to repayment performance.
+- Interest Rate: Interest subsidy of 7% per annum for eligible timely/early repayment; actual lending rate is determined by the lender.
+- Repayment Period: Tranche tenure follows applicable PM SVANidhi guidelines and sanction terms.
+- Channel Partners: Scheduled Commercial Banks, Regional Rural Banks, Small Finance Banks, Cooperative Banks, NBFCs, MFIs and SHG Banks.
+- Target Beneficiaries: Eligible street vendors/hawkers, including eligible vendors from surrounding peri-urban and rural areas.
+
+25. PM SVANIDHI — FIRST TRANCHE
+- Description: First-stage working-capital support under PM SVANidhi for eligible street vendors.
+- Loan Limits: Up to ₹15,000 under the enhanced current tranche.
+- Pattern of Financing: Collateral-free working-capital loan through participating lending institutions.
+- Interest Rate: 7% interest subsidy for eligible timely/early repayment; actual loan rate is lender-determined.
+- Repayment Period: According to current PM SVANidhi tranche and lender sanction terms.
+- Channel Partners: Scheduled Commercial Banks, Regional Rural Banks, Small Finance Banks, Cooperative Banks, NBFCs, MFIs and SHG Banks.
+- Target Beneficiaries: Eligible street vendors/hawkers.
+
+26. PM SVANIDHI — SECOND TRANCHE
+- Description: Second-stage working-capital support for eligible vendors who qualify for a higher tranche after repayment of the earlier loan.
+- Loan Limits: Up to ₹25,000 under the enhanced current tranche.
+- Pattern of Financing: Collateral-free working-capital loan through participating lending institutions.
+- Interest Rate: 7% interest subsidy for eligible timely/early repayment; actual loan rate is lender-determined.
+- Repayment Period: According to current PM SVANidhi tranche and lender sanction terms.
+- Channel Partners: Scheduled Commercial Banks, Regional Rural Banks, Small Finance Banks, Cooperative Banks, NBFCs, MFIs and SHG Banks.
+- Target Beneficiaries: Eligible street vendors who satisfy the conditions for the second tranche.
+
+27. PM SVANIDHI — THIRD TRANCHE
+- Description: Third-stage working-capital support for eligible vendors with qualifying repayment history.
+- Loan Limits: Up to ₹50,000 under the enhanced current tranche.
+- Pattern of Financing: Collateral-free working-capital loan through participating lending institutions.
+- Interest Rate: 7% interest subsidy for eligible timely/early repayment; actual loan rate is lender-determined.
+- Repayment Period: According to current PM SVANidhi tranche and lender sanction terms.
+- Channel Partners: Scheduled Commercial Banks, Regional Rural Banks, Small Finance Banks, Cooperative Banks, NBFCs, MFIs and SHG Banks.
+- Target Beneficiaries: Eligible street vendors who satisfy the conditions for the third tranche.
+
+28. KISAN CREDIT CARD — CROP PRODUCTION
+- Description: Provides timely short-term credit for crop production and related agricultural requirements, including post-harvest and farm-maintenance needs.
+- Loan Limits: Short-term crop-production credit is generally available within the applicable KCC limit; the benchmark interest-subvention framework covers eligible short-term credit up to ₹3 lakh.
+- Pattern of Financing: Cash-credit/revolving KCC facility based on scale of finance, cropping pattern and bank assessment.
+- Interest Rate: Benchmark short-term KCC lending rate of 7%; eligible interest subvention and prompt-repayment incentive can reduce the effective rate to 4% under applicable government support.
+- Repayment Period: KCC is generally issued with validity up to 5 years, with periodic review; individual crop-loan repayment follows crop-cycle requirements.
+- Channel Partners: Commercial Banks, Regional Rural Banks, Cooperative Banks and other eligible lending institutions.
+- Target Beneficiaries: Owner cultivators, tenant farmers, oral lessees, sharecroppers, SHGs/JLGs of farmers and other eligible cultivators.
+
+29. KISAN CREDIT CARD — ANIMAL HUSBANDRY
+- Description: Extends KCC-based working-capital support to eligible animal-husbandry activities.
+- Loan Limits: Limit is activity- and bank-assessment based; government interest-support provisions apply to eligible short-term animal-husbandry credit subject to prevailing limits and guidelines.
+- Pattern of Financing: Working-capital KCC facility based on activity, scale of finance and lender appraisal.
+- Interest Rate: Government interest-subvention and prompt-repayment support applies to eligible cases; actual lending rate is governed by applicable KCC rules and lender terms.
+- Repayment Period: Generally short-term/annual working-capital cycles with renewal and review under KCC arrangements.
+- Channel Partners: Eligible banks and lending institutions participating in KCC.
+- Target Beneficiaries: Farmers and eligible individuals/groups engaged in dairy, livestock and other covered animal-husbandry activities.
+
+30. KISAN CREDIT CARD — FISHERIES
+- Description: Extends KCC working-capital credit to eligible fisheries and aquaculture activities.
+- Loan Limits: Limit is activity- and bank-assessment based; current government support includes enhanced lending provisions for eligible fisheries stakeholders.
+- Pattern of Financing: Working-capital KCC facility based on activity, scale of finance and lender appraisal.
+- Interest Rate: Applicable interest-subvention and prompt-repayment incentives are provided under current fisheries-KCC rules; actual lending rate is lender-determined.
+- Repayment Period: Generally short-term/annual working-capital cycles with renewal and review.
+- Channel Partners: Eligible banks and lending institutions participating in KCC.
+- Target Beneficiaries: Eligible fishers, fish farmers, SHGs/JLGs and other qualifying fisheries stakeholders.
+
+31. AGRICULTURE INFRASTRUCTURE FUND (AIF)
+- Description: Financing facility supporting post-harvest management infrastructure and community farming assets.
+- Loan Limits: Eligible loans can receive interest support on loans up to ₹2 crore.
+- Pattern of Financing: Bank/institutional term lending for eligible infrastructure projects, supported by government interest subvention and eligible credit-guarantee support.
+- Interest Rate: 3% interest subvention per annum on eligible loans up to ₹2 crore.
+- Repayment Period: Interest-subvention support is available for up to 7 years, subject to applicable scheme conditions.
+- Channel Partners: Scheduled Commercial Banks, Cooperative Banks, Regional Rural Banks, Small Finance Banks, NBFCs and other eligible financial institutions.
+- Target Beneficiaries: Farmers, FPOs, PACS, cooperatives, SHGs, JLGs, agri-entrepreneurs, startups and other eligible entities undertaking permitted agriculture infrastructure.
+
+32. ACABC — INDIVIDUAL PROJECT
+- Description: Supports trained agriculture and allied-sector candidates in establishing agri-clinics and agri-business ventures.
+- Loan Limits: Individual project cost eligible under the core subsidy framework: up to ₹20 lakh.
+- Pattern of Financing: Credit-linked back-ended capital subsidy combined with bank finance; subsidy is 36% for general beneficiaries and 44% for eligible special categories under applicable rules.
+- Interest Rate: Bank interest rate as applicable to the sanctioned loan; ACABC does not prescribe a single uniform borrower rate.
+- Repayment Period: Repayment period is as sanctioned by the financing bank under the applicable ACABC loan.
+- Channel Partners: Commercial Banks, Regional Rural Banks and other eligible lending institutions through the ACABC/MANAGE framework and JanSamarth.
+- Target Beneficiaries: Eligible agriculture/allied graduates and other candidates meeting ACABC training and eligibility requirements.
+
+33. ACABC — SUCCESSFUL INDIVIDUAL PROJECT
+- Description: Supports eligible trained agriculture/allied professionals establishing or expanding an agri-clinic or agri-business venture after successful completion of the required programme.
+- Loan Limits: Official subsidy framework provides an individual project ceiling of ₹20 lakh; any higher bank finance is subject to lender appraisal and should not be treated as a universal ACABC subsidy ceiling.
+- Pattern of Financing: Bank finance with applicable credit-linked back-ended subsidy under ACABC norms.
+- Interest Rate: Bank interest rate as applicable to the sanctioned loan.
+- Repayment Period: Repayment period is determined by the financing bank.
+- Channel Partners: Commercial Banks, Regional Rural Banks and other eligible lending institutions through the ACABC/MANAGE framework.
+- Target Beneficiaries: Eligible trained agriculture/allied professionals meeting current ACABC conditions.
+
+34. ACABC — GROUP PROJECT
+- Description: Supports group agri-clinic/agri-business ventures established by eligible trained agriculture/allied-sector candidates.
+- Loan Limits: Up to ₹1 crore for an eligible group project under the ACABC framework.
+- Pattern of Financing: Bank finance with credit-linked back-ended subsidy; applicable subsidy percentage depends on beneficiary category.
+- Interest Rate: Bank interest rate as applicable to the sanctioned loan.
+- Repayment Period: Repayment period is determined by the financing bank under the sanctioned facility.
+- Channel Partners: Commercial Banks, Regional Rural Banks and other eligible lending institutions through the ACABC/MANAGE framework.
+- Target Beneficiaries: Eligible groups, including groups of trained agriculture/allied-sector candidates meeting current ACABC requirements.
+
+35. DAY-NULM SEP — INDIVIDUAL ENTERPRISE
+- Description: Provides subsidized credit support for setting up or expanding an eligible individual micro-enterprise under the Self Employment Programme.
+- Loan Limits: Project cost ceiling: ₹2,00,000.
+- Pattern of Financing: Bank loan for the micro-enterprise with interest subsidy support under DAY-NULM.
+- Interest Rate: Interest subsidy applies to the portion of bank interest above the prescribed 7% benchmark, subject to scheme rules.
+- Repayment Period: Repayment period is as per bank sanction and applicable DAY-NULM guidelines.
+- Channel Partners: Banks and eligible financial institutions coordinated through Urban Local Bodies and DAY-NULM structures.
+- Target Beneficiaries: Urban poor individuals eligible under DAY-NULM who wish to establish or expand a micro-enterprise.
+
+36. DAY-NULM SEP — GROUP ENTERPRISE
+- Description: Provides subsidized credit support for eligible group micro-enterprises under the Self Employment Programme.
+- Loan Limits: Project cost ceiling: ₹10,00,000.
+- Pattern of Financing: Bank loan for the group enterprise with interest subsidy support under DAY-NULM.
+- Interest Rate: Interest subsidy applies to the portion of bank interest above the prescribed 7% benchmark, subject to scheme rules.
+- Repayment Period: Repayment period is as per bank sanction and applicable DAY-NULM guidelines.
+- Channel Partners: Banks and eligible financial institutions coordinated through Urban Local Bodies and DAY-NULM structures.
+- Target Beneficiaries: Groups of eligible urban poor members establishing a micro-enterprise.
+
+37. DAY-NULM — SHG BANK LINKAGE
+- Description: Facilitates bank credit linkage for eligible urban Self Help Groups to support livelihood and income-generating activities.
+- Loan Limits: No universal ₹10 lakh scheme cap is prescribed for all SHG bank-linkage cases; sanctioned credit depends on group eligibility, bank assessment and applicable guidelines.
+- Pattern of Financing: Bank linkage/credit facility to eligible SHGs; interest subsidy is provided under DAY-NULM rules.
+- Interest Rate: Interest subsidy over the prescribed 7% benchmark; eligible women SHGs may receive an additional 3% interest subvention for timely repayment under applicable rules.
+- Repayment Period: Repayment is according to the bank's sanctioned SHG credit facility.
+- Channel Partners: Banks coordinated through Urban Local Bodies and DAY-NULM institutional structures.
+- Target Beneficiaries: Eligible urban poor Self Help Groups, particularly women SHGs.
+
+38. SHG MICRO FINANCE LOAN
+- Description: Microfinance credit for eligible Self Help Groups for livelihood and income-generating activities.
+- Loan Limits: Limit depends on the implementing programme, lender and SHG eligibility; a ₹1.40 lakh universal central-scheme ceiling could not be established as a single current standard.
+- Pattern of Financing: Group-based microfinance through the applicable SHG/lender programme.
+- Interest Rate: Interest rate and subsidy, if any, depend on the implementing programme and lending institution.
+- Repayment Period: Repayment is according to the sanctioned microfinance facility.
+- Channel Partners: Banks, MFIs, SHG federations and other eligible implementing/lending institutions, depending on the programme.
+- Target Beneficiaries: Eligible Self Help Groups and their members.
+
+39. NBCFDC GENERAL TERM LOAN — UP TO ₹5 LAKH
+- Description: Provides concessional term finance to eligible members of Backward Classes for income-generating activities.
+- Loan Limits: Up to ₹5,00,000 within the NBCFDC General Loan slab.
+- Pattern of Financing: Up to 85% of project cost may be financed by NBCFDC under the applicable pattern; balance is met through the channel agency/beneficiary as prescribed.
+- Interest Rate: 6% per annum for loans up to ₹5 lakh under the current NBCFDC General Loan structure.
+- Repayment Period: Up to 8 years, subject to applicable sanction and repayment conditions.
+- Channel Partners: State Channelizing Agencies and other approved NBCFDC channel partners.
+- Target Beneficiaries: Eligible persons belonging to Backward Classes meeting NBCFDC income and other eligibility conditions.
+
+40. NBCFDC GENERAL TERM LOAN — ₹5–10 LAKH
+- Description: Provides concessional term finance to eligible Backward Class beneficiaries for income-generating activities.
+- Loan Limits: Above ₹5,00,000 and up to ₹10,00,000.
+- Pattern of Financing: Up to 85% of project cost under the applicable NBCFDC financing pattern, with the balance from the prescribed channel/beneficiary contribution.
+- Interest Rate: 7% per annum for the ₹5–10 lakh slab.
+- Repayment Period: Up to 8 years.
+- Channel Partners: State Channelizing Agencies and other approved NBCFDC channel partners.
+- Target Beneficiaries: Eligible Backward Class beneficiaries meeting NBCFDC conditions.
+
+41. NBCFDC GENERAL TERM LOAN — ₹10–15 LAKH
+- Description: Provides concessional term finance to eligible Backward Class beneficiaries for income-generating projects.
+- Loan Limits: Above ₹10,00,000 and up to ₹15,00,000.
+- Pattern of Financing: Up to 85% of project cost under the applicable NBCFDC financing pattern, with the balance from the prescribed channel/beneficiary contribution.
+- Interest Rate: 8% per annum for the ₹10–15 lakh slab.
+- Repayment Period: Up to 8 years.
+- Channel Partners: State Channelizing Agencies and other approved NBCFDC channel partners.
+- Target Beneficiaries: Eligible Backward Class beneficiaries meeting NBCFDC conditions.
+
+42. NBCFDC NEW SWARNIMA FOR WOMEN
+- Description: Concessional term-loan scheme supporting eligible women from Backward Classes to undertake income-generating activities.
+- Loan Limits: Up to ₹2,00,000.
+- Pattern of Financing: Up to 95% of project cost under the applicable financing pattern; balance is contributed as prescribed.
+- Interest Rate: 5% per annum to the beneficiary under the current NBCFDC structure.
+- Repayment Period: Up to 8 years.
+- Channel Partners: State Channelizing Agencies and other approved NBCFDC channel partners.
+- Target Beneficiaries: Eligible women belonging to Backward Classes meeting NBCFDC income and other conditions.
+
+43. NBCFDC MICRO FINANCE SCHEME
+- Description: Provides small-ticket microfinance support to eligible Backward Class beneficiaries, including SHG-based financing.
+- Loan Limits: Up to ₹1,25,000 per individual beneficiary; SHG financing can extend up to ₹15 lakh for eligible groups under applicable norms.
+- Pattern of Financing: Typically up to 90% NBCFDC financing with the balance from the channel/beneficiary as prescribed.
+- Interest Rate: 2% from NBCFDC to the channel agency and 5% to the beneficiary under the applicable structure.
+- Repayment Period: Up to 4 years, including the applicable principal moratorium.
+- Channel Partners: State Channelizing Agencies, SHGs and other approved NBCFDC microfinance channels.
+- Target Beneficiaries: Eligible Backward Class individuals and eligible SHGs meeting NBCFDC conditions.
+
+44. NBCFDC MAHILA SAMRIDDHI YOJANA
+- Description: Provides microfinance support to women from Backward Classes for small income-generating activities.
+- Loan Limits: Up to ₹1,25,000 per beneficiary; eligible SHG financing may extend up to ₹15 lakh subject to current norms.
+- Pattern of Financing: Typically 95% NBCFDC financing and 5% channel/beneficiary contribution under the applicable structure.
+- Interest Rate: 1% from NBCFDC to the channel partner and 4% to the beneficiary under the applicable structure.
+- Repayment Period: Up to 4 years, including the applicable 6-month principal moratorium.
+- Channel Partners: State Channelizing Agencies and approved NBCFDC channels, including eligible SHG structures.
+- Target Beneficiaries: Women belonging to Backward Classes meeting the prescribed family-income and other eligibility conditions.
+
+45. NMDFC TERM LOAN — CREDIT LINE 1
+- Description: Provides concessional term finance for viable income-generating activities for eligible persons from notified minority communities.
+- Loan Limits: Up to ₹20,00,000.
+- Pattern of Financing: Financing is channelled through State Channelizing Agencies and other approved partners under the NMDFC financing pattern.
+- Interest Rate: 6% per annum at the beneficiary level under Credit Line 1.
+- Repayment Period: Repayment is as per NMDFC terms and the sanctioned loan schedule.
+- Channel Partners: State Channelizing Agencies, banks and other approved NMDFC channel partners.
+- Target Beneficiaries: Eligible members of notified minority communities meeting Credit Line 1 income criteria.
+
+46. NMDFC TERM LOAN — CREDIT LINE 2
+- Description: Provides concessional term finance for larger viable income-generating activities for eligible minority beneficiaries.
+- Loan Limits: Up to ₹30,00,000.
+- Pattern of Financing: Financing through NMDFC channel partners under the applicable Credit Line 2 structure.
+- Interest Rate: 8% per annum for male beneficiaries and 6% for female beneficiaries under the applicable structure.
+- Repayment Period: Repayment is as per NMDFC terms and the sanctioned loan schedule.
+- Channel Partners: State Channelizing Agencies, banks and other approved NMDFC channel partners.
+- Target Beneficiaries: Eligible minority beneficiaries meeting Credit Line 2 income criteria.
+
+47. NMDFC VIRASAT — CREDIT LINE 1
+- Description: Provides concessional finance to eligible minority artisans and craftpersons for preserving and expanding traditional arts and crafts.
+- Loan Limits: Up to ₹10,00,000.
+- Pattern of Financing: Generally financed through the applicable NMDFC/channel-agency pattern with beneficiary contribution as prescribed.
+- Interest Rate: 5% per annum for male beneficiaries and 4% for female beneficiaries.
+- Repayment Period: Typically 5 years, including applicable moratorium.
+- Channel Partners: State Channelizing Agencies and other approved NMDFC partners.
+- Target Beneficiaries: Eligible minority artisans/craftpersons covered by the Virasat scheme.
+
+48. NMDFC VIRASAT — CREDIT LINE 2
+- Description: Provides concessional finance to eligible minority artisans and craftpersons for traditional-art and craft-related income-generating activities.
+- Loan Limits: Up to ₹10,00,000.
+- Pattern of Financing: Financing through the applicable NMDFC/channel-agency pattern with beneficiary contribution as prescribed.
+- Interest Rate: 6% per annum for male beneficiaries and 5% for female beneficiaries.
+- Repayment Period: Typically 5 years, including applicable moratorium.
+- Channel Partners: State Channelizing Agencies and other approved NMDFC partners.
+- Target Beneficiaries: Eligible minority artisans/craftpersons covered by the Virasat scheme.
+
+49. NMDFC MICRO FINANCE — CREDIT LINE 1
+- Description: Provides microfinance support to eligible minority beneficiaries, primarily through group-based financing.
+- Loan Limits: Up to ₹1,00,000 per beneficiary; group financing is subject to applicable NMDFC limits.
+- Pattern of Financing: Group-based financing through approved NMDFC channel partners.
+- Interest Rate: 7% per annum at the beneficiary level under Credit Line 1.
+- Repayment Period: Repayment is as per NMDFC microfinance terms and sanctioned schedule.
+- Channel Partners: State Channelizing Agencies, NGOs and other approved NMDFC microfinance partners.
+- Target Beneficiaries: Eligible minority beneficiaries and eligible women SHGs meeting scheme conditions.
+
+50. NMDFC MICRO FINANCE — CREDIT LINE 2
+- Description: Provides higher microfinance support to eligible minority beneficiaries under the second income category.
+- Loan Limits: Up to ₹1,50,000 per beneficiary; group financing is subject to applicable NMDFC limits.
+- Pattern of Financing: Group-based financing through approved NMDFC channel partners.
+- Interest Rate: 10% for male beneficiaries and 8% for female beneficiaries under Credit Line 2.
+- Repayment Period: Repayment is as per NMDFC microfinance terms and sanctioned schedule.
+- Channel Partners: State Channelizing Agencies, NGOs and other approved NMDFC microfinance partners.
+- Target Beneficiaries: Eligible minority beneficiaries and eligible women SHGs meeting scheme conditions.
+
+51. NMDFC EDUCATION LOAN INDIA — CREDIT LINE 1
+- Description: Concessional education finance for eligible minority students pursuing approved higher education in India.
+- Loan Limits: Up to ₹20,00,000.
+- Pattern of Financing: Education loan through NMDFC channel partners; financing follows applicable course-cost and NMDFC norms.
+- Interest Rate: 3% per annum under Credit Line 1.
+- Repayment Period: Up to the applicable NMDFC education-loan repayment period after the moratorium.
+- Channel Partners: State Channelizing Agencies and other approved NMDFC education-loan partners.
+- Target Beneficiaries: Eligible minority students admitted to approved higher-education courses in India.
+
+52. NMDFC EDUCATION LOAN ABROAD — CREDIT LINE 1
+- Description: Concessional education finance for eligible minority students pursuing approved higher education abroad.
+- Loan Limits: Up to ₹30,00,000.
+- Pattern of Financing: Education loan through NMDFC channel partners; financing follows applicable course-cost and NMDFC norms.
+- Interest Rate: 3% per annum under Credit Line 1.
+- Repayment Period: Up to the applicable NMDFC education-loan repayment period after the moratorium.
+- Channel Partners: State Channelizing Agencies and other approved NMDFC education-loan partners.
+- Target Beneficiaries: Eligible minority students admitted to approved higher-education courses abroad.
+
+53. NSKFDC MAHILA SAMRIDHI
+- Description: Provides concessional credit to eligible women Safai Karamcharis, waste pickers and their dependants for income-generating activities.
+- Loan Limits: Up to ₹1,00,000.
+- Pattern of Financing: Applicable unit/project financing is provided through NSKFDC channel agencies, with financing and beneficiary contribution structured under current guidelines.
+- Interest Rate: 2% at the channel/SCA level and 6% at the beneficiary level under the current structure.
+- Repayment Period: Up to 3 years, subject to applicable moratorium/implementation conditions.
+- Channel Partners: State Channelizing Agencies, banks and other approved NSKFDC channels.
+- Target Beneficiaries: Eligible women Safai Karamcharis, waste pickers and dependants covered by NSKFDC eligibility criteria.
+
+54. NSKFDC MAHILA ADHIKARITA
+- Description: Provides concessional credit to eligible women beneficiaries for income-generating activities and economic empowerment.
+- Loan Limits: Up to ₹2,00,000.
+- Pattern of Financing: Financing through NSKFDC channel agencies under the applicable project-cost and contribution structure.
+- Interest Rate: 3% at the channel/SCA level and 7% at the beneficiary level.
+- Repayment Period: Up to 5 years.
+- Channel Partners: State Channelizing Agencies, banks and other approved NSKFDC channels.
+- Target Beneficiaries: Eligible women Safai Karamcharis, waste pickers and dependants meeting NSKFDC conditions.
+
+55. NSKFDC MICRO CREDIT FINANCE
+- Description: Provides small-ticket concessional finance to eligible Safai Karamcharis and dependants for income-generating activities.
+- Loan Limits: Up to ₹1,00,000 per beneficiary.
+- Pattern of Financing: Financing through approved NSKFDC channel agencies under the applicable micro-credit structure.
+- Interest Rate: 3% at the channel/SCA level and 7% at the beneficiary level.
+- Repayment Period: Up to 3 years.
+- Channel Partners: State Channelizing Agencies, banks and other approved NSKFDC channels.
+- Target Beneficiaries: Eligible Safai Karamcharis, waste pickers and dependants.
+
+56. NSKFDC GENERAL TERM LOAN — UP TO ₹10 LAKH
+- Description: Provides concessional term finance to eligible beneficiaries for viable income-generating activities.
+- Loan Limits: Up to ₹10,00,000.
+- Pattern of Financing: Financing through NSKFDC channel agencies under the applicable project-financing pattern.
+- Interest Rate: 8% per annum at the beneficiary level.
+- Repayment Period: Up to 10 years.
+- Channel Partners: State Channelizing Agencies, banks and other approved NSKFDC channels.
+- Target Beneficiaries: Eligible Safai Karamcharis, waste pickers and dependants meeting NSKFDC conditions.
+
+57. NSKFDC GENERAL TERM LOAN — ₹10–15 LAKH
+- Description: Provides concessional term finance for larger eligible income-generating projects.
+- Loan Limits: Above ₹10,00,000 and up to ₹15,00,000.
+- Pattern of Financing: Financing through NSKFDC channel agencies under the applicable project-financing pattern.
+- Interest Rate: 9% per annum at the beneficiary level.
+- Repayment Period: Up to 10 years.
+- Channel Partners: State Channelizing Agencies, banks and other approved NSKFDC channels.
+- Target Beneficiaries: Eligible Safai Karamcharis, waste pickers and dependants meeting NSKFDC conditions.
+
+58. NSKFDC COMMUNITY TOILET PROJECT
+- Description: Supports community sanitation infrastructure projects for eligible beneficiaries/implementing entities under NSKFDC sanitation-related financing.
+- Loan Limits: Up to ₹25,00,000.
+- Pattern of Financing: Financing through NSKFDC channel agencies under the applicable project-financing structure.
+- Interest Rate: 4% at the channel/SCA level and 8% at the beneficiary level.
+- Repayment Period: Up to 10 years.
+- Channel Partners: State Channelizing Agencies and other approved NSKFDC channels.
+- Target Beneficiaries: Eligible sanitation workers, their organisations and other entities permitted under current NSKFDC guidelines.
+
+59. NSKFDC EDUCATION LOAN — INDIA
+- Description: Provides concessional education finance to eligible beneficiaries for approved higher education in India.
+- Loan Limits: Up to ₹10,00,000.
+- Pattern of Financing: Education loan through NSKFDC channel agencies under the applicable financing pattern.
+- Interest Rate: 2% at the channel/SCA level and 6% at the beneficiary level.
+- Repayment Period: Up to 5 years after course completion, with the applicable one-year moratorium.
+- Channel Partners: State Channelizing Agencies, banks and other approved NSKFDC education-loan channels.
+- Target Beneficiaries: Eligible Safai Karamchari/waste-picker beneficiaries and dependants admitted to approved courses in India.
+
+60. NSKFDC EDUCATION LOAN — ABROAD
+- Description: Provides concessional education finance to eligible beneficiaries for approved higher education abroad.
+- Loan Limits: Up to ₹20,00,000.
+- Pattern of Financing: Education loan through NSKFDC channel agencies under the applicable financing pattern.
+- Interest Rate: 3% at the channel/SCA level and 7% at the beneficiary level; applicable female rebate is provided under current rules.
+- Repayment Period: Up to 5 years after course completion, with applicable moratorium.
+- Channel Partners: State Channelizing Agencies, banks and other approved NSKFDC education-loan channels.
+- Target Beneficiaries: Eligible beneficiaries and dependants admitted to approved courses abroad.
+
+61. NDFDC DIVYANGJAN SWAVALAMBAN YOJANA
+- Description: Provides concessional finance for self-employment and income-generating activities of persons with disabilities.
+- Loan Limits: Up to ₹50,00,000.
+- Pattern of Financing: Financing through implementing agencies with NDFDC participation and an applicable implementing-agency margin.
+- Interest Rate: Beneficiary rate varies by loan slab, approximately 5% to 9% across the applicable slabs after NDFDC and implementing-agency margins.
+- Repayment Period: Repayment within up to 10 years from disbursement, subject to case-specific sanction.
+- Channel Partners: State Channelizing Agencies and other approved NDFDC implementing agencies.
+- Target Beneficiaries: Indian citizens with qualifying benchmark disability and other eligibility requirements, including applicable UDID requirements.
+
+62. NDFDC VISHESH MICROFINANCE YOJANA
+- Description: Provides small-ticket microfinance for income-generating activities of eligible persons with disabilities.
+- Loan Limits: Up to ₹60,000.
+- Pattern of Financing: Typically up to 90% NDFDC financing with the balance from the implementing agency/beneficiary as prescribed.
+- Interest Rate: Beneficiary interest can be up to 12.5%, subject to implementing-agency terms.
+- Repayment Period: Up to 3 years, including the applicable moratorium.
+- Channel Partners: NBFC-MFIs, Section-8 MFIs, NGO-MFIs, SHG federations, State Government Missions, SCAs and other approved channels.
+- Target Beneficiaries: Eligible persons with disabilities meeting NDFDC Vishesh Microfinance eligibility requirements.
+
+63. SBI STUDENT LOAN — UP TO ₹7.5 LAKH
+- Description: Education loan for eligible students pursuing higher education in India or abroad.
+- Loan Limits: Loan amount up to ₹7,50,000 under the applicable Student Loan category.
+- Pattern of Financing: Bank-funded education loan; up to ₹7.5 lakh is generally available without tangible collateral under applicable terms.
+- Interest Rate: Current SBI rate for the no-collateral up-to-₹7.5 lakh Student Loan category is 10.15%; eligible girl-student concession may apply.
+- Repayment Period: Up to 15 years after the applicable repayment holiday/moratorium.
+- Channel Partners: State Bank of India branches and applicable SBI education-loan channels.
+- Target Beneficiaries: Indian nationals admitted to eligible higher-education courses in India or abroad.
+
+64. SBI STUDENT LOAN — ABOVE ₹7.5 LAKH
+- Description: Education loan for eligible students requiring financing above the standard no-collateral Student Loan limit.
+- Loan Limits: Above ₹7,50,000; higher amounts are subject to course, institution, country and SBI assessment limits.
+- Pattern of Financing: Bank-funded education loan generally supported by tangible collateral above the applicable no-collateral limit.
+- Interest Rate: Current SBI rate for the collateralized Student Loan category above ₹7.5 lakh is 9.15%; eligible girl-student concession may apply.
+- Repayment Period: Up to 15 years after the applicable repayment holiday/moratorium.
+- Channel Partners: State Bank of India branches and applicable SBI education-loan channels.
+- Target Beneficiaries: Indian nationals admitted to eligible higher-education courses in India or abroad.
+
+65. SBI SCHOLAR LOAN — LIST AA
+- Description: Education loan for students admitted to selected premier institutions classified under SBI Scholar Loan List AA.
+- Loan Limits: Up to ₹50,00,000 without security under applicable Scholar Loan terms; higher need-based finance may be considered with security.
+- Pattern of Financing: Bank-funded education loan with security requirements determined by the sanctioned amount and applicable institution/category rules.
+- Interest Rate: Current SBI Scholar Loan rates vary by institution/category and applicable rate structure.
+- Repayment Period: Up to 15 years; EMI commencement follows the applicable SBI education-loan holiday rules.
+- Channel Partners: State Bank of India.
+- Target Beneficiaries: Indian nationals admitted to eligible professional/technical courses in institutions covered by Scholar Loan List AA.
+
+66. SBI SCHOLAR LOAN — LIST A
+- Description: Education loan for students admitted to institutions covered under SBI Scholar Loan List A.
+- Loan Limits: Up to ₹40,00,000 without security under applicable Scholar Loan terms.
+- Pattern of Financing: Bank-funded education loan with applicable security and sanction conditions.
+- Interest Rate: Current SBI Scholar Loan rates vary by institution/category and applicable rate structure.
+- Repayment Period: Up to 15 years under applicable SBI education-loan terms.
+- Channel Partners: State Bank of India.
+- Target Beneficiaries: Indian nationals admitted to eligible courses in institutions covered by Scholar Loan List A.
+
+67. SBI SCHOLAR LOAN — LIST B
+- Description: Education loan for students admitted to institutions covered under SBI Scholar Loan List B.
+- Loan Limits: Up to ₹30,00,000 without security under applicable Scholar Loan terms.
+- Pattern of Financing: Bank-funded education loan with applicable security and sanction conditions.
+- Interest Rate: Current SBI Scholar Loan rates vary by institution/category and applicable rate structure.
+- Repayment Period: Up to 15 years under applicable SBI education-loan terms.
+- Channel Partners: State Bank of India.
+- Target Beneficiaries: Indian nationals admitted to eligible courses in institutions covered by Scholar Loan List B.
+
+68. SBI SCHOLAR LOAN — LIST C
+- Description: Education loan for students admitted to institutions covered under SBI Scholar Loan List C.
+- Loan Limits: Up to ₹7,50,000 without security; higher collateralized finance may be available subject to SBI terms.
+- Pattern of Financing: Bank-funded education loan with applicable security and sanction conditions.
+- Interest Rate: Current SBI Scholar Loan rates vary by institution/category and applicable rate structure.
+- Repayment Period: Up to 15 years under applicable SBI education-loan terms.
+- Channel Partners: State Bank of India.
+- Target Beneficiaries: Indian nationals admitted to eligible courses in institutions covered by Scholar Loan List C.
+
+69. SBI GLOBAL ED-VANTAGE
+- Description: Education loan for eligible Indian students pursuing full-time regular higher education at recognised institutions abroad.
+- Loan Limits: Up to ₹3,00,00,000 under the current Global Ed-Vantage product.
+- Pattern of Financing: Bank-funded education loan; tangible collateral is generally required, with collateral-free provisions available for specified premier institutions/eligible cases.
+- Interest Rate: Current SBI rate for Global Ed-Vantage is based on the applicable SBI education-loan rate structure; the current product page should be treated as the rate source.
+- Repayment Period: Up to 15 years under applicable SBI education-loan terms.
+- Channel Partners: State Bank of India.
+- Target Beneficiaries: Indian nationals pursuing eligible full-time regular higher education abroad.
+
+70. SBI PM-VIDYALAXMI EDUCATION LOAN
+- Description: Special education-loan framework for students admitted on merit to eligible Quality Higher Education Institutions in India, with collateral-free and guarantor-free support under the scheme.
+- Loan Limits: No fixed universal upper loan cap is prescribed by the PM-Vidyalaxmi guidelines; the loan is based on eligible course fees and expenses. The 3% interest-subvention benefit applies to eligible loans up to ₹10 lakh.
+- Pattern of Financing: Education loan through participating banks under PM-Vidyalaxmi; collateral and guarantor are not required for eligible scheme loans.
+- Interest Rate: SBI's applicable PM-Vidyalaxmi product rate varies by the relevant product/category; eligible families with annual income up to ₹8 lakh may receive 3% interest subvention during the moratorium on loans up to ₹10 lakh.
+- Repayment Period: Up to 15 years excluding the moratorium period, with moratorium covering course period plus one year.
+- Channel Partners: Participating Scheduled Commercial Banks, including State Bank of India, through the PM-Vidyalaxmi framework.
+- Target Beneficiaries: Students admitted on merit to eligible Quality Higher Education Institutions in India; management-quota admissions are excluded under the scheme guidelines.
 
