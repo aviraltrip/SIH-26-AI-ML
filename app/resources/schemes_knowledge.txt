@@ -700,3 +700,23 @@ OFFICIAL GOVERNMENT SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
   5. Field Appraisal & Verification: Bank officer or nodal officer conducts physical/telephonic trade verification.
   6. Sanction Letter & Disbursement: Sanction letter issued detailing interest rate, moratorium, and EMI schedule.
 
+72. UNIVERSAL DOCUMENT CHECKLIST AND PAPERWORK REQUIREMENTS
+- Description: Comprehensive checklist of mandatory and optional documents required by Channel Partners (Banks, SCAs, RRBs) across schemes.
+- Mandatory Identification & Address Proofs (KYC):
+  * Aadhaar Card (with linked mobile number for OTP/e-KYC verification).
+  * Voter ID / PAN Card / Passport / Driving License (secondary photo identification).
+  * Proof of Address: Electricity bill, Ration Card, Domicile certificate, or Village Panchayat Certificate.
+- Category & Income Verification Documents:
+  * Caste Certificate: Issued by designated Revenue Authority (Tehsildar / Sub-Divisional Magistrate / District Magistrate) for SC, ST, OBC, or EWS category.
+  * Income Certificate: Issued by competent state authority (Tehsildar / Revenue Officer) stating gross annual family income.
+  * Disability Certificate (UDID): Mandatory for NHFDC / Divyangjan schemes certifying 40% or above benchmark disability.
+  * Safai Karamchari Certificate: Certificate from local municipal body / employer for NSKFDC schemes.
+- Project & Enterprise Paperwork:
+  * Machinery / Equipment Quotation: Proforma invoice or price quotation from authorized vendor/dealer.
+  * Project Report / Business Plan: Simple 1-2 page sheet detailing setup costs, working capital, raw materials, and expected monthly sales (mandatory for loans above ₹5 Lakhs, e.g. PMEGP).
+  * Rent Agreement / Proof of Business Premises: Shop lease or ownership deed if business is operated from separate commercial premises.
+  * Skill Training Certificate: Trade certificate (ITI, PMKVY, or traditional trade verification for PM Vishwakarma).
+- Banking Documents:
+  * Active Savings Bank Account Passbook (or cancelled cheque) with IFSC and MICR codes.
+  * Aadhaar-seeded NPCI mapping for direct benefit transfer (DBT) subsidy credit.
+
