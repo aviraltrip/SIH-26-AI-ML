@@ -51,7 +51,7 @@ graph TD
 | **Entity Extraction** | Captures audio/text and acts as a gateway proxy. | Extracts parameters from raw voice transcriptions into structured JSON via Gemini. |
 | **Document Processing** | Stores documents, manages metadata, and generates PDF dossiers. | Renders PDFs/Images via PyMuPDF/Pillow and parses structured fields via Gemini Multimodal Vision. |
 | **Natural Language** | Serves static UI translations. | Generates contextual, localized explanations of terminology and scheme fit. |
-| **Scheme Advisory Chat** | Manages conversation state, stores chat transcripts, and proxies user messages. | Runs retrieval-augmented generation (RAG) using consolidated policy guidelines. |
+| **Scheme Advisory Chat** | Manages conversation state, stores chat transcripts, and proxies user messages. | Runs two-tier hybrid RAG (Grounded Policy Truth Base + General Banking & Procedural Fallback) with proactive suggested questions. |
 
 ---
 
