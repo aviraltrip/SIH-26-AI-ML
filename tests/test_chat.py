@@ -238,3 +238,47 @@ def test_scheme_chat_passes_tools_and_config(mock_genai_client):
     assert "Grounding & Citations" in config.system_instruction
     assert "Confidence / Strict Abstention" in config.system_instruction
 
+
+def test_tool_retrieve_procedural_and_document_guidelines():
+    """Test retrieve_scheme_guidelines tool for procedural, application, and document checklist queries."""
+    from app.services.gemini_service import retrieve_scheme_guidelines
+
+    res_proc = retrieve_scheme_guidelines("how to apply at CSC center or Jan Samarth portal?")
+    assert "APPLICATION PROCEDURES" in res_proc or "CSC" in res_proc
+
+    res_docs = retrieve_scheme_guidelines("what documents and KYC are required for loan?")
+    assert "DOCUMENT CHECKLIST" in res_docs or "Aadhaar" in res_docs
+
+
+def test_tool_retrieve_disbursement_and_grievance_guidelines():
+    """Test retrieve_scheme_guidelines tool for moratorium, subsidy, and grievance escalation queries."""
+    from app.services.gemini_service import retrieve_scheme_guidelines
+
+    res_disb = retrieve_scheme_guidelines("what is the moratorium period and subsidy release?")
+    assert "DISBURSEMENT" in res_disb or "Moratorium" in res_disb
+
+    res_griev = retrieve_scheme_guidelines("how to file a grievance to Lead District Manager if rejected?")
+    assert "GRIEVANCE REDRESSAL" in res_griev or "Lead District Manager" in res_griev
+
+
+def test_parse_chat_response_numbered_suggestions_sanitized():
+    """Test that _parse_chat_response cleans numbered prefixes from suggested follow-up questions."""
+    from app.services.gemini_service import _parse_chat_response
+
+    raw_json = (
+        '{\n'
+        '  "response": "Here is the guidance on documents.",\n'
+        '  "suggested_questions": [\n'
+        '    "1. What is the income certificate validity?",\n'
+        '    "2) How do I apply through CSC?",\n'
+        '    "3. Can my spouse also apply?"\n'
+        '  ]\n'
+        '}'
+    )
+    resp, suggestions = _parse_chat_response(raw_json)
+    assert resp == "Here is the guidance on documents."
+    assert len(suggestions) == 3
+    assert suggestions[0] == "What is the income certificate validity?"
+    assert suggestions[1] == "How do I apply through CSC?"
+    assert suggestions[2] == "Can my spouse also apply?"
+
