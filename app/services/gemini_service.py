@@ -228,6 +228,16 @@ def retrieve_scheme_guidelines(query: str) -> str:
             keywords.extend(["adivasi", "amsy", "nstfdc", "tribal", "st women", "scheduled tribe"])
         if "swachhta" in title or "suy" in title or "nskfdc" in title or "safai" in title:
             keywords.extend(["swachhta", "suy", "nskfdc", "safai", "karamchari", "sanitation", "toilet", "manual scavenger"])
+        if "application procedure" in title or "csc" in title or "jan samarth" in title:
+            keywords.extend(["apply", "application", "procedure", "csc", "jan samarth", "udyam", "vle", "process", "register", "registration", "portal"])
+        if "document" in title or "paperwork" in title or "checklist" in title:
+            keywords.extend(["document", "documents", "paperwork", "checklist", "kyc", "aadhaar", "caste certificate", "income certificate", "proof", "pan", "quotation", "passbook", "ration card"])
+        if "disbursement" in title or "moratorium" in title or "subsidy release" in title:
+            keywords.extend(["disbursement", "disburse", "moratorium", "repayment holiday", "grace period", "subsidy release", "srf", "subvention", "cgtmse", "guarantee"])
+        if "grievance" in title or "nodal" in title or "lead district" in title or "ldm" in title:
+            keywords.extend(["grievance", "complaint", "reject", "rejection", "delay", "ldm", "lead district manager", "nodal", "ombudsman", "helpline", "toll free", "escalate"])
+        if "cross-scheme" in title or "family" in title or "cibil" in title or "faqs" in title:
+            keywords.extend(["family", "cibil", "credit score", "multiple", "switch", "both apply", "husband", "wife", "faq", "criteria"])
 
         for kw in keywords:
             if len(kw) <= 2:
