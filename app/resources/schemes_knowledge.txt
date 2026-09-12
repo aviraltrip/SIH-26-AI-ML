@@ -736,3 +736,32 @@ OFFICIAL GOVERNMENT SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
 - Collateral-Free Guarantees (CGTMSE / CGFMU):
   * Micro and small enterprise loans under Mudra (up to ₹10-20 Lakhs) and PMEGP/Vishwakarma are covered under government credit guarantee funds (CGTMSE / CGFMU). Banks cannot demand third-party collateral or mortgage of residential property for eligible collateral-free categories.
 
+74. GRIEVANCE REDRESSAL, NODAL OFFICERS, AND LEAD DISTRICT MANAGERS (LDM)
+- Description: Official escalation matrix and grievance resolution channels when applications face delays or wrongful rejections.
+- Key Grievance Escalation Steps:
+  1. Branch Manager & Branch Nodal Officer: First point of contact. Request in writing the specific reason for delay or rejection (e.g. CIBIL score issue, missing document, or quota exhaustion).
+  2. Lead District Manager (LDM): Senior bank official appointed by RBI in each district to coordinate government scheme credit across all commercial and rural banks in that district.
+  3. District Level Task Force Committee (DLTFC) / GM DIC: For PMEGP applications, General Manager of District Industries Centre (DIC) heads the scrutiny committee and can re-route rejected applications.
+  4. State Channelizing Agency (SCA) Managing Director: For NBCFDC/NSFDC/NSTFDC/NSKFDC schemes, state SCAs have dedicated grievance redressal officers.
+  5. CPGRAMS & RBI Ombudsman: Central public grievance portal (pgportal.gov.in) and RBI Banking Ombudsman (bankingombudsman.rbi.org.in) for unfair trade practices or arbitrary denial of collateral-free loans.
+- National Helplines:
+  * PM Vishwakarma Toll-Free Helpline: 18002677777 / 17923
+  * Jan Samarth Helpdesk: support@jansamarth.in
+  * Mudra Helpline: 18001801111 / 1800110001
+  * KVIC / PMEGP Helpdesk: 180030000034
+
+75. CROSS-SCHEME ELIGIBILITY, ONE BENEFICIARY PER FAMILY NORMS, AND COMMON FAQS
+- Description: Critical policy rules addressing common applicant questions regarding family eligibility, overlapping schemes, and credit criteria.
+- Family Definition & One Beneficiary Norm:
+  * Most subsidized schemes (PM Vishwakarma, PMEGP, Stand-Up India, MSY) enforce a strict 'one beneficiary per family' rule.
+  * 'Family' is defined as applicant, spouse, and unmarried dependent children. Two adult family members cannot simultaneously claim subsidies or concessional loans for the same enterprise.
+- Credit Score (CIBIL / Experian) Requirements:
+  * For micro-loans up to ₹50,000 (Mudra Shishu, PM SVANidhi), a pristine credit history is not mandatory, but active willful defaults on prior bank loans disqualifies the applicant.
+  * For term loans above ₹2 Lakhs, a minimum CIBIL score of 650+ is generally required by commercial banks.
+- Switching or Availing Multiple Schemes:
+  * An applicant cannot claim multiple government interest subsidies for the same project or asset.
+  * However, after successfully repaying a micro-finance loan (e.g., MSY or Mudra Shishu), an entrepreneur can graduate to a higher loan slab (e.g., Mudra Kishor, PM Vishwakarma Tranche 2, or PMEGP Term Loan) for enterprise expansion.
+- Educational Loans (ELAS / PM Vidyalaxmi) vs Commercial Loans:
+  * Educational loans are specifically for tuition, admission fees, books, equipment, and hostel expenses. They cannot be diverted for commercial business setup.
+  * Repayment holiday (moratorium) for education loans lasts for the entire course duration plus 6 to 12 months after course completion or securing employment.
+
