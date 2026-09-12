@@ -685,3 +685,18 @@ OFFICIAL GOVERNMENT SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
 - Channel Partners: Participating Scheduled Commercial Banks, including State Bank of India, through the PM-Vidyalaxmi framework.
 - Target Beneficiaries: Students admitted on merit to eligible Quality Higher Education Institutions in India; management-quota admissions are excluded under the scheme guidelines.
 
+71. GENERAL LOAN APPLICATION PROCEDURES, CSC WORKFLOWS, AND JAN SAMARTH GUIDELINES
+- Description: Standardized procedural walkthrough for rural and semi-urban applicants to apply for credit assistance and subsidies.
+- Application Modes & Gateways:
+  * Common Service Centres (CSCs): Village Level Entrepreneurs (VLEs) assist applicants with online registration, biometric Aadhaar authentication, and document scanning for PM Vishwakarma, PMEGP, and Mudra loans.
+  * Jan Samarth Portal (jansamarth.in): Central digital portal linking 13+ credit-linked government schemes with over 125+ lenders (PSBs, RRBs, and SCAs). Applicants check digital eligibility, receive In-Principle Sanction Letters, and track status.
+  * Udyam / Udyam Assist Platform (UAP): Free government portal (udyamregistration.gov.in) for obtaining Micro Enterprise registration certificate. Udyam Assist helps informal micro enterprises (IMEs) obtain priority sector lending benefits.
+  * State Channelizing Agencies (SCAs): Physical state offices accepting offline and online application dossiers for NBCFDC, NSFDC, NSTFDC, and NSKFDC schemes.
+- Step-by-Step Application Process:
+  1. Profile Registration & Aadhaar E-KYC: Beneficiary registers with active mobile number linked to Aadhaar and completes OTP or biometric authentication.
+  2. Scheme Selection & Project Data: Enter enterprise details, estimated project cost, required loan amount, trade, and category.
+  3. Document Upload: Upload scanned copies of identity, address proof, caste/income certificates, and machinery quotation.
+  4. In-Principle Approval & Bank Routing: Application routed to preferred local bank branch or SCA with lowest pending pipeline.
+  5. Field Appraisal & Verification: Bank officer or nodal officer conducts physical/telephonic trade verification.
+  6. Sanction Letter & Disbursement: Sanction letter issued detailing interest rate, moratorium, and EMI schedule.
+
