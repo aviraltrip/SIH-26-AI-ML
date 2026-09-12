@@ -457,7 +457,12 @@ def _parse_chat_response(raw_text: str) -> tuple[str, list[str]]:
 
             raw_suggestions = data.get("suggested_questions") or data.get("suggestedQuestions") or []
             if isinstance(raw_suggestions, list):
-                suggestions = [str(q).strip() for q in raw_suggestions if str(q).strip()]
+                suggestions = []
+                for q in raw_suggestions:
+                    clean_q = re.sub(r"^\d+[\.\)]\s*", "", str(q).strip()).strip('\"\'')
+                    if clean_q:
+                        suggestions.append(clean_q)
+                suggestions = suggestions[:3]
             else:
                 suggestions = []
 
