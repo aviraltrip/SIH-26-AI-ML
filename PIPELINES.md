@@ -143,9 +143,9 @@ Rules:
 
 ---
 
-## 5. Scheme Q&A Chatbot (Grounded Long-Context RAG & Proactive Suggestions)
+## 5. Scheme Q&A Chatbot (Two-Tier Grounded RAG & Proactive Suggestions)
 
-Provides grounded, multi-turn conversational advisory based exclusively on consolidated government policy guidelines loaded from `app/resources/schemes_knowledge.txt`, and generates 2–3 contextual follow-up question suggestions for user discovery.
+Provides grounded, multi-turn conversational advisory based on consolidated government policy guidelines loaded from `app/resources/schemes_knowledge.txt`, coupled with a resilient two-tier hybrid fallback that answers general banking/procedural questions without dead-ending the user.
 
 ### Execution Flow
 
@@ -153,18 +153,30 @@ Provides grounded, multi-turn conversational advisory based exclusively on conso
 graph TD
     UserQuery[User Question + Chat History] --> Router[POST /scheme-chat]
     Router --> Tools[Gemini Agent + Scheme Knowledge Tools]
-    Tools --> Retrieve[retrieve_scheme_guidelines / simplify_financial_jargon]
-    Retrieve --> Model[Gemini 2.5 Flash Response Generation]
-    Model --> Parser[_parse_chat_response JSON Extractor]
+    Tools --> Retrieve[retrieve_scheme_guidelines / simplify_financial_jargon / explain_scheme_recommendations]
+    Retrieve --> Match{Found in Knowledge Base?}
+    Match -->|Yes| Tier1[Tier 1: Policy-Grounded Response with Markdown Citations]
+    Match -->|No / Procedural| Tier2[Tier 2: General Advisory & Step-by-Step Guidance]
+    Tier1 --> Parser[_parse_chat_response JSON Extractor]
+    Tier2 --> Parser
     Parser --> Output["ChatResponse: { response, suggested_questions }"]
 ```
+
+### Knowledge Base Content Coverage
+* **Schemes (1 to 70)**: NBCFDC (MSY, MCS), PM Vishwakarma, PMEGP, Mudra (Shishu/Kishor/Tarun), Stand-Up India, SVANidhi, NHFDC, NMDFC, ELAS, and State-level concessional credit schemes.
+* **Procedural Guidelines (71 to 75)**:
+  * Section 71: General Loan Application Procedures, CSC Workflows, and Jan Samarth Guidelines.
+  * Section 72: Universal Document Checklist and Paperwork Requirements.
+  * Section 73: Loan Disbursement, Moratorium Mechanics, and Subsidy Release Process.
+  * Section 74: Grievance Redressal, Nodal Officers, and Lead District Managers (LDM).
+  * Section 75: Cross-Scheme Eligibility, One Beneficiary per Family Norms, and Common FAQs.
 
 ### Output Format Specification
 
 The model formats its output as structured JSON:
 ```json
 {
-  "response": "Grounded answer text in the requested target language with citations.",
+  "response": "Grounded answer text in the requested target language with citations or general procedural steps.",
   "suggested_questions": [
     "Contextual follow-up question 1 in target language",
     "Contextual follow-up question 2 in target language",
