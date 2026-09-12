@@ -720,3 +720,19 @@ OFFICIAL GOVERNMENT SCHEME POLICY GUIDELINES & FAQS (SOURCE OF TRUTH)
   * Active Savings Bank Account Passbook (or cancelled cheque) with IFSC and MICR codes.
   * Aadhaar-seeded NPCI mapping for direct benefit transfer (DBT) subsidy credit.
 
+73. LOAN DISBURSEMENT, MORATORIUM MECHANICS, AND SUBSIDY RELEASE PROCESS
+- Description: Policy guidelines on how funds are released, how repayment holidays function, and how subsidies are adjusted.
+- Disbursement Mechanics:
+  * Direct Vendor Payment for Assets: For asset creation (machinery, tools, vehicles), loan funds are disbursed directly to the vendor's bank account against the proforma invoice to prevent misuse.
+  * Working Capital Release: Working capital is credited directly to the entrepreneur's current/cash-credit account or disbursed in stages/tranches (e.g. Mudra or SVANidhi).
+- Moratorium Period (Repayment Holiday):
+  * Definition: A grace period immediately after loan disbursal during which the borrower is exempt from paying principal EMI installments.
+  * Typical Duration: Ranges between 3 to 12 months (e.g., 6 months for NBCFDC MSY/MCS, 6-12 months for PMEGP, up to course completion + 1 year for education loans).
+  * Purpose: Allows the entrepreneur to procure machinery, set up the shop, build inventory, and generate cash flow before repayment begins.
+  * Simple Analogy: Like a seed germination period where you water the plant before expecting crop harvest.
+- Margin Money & Subsidy Adjustments:
+  * Back-Ended Subsidy: In schemes like PMEGP, government margin money subsidy is kept in a separate 'Subsidy Reserve Fund (SRF)' account for 3 years without earning interest. After successful unit operation for 3 years, the subsidy is credited to adjust the principal loan balance.
+  * Concessional Subvention: In schemes like PM Vishwakarma and Mudra Shishu, interest subvention (e.g. 8% subvention for Vishwakarma) is reimbursed by the Central Government directly to the lending bank, leaving the borrower with a flat 5% interest liability.
+- Collateral-Free Guarantees (CGTMSE / CGFMU):
+  * Micro and small enterprise loans under Mudra (up to ₹10-20 Lakhs) and PMEGP/Vishwakarma are covered under government credit guarantee funds (CGTMSE / CGFMU). Banks cannot demand third-party collateral or mortgage of residential property for eligible collateral-free categories.
+
