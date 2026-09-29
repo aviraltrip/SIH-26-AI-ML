@@ -1,12 +1,12 @@
 # API Contract Specifications
 
-This document defines the strict API contracts, Pydantic schemas, validation constraints, and error response formats for the FastAPI AI/ML microservice.
+This document defines the strict API contracts, Pydantic v2 schemas, validation constraints, and error response formats for the FastAPI AI/ML microservice.
 
 ---
 
 ## Global Error Response Format
 
-All standard HTTP exceptions, validation errors, and runtime failures return a consistent JSON schema:
+All standard HTTP exceptions, validation errors, and runtime failures return a consistent JSON schema envelope:
 
 ```json
 {
@@ -18,24 +18,28 @@ All standard HTTP exceptions, validation errors, and runtime failures return a c
 }
 ```
 
-### Standard Error Codes
-* `BAD_REQUEST` (400): Missing required parameters or empty payload.
-* `VALIDATION_ERROR` (422): JSON schema validation failed or type constraints violated.
-* `UNAUTHORIZED` / `FORBIDDEN` (401 / 403): Auth failure with upstream providers.
-* `NOT_FOUND` (404): Route or resource not found.
-* `INTERNAL_SERVER_ERROR` (500): Downstream LLM provider timeout or processing error.
+### Standard Error Codes & Status Codes
+
+| HTTP Status | Error Code | Description |
+| :--- | :--- | :--- |
+| `400 Bad Request` | `BAD_REQUEST` | Missing required parameters, empty transcript/term, or unsupported file formats. |
+| `401 Unauthorized` | `UNAUTHORIZED` | Invalid or expired API credentials with upstream LLM provider. |
+| `403 Forbidden` | `FORBIDDEN` | Upstream provider permission denied. |
+| `404 Not Found` | `NOT_FOUND` | Requested route or endpoint does not exist. |
+| `422 Unprocessable` | `VALIDATION_ERROR` | JSON schema validation failure or violated type constraints. |
+| `500 Internal Error`| `INTERNAL_SERVER_ERROR` | Downstream LLM provider timeout, rate limit, or unexpected execution exception. |
 
 ---
 
 ## 1. Extract Applicant Intent
 
-Parses conversational speech transcriptions or text statements into structured applicant profiles.
+Parses conversational speech transcriptions or text statements (in Hindi, English, or regional languages) into a structured applicant profile adhering to `IntentResponse`.
 
 * **URL**: `/extract-applicant-intent`
 * **Method**: `POST`
 * **Content-Type**: `application/json`
 
-### Pydantic Models
+### Pydantic Models (`app/models/schemas.py`)
 
 ```python
 from typing import Literal
@@ -82,9 +86,9 @@ class IntentResponse(BaseModel):
 
 ---
 
-## 2. OCR Certificate
+## 2. Multimodal Certificate OCR
 
-Extracts applicant information from uploaded certificates (Caste or Income) to verify eligibility.
+Extracts applicant information from uploaded certificates (Caste or Income) in PDF, PNG, JPG, or WEBP format and verifies income eligibility.
 
 * **URL**: `/ocr-certificate`
 * **Method**: `POST`
@@ -94,10 +98,10 @@ Extracts applicant information from uploaded certificates (Caste or Income) to v
 
 | Field | Type | Required | Description |
 |---|---|---|---|
-| `file` | `UploadFile` (Binary) | Yes | Uploaded file (`application/pdf`, `image/jpeg`, `image/png`, `image/webp`). |
+| `file` | `UploadFile` (Binary) | Yes | Uploaded file (`.pdf`, `.png`, `.jpg`, `.jpeg`, `.webp`). |
 | `doc_type` | `str` | Yes | Type of certificate: `"caste"` or `"income"`. |
 
-### Pydantic Models
+### Pydantic Models (`app/models/schemas.py`)
 
 ```python
 from typing import Optional
@@ -105,7 +109,7 @@ from pydantic import BaseModel, Field
 
 class ExtractedFields(BaseModel):
     name: str = Field(..., description="Name of the applicant printed on the document")
-    category: Optional[str] = Field(None, description="Caste category (SC, ST, OBC, General) extracted from Caste Certificate")
+    category: Optional[str] = Field(None, description="Caste category (SC, ST, OBC, EWS, General) extracted from Caste Certificate")
     annual_income: Optional[float] = Field(None, description="Annual income in INR extracted from Income Certificate")
     valid_until: Optional[str] = Field(None, description="Expiration date of document in YYYY-MM-DD format (if applicable)")
 
@@ -116,7 +120,7 @@ class OCRResponse(BaseModel):
     raw_confidence: float = Field(..., description="Average OCR engine extraction confidence (0.0 to 1.0)")
 ```
 
-### Example Response (200 OK - Income Certificate)
+### Example Response (200 OK — Income Certificate)
 ```json
 {
   "doc_type": "income",
@@ -131,17 +135,32 @@ class OCRResponse(BaseModel):
 }
 ```
 
+### Example Response (200 OK — Caste Certificate)
+```json
+{
+  "doc_type": "caste",
+  "extracted_fields": {
+    "name": "Sunita Devi",
+    "category": "OBC",
+    "annual_income": null,
+    "valid_until": null
+  },
+  "income_verified": false,
+  "raw_confidence": 0.95
+}
+```
+
 ---
 
 ## 3. Simplify Term (Jargon Simplifier)
 
-Rephrases financial, structural, and regulatory jargon (e.g., *moratorium*, *collateral*, *promoter margin*) into plain, conversational regional language.
+Simplifies financial, banking, and regulatory jargon (e.g. *Moratorium*, *Collateral*, *Promoter Margin*) into clear, conversational language in 12+ Indian languages using intuitive analogies.
 
 * **URL**: `/simplify-term`
 * **Method**: `POST`
 * **Content-Type**: `application/json`
 
-### Pydantic Models
+### Pydantic Models (`app/models/schemas.py`)
 
 ```python
 class JargonRequest(BaseModel):
@@ -171,13 +190,13 @@ class JargonResponse(BaseModel):
 
 ## 4. Recommend Scheme Explainer
 
-Generates a localized natural-language narrative describing why the shortlisted schemes fit the applicant's profile and explaining any alternatives.
+Generates a tailored natural-language narrative describing why the shortlisted schemes fit the applicant's profile and providing comparison notes for runner-up options.
 
 * **URL**: `/recommend-scheme-explainer`
 * **Method**: `POST`
 * **Content-Type**: `application/json`
 
-### Pydantic Models
+### Pydantic Models (`app/models/schemas.py`)
 
 ```python
 class ApplicantProfile(BaseModel):
@@ -236,22 +255,22 @@ class ExplainerResponse(BaseModel):
 ```json
 {
   "top_scheme": "Mahila Samriddhi Yojana",
-  "explanation": "Mahila Samriddhi Yojana is the most suitable scheme for you because it offers the highest financial coverage (90%) and the lowest interest rate (4.0%) specifically tailored for female entrepreneurs in tailoring.",
-  "runner_up_note": "Micro Credit Scheme is also a viable option but offers slightly lower project coverage (80%) with a higher interest rate (6.0%)."
+  "explanation": "Mahila Samriddhi Yojana is the most suitable scheme for you because it offers the highest financial coverage (90%) and the lowest subsidized interest rate (4.0%) specifically tailored for female entrepreneurs in tailoring.",
+  "runner_up_note": "Micro Credit Scheme is also an option, but it covers only 80% with a higher interest rate of 6.0%."
 }
 ```
 
 ---
 
-## 5. Scheme Q&A Chatbot
+## 5. Grounded Scheme Advisory Chatbot
 
-Conversational, multi-turn questions and answers grounded in official scheme policy guidelines.
+Provides grounded, multi-turn conversational Q&A based on official scheme guidelines and procedural checklists, dynamically returning follow-up questions for quick-reply chips.
 
 * **URL**: `/scheme-chat`
 * **Method**: `POST`
 * **Content-Type**: `application/json`
 
-### Pydantic Models
+### Pydantic Models (`app/models/schemas.py`)
 
 ```python
 class ChatMessage(BaseModel):

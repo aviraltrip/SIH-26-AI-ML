@@ -1,24 +1,35 @@
 # 🚀 SIH 26 — AI/ML Microservice & Integration Guide
 
-Stateless AI/ML service powered by **FastAPI** and **Google Gemini 2.5 Flash**.  
-This microservice provides **speech-to-intent parsing**, **multilingual multimodal certificate OCR**, **vernacular jargon simplification**, **scheme recommendation narratives**, and a **grounded scheme advisory chatbot (RAG)**.
+Stateless, production-ready AI/ML microservice built with **FastAPI**, **Google Gemini 2.5 Flash** (via `google-genai` SDK and **OpenRouter** fallback), and **Pydantic v2**.
+
+This service powers the intelligence layer for the Smart India Hackathon (SIH) Scheme Matching Platform, providing:
+- 🎤 **Multilingual Voice & Text Intent Extraction** (Speech transcription to structured profile)
+- 📄 **Multimodal Certificate OCR & Verification** (Income & Caste certificates in PDF/Image formats via PyMuPDF + Gemini Vision)
+- 💡 **Vernacular Financial Jargon Simplification** (Explaining complex terms in 12+ Indian regional languages with real-life analogies)
+- 🏆 **Personalized Scheme Recommendation Narratives** (Localized justification comparing candidate schemes)
+- 🤖 **Grounded Scheme Advisory Chatbot (RAG)** (Two-tier hybrid RAG answering from official policy guidelines with proactive follow-up quick-replies)
 
 ---
 
 ## 📌 Quick Integration Cheatsheet for Fullstack Developers
 
-| Base URL | Local: `http://localhost:8000` &nbsp;\|&nbsp; Production: `https://<your-render-service>.onrender.com` |
+| Property | Value |
 | :--- | :--- |
-| **Interactive Docs (Swagger UI)** | `GET /docs` (Test all endpoints directly from your browser) |
-| **OpenAPI JSON Schema** | `GET /openapi.json` |
-| **Health Check (Keep-Alive)** | `GET /health` |
+| **Base URL (Local)** | `http://localhost:8000` |
+| **Base URL (Production)** | `https://<your-service-name>.onrender.com` |
+| **Interactive Docs (Swagger UI)** | [`GET /docs`](http://localhost:8000/docs) (Test and inspect all endpoints directly in your browser) |
+| **Alternative Docs (ReDoc)** | [`GET /redoc`](http://localhost:8000/redoc) |
+| **OpenAPI Schema** | `GET /openapi.json` |
+| **Health Check & Keep-Alive** | `GET /health` |
+| **Root Welcome Endpoint** | `GET /` |
 
 ---
 
 ## 🧭 Endpoint Integration Guide
 
-### 1. 🎤 Voice/Text Intent Extraction (`/extract-applicant-intent`)
-> **Use Case in App**: When an applicant speaks (or types) into the search/onboarding bar in Hindi/English/regional languages. Automatically extracts structured profile details to pre-fill their form.
+### 1. 🎤 Voice/Text Intent Extraction (`POST /extract-applicant-intent`)
+
+> **Use Case**: When an applicant speaks or types into the search or onboarding interface in Hindi, English, Marathi, Tamil, etc. Automatically extracts structured profile parameters to pre-fill their application form.
 
 * **Endpoint**: `POST /extract-applicant-intent`
 * **Content-Type**: `application/json`
@@ -43,27 +54,39 @@ This microservice provides **speech-to-intent parsing**, **multilingual multimod
 }
 ```
 
-#### Fullstack Code Snippet (Axios / Fetch)
+#### Frontend / Fullstack Integration (TypeScript / Axios)
 ```typescript
-// Call from Express or Next.js API Route
-const res = await axios.post(`${AI_SERVICE_URL}/extract-applicant-intent`, {
-  transcript: userSpeechTranscript,
-  language: selectedLanguageCode // 'hi', 'en', 'mr', 'ta', etc.
-});
+import axios from "axios";
 
-const { project_category, requested_amount, annual_income, trade, gender } = res.data;
+interface IntentResponse {
+  project_category: "Manufacturing" | "Service" | "Trading";
+  requested_amount: number;
+  annual_income: number;
+  trade: string;
+  gender: string;
+  confidence: number;
+}
+
+export async function extractApplicantIntent(transcript: string, language: string = "hi"): Promise<IntentResponse> {
+  const { data } = await axios.post<IntentResponse>(`${process.env.AI_SERVICE_URL}/extract-applicant-intent`, {
+    transcript,
+    language,
+  });
+  return data;
+}
 ```
 
 ---
 
-### 2. 📄 Certificate OCR & Verification (`/ocr-certificate`)
-> **Use Case in App**: When an applicant uploads a Caste or Income Certificate (PDF, JPEG, or PNG). Extracts printed details (name, category, annual income) and checks whether income meets eligibility criteria ($\le$ ₹5,00,000).
+### 2. 📄 Multimodal Certificate OCR & Verification (`POST /ocr-certificate`)
+
+> **Use Case**: When an applicant uploads a Caste or Income Certificate (`.pdf`, `.jpg`, `.jpeg`, `.png`, `.webp`). Extracts printed name, category, income, and validity date, and automatically verifies income eligibility ($\le$ ₹5,00,000).
 
 * **Endpoint**: `POST /ocr-certificate`
 * **Content-Type**: `multipart/form-data`
 * **Form Fields**:
-  - `file`: The binary file (`.pdf`, `.jpg`, `.jpeg`, `.png`, `.webp`)
-  - `doc_type`: Either `"income"` or `"caste"`
+  - `file`: Binary file stream (`.pdf`, `.png`, `.jpg`, `.jpeg`, `.webp`)
+  - `doc_type`: String — `"income"` or `"caste"`
 
 #### Response (200 OK — Income Certificate)
 ```json
@@ -80,27 +103,44 @@ const { project_category, requested_amount, annual_income, trade, gender } = res
 }
 ```
 
-#### Fullstack Code Snippet (Node.js / FormData)
+#### Response (200 OK — Caste Certificate)
+```json
+{
+  "doc_type": "caste",
+  "extracted_fields": {
+    "name": "Sunita Devi",
+    "category": "OBC",
+    "annual_income": null,
+    "valid_until": null
+  },
+  "income_verified": false,
+  "raw_confidence": 0.95
+}
+```
+
+#### Frontend / Fullstack Integration (Node.js FormData / Web API)
 ```typescript
-import FormData from 'form-data';
-import fs from 'fs';
+import FormData from "form-data";
+import axios from "axios";
 
-const formData = new FormData();
-formData.append('file', fileBufferOrStream, { filename: 'certificate.pdf' });
-formData.append('doc_type', 'income'); // or 'caste'
+export async function verifyCertificate(fileBuffer: Buffer, filename: string, docType: "income" | "caste") {
+  const formData = new FormData();
+  formData.append("file", fileBuffer, { filename });
+  formData.append("doc_type", docType);
 
-const res = await axios.post(`${AI_SERVICE_URL}/ocr-certificate`, formData, {
-  headers: formData.getHeaders(),
-});
+  const { data } = await axios.post(`${process.env.AI_SERVICE_URL}/ocr-certificate`, formData, {
+    headers: formData.getHeaders(),
+  });
 
-console.log('Verified?', res.data.income_verified);
-console.log('Extracted Fields:', res.data.extracted_fields);
+  return data;
+}
 ```
 
 ---
 
-### 3. 💡 Financial Jargon Simplifier (`/simplify-term`)
-> **Use Case in App**: When a user hovers over or clicks an info icon on complex banking terms like *"Moratorium"*, *"Promoter Margin"*, *"Collateral"*, etc. Returns a 2–3 sentence conversational explanation with real-life analogies in their chosen language.
+### 3. 💡 Financial Jargon Simplifier (`POST /simplify-term`)
+
+> **Use Case**: When a user clicks or hovers over complex banking terms (e.g. *"Moratorium"*, *"Promoter Margin"*, *"Collateral"*, *"Working Capital"*, *"Debt-Equity Ratio"*). Returns a 2–3 sentence conversational explanation with real-life analogies in their chosen language without technical jargon.
 
 * **Endpoint**: `POST /simplify-term`
 * **Content-Type**: `application/json`
@@ -120,20 +160,24 @@ console.log('Extracted Fields:', res.data.extracted_fields);
 }
 ```
 
-#### Fullstack Code Snippet
+#### Frontend / Fullstack Integration (TypeScript / Fetch)
 ```typescript
-const res = await axios.post(`${AI_SERVICE_URL}/simplify-term`, {
-  term: 'Promoter Margin',
-  language: 'mr' // Marathi, Hindi ('hi'), English ('en'), etc.
-});
-
-alert(res.data.explanation);
+export async function simplifyJargon(term: string, language: string = "hi"): Promise<string> {
+  const res = await fetch(`${process.env.AI_SERVICE_URL}/simplify-term`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ term, language }),
+  });
+  const data = await res.json();
+  return data.explanation;
+}
 ```
 
 ---
 
-### 4. 🏆 Scheme Recommendation Explainer (`/recommend-scheme-explainer`)
-> **Use Case in App**: On the Scheme Results / Comparison page. Takes the applicant's profile and the candidate schemes shortlisted by your database query, and generates a personalized narrative explaining *why* the top scheme was chosen and how other schemes compare.
+### 4. 🏆 Scheme Recommendation Explainer (`POST /recommend-scheme-explainer`)
+
+> **Use Case**: On the scheme comparison or recommendation page. Takes the applicant's profile and database-shortlisted candidate schemes, and generates a personalized narrative explaining *why* the top scheme was recommended and how other alternatives compare.
 
 * **Endpoint**: `POST /recommend-scheme-explainer`
 * **Content-Type**: `application/json`
@@ -170,15 +214,16 @@ alert(res.data.explanation);
 ```json
 {
   "top_scheme": "Mahila Samriddhi Yojana",
-  "explanation": "Mahila Samriddhi Yojana is the best match for you because it offers 90% project coverage with a highly subsidized interest rate of 4.0% per annum, specifically tailored for women entrepreneurs in tailoring.",
-  "runner_up_note": "Micro Credit Scheme is also an option, but it covers only 80% and has a higher interest rate of 6.0%."
+  "explanation": "Mahila Samriddhi Yojana is the most suitable scheme for you because it offers the highest financial coverage (90%) and a low subsidized interest rate of 4.0% specifically designed for female entrepreneurs in tailoring.",
+  "runner_up_note": "Micro Credit Scheme is also an option, but it covers only 80% with a higher interest rate of 6.0%."
 }
 ```
 
 ---
 
-### 5. 🤖 Grounded Scheme Advisory Chatbot (`/scheme-chat`)
-> **Use Case in App**: An interactive chatbot widget where users can ask any questions about government schemes (eligibility, documents required, loan limits, interest rates). The AI answers strictly from official policy guidelines (`schemes_knowledge.txt`) and dynamically returns 2–3 contextual follow-up questions for the frontend to render as quick-reply chips/pills.
+### 5. 🤖 Grounded Scheme Advisory Chatbot (`POST /scheme-chat`)
+
+> **Use Case**: Interactive conversational assistant widget. Users can ask questions regarding schemes, eligibility, documents, interest rates, and loan procedures in any language. The AI answers strictly from official scheme knowledge (`schemes_knowledge.txt`), provides general procedural guidance when needed, and returns 2–3 contextual follow-up question suggestions for clickable quick-reply chips.
 
 * **Endpoint**: `POST /scheme-chat`
 * **Content-Type**: `application/json`
@@ -204,20 +249,20 @@ alert(res.data.explanation);
 #### Response (200 OK)
 ```json
 {
-  "response": "Under the Mahila Samriddhi Yojana, eligible female beneficiaries can receive loans up to ₹1,40,000 with a subsidized interest rate of 4% per annum. The scheme covers up to 90% of the total project cost.",
+  "response": "Under the Mahila Samriddhi Yojana (MSY), female beneficiaries from backward classes can avail loans up to ₹1,40,000 with a subsidized interest rate of 4% per annum. The scheme covers up to 90% of the project cost.",
   "suggested_questions": [
     "What documents are required to apply for Mahila Samriddhi Yojana?",
-    "What is the annual income eligibility criteria?",
-    "How can I apply for this loan through a channel partner?"
+    "What is the annual income eligibility limit?",
+    "How can I apply for this loan through a State Channelising Agency?"
   ]
 }
 ```
 
 ---
 
-## ⚠️ Standard Error Handling
+## ⚠️ Standardized Error Response
 
-All error responses return a standardized JSON structure:
+All error responses across all routes follow a unified JSON envelope:
 
 ```json
 {
@@ -229,42 +274,96 @@ All error responses return a standardized JSON structure:
 }
 ```
 
-### HTTP Status Codes
-- `200 OK`: Successful operation.
-- `400 BAD_REQUEST`: Missing required parameters or empty payload.
-- `422 VALIDATION_ERROR`: Incorrect data types or failed field validations.
-- `500 INTERNAL_SERVER_ERROR`: Upstream AI provider error (e.g. invalid API key or rate limit).
+### HTTP Status Code Mapping
+
+| Status Code | Error Code | Trigger Condition |
+| :--- | :--- | :--- |
+| `200 OK` | — | Successful processing. |
+| `400 BAD_REQUEST` | `BAD_REQUEST` | Empty input text, unsupported document extension, corrupted upload. |
+| `401 UNAUTHORIZED` | `UNAUTHORIZED` | Invalid or expired API credentials with upstream LLM provider. |
+| `403 FORBIDDEN` | `FORBIDDEN` | Upstream provider permission denied. |
+| `404 NOT_FOUND` | `NOT_FOUND` | Route not found. |
+| `422 UNPROCESSABLE` | `VALIDATION_ERROR` | Missing required payload fields or invalid data types. |
+| `500 INTERNAL ERROR` | `INTERNAL_SERVER_ERROR` | Upstream API downtime or runtime processing failure. |
 
 ---
 
-## 🛠️ Local Setup & Running Locally
+## ⚙️ Configuration & Environment Variables
 
+Create a `.env` file in the root directory (see [`.env.example`](file:///c:/Users/avira/SIH-26-AI-ML/.env.example)):
+
+```env
+# Option 1: Direct Google Gemini API Key (Recommended)
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
+
+# Option 2: OpenRouter API Key (Automatic detection for sk-or-... keys)
+# OPENROUTER_API_KEY=sk-or-v1-...
+# GEMINI_MODEL=google/gemini-2.5-flash
+# OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+
+PORT=8000
+```
+
+---
+
+## 🛠️ Local Setup & Testing
+
+### 1. Clone & Setup Environment
 ```bash
-# 1. Clone repo
 git clone https://github.com/aviraltrip/SIH-26-AI-ML.git
 cd SIH-26-AI-ML
 
-# 2. Set up virtual environment
+# Create and activate virtual environment
 python -m venv venv
-# Windows:
-.\venv\Scripts\activate
-# Linux/macOS:
+# On Windows (PowerShell):
+.\venv\Scripts\Activate.ps1
+# On Linux/macOS:
 source venv/bin/activate
 
-# 3. Install dependencies
+# Install dependencies
 pip install -r requirements.txt
+```
 
-# 4. Create .env file
-echo "GEMINI_API_KEY=your_gemini_api_key_here" > .env
+### 2. Run the Test Suite (45 Unit & Integration Tests)
+```bash
+python -m pytest
+```
 
-# 5. Run the server
+### 3. Launch Development Server
+```bash
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
-Open [http://localhost:8000/docs](http://localhost:8000/docs) in your browser to test endpoints interactively.
+Open [http://localhost:8000/docs](http://localhost:8000/docs) in your browser for interactive testing via Swagger UI.
+
+---
+
+## 🐳 Docker & Containerization
+
+### Build and Run Docker Container Locally
+```bash
+# Build Docker image
+docker build -t sih-ai-ml-service .
+
+# Run container
+docker run -p 7860:7860 -e GEMINI_API_KEY="your_api_key" sih-ai-ml-service
+```
 
 ---
 
 ## 🌐 Production Deployment (Render)
 
-1. **Environment Variables**: Add `GEMINI_API_KEY` in the Render Dashboard (**Environment** tab).
-2. **Preventing Free-Tier Sleep**: Render puts free containers to sleep after 15 minutes of inactivity. Set up a free monitor (e.g. on [UptimeRobot](https://uptimerobot.com)) to ping `GET /health` every 10–12 minutes.
+1. Connect your repository to **Render** as a **Web Service** (Docker runtime).
+2. Set Environment Variables in Render Dashboard:
+   - `GEMINI_API_KEY`: Your Google Gemini API Key (or `OPENROUTER_API_KEY`)
+   - `GEMINI_MODEL`: `gemini-2.5-flash` (or `google/gemini-2.5-flash`)
+3. Render will build the container using [`Dockerfile`](file:///c:/Users/avira/SIH-26-AI-ML/Dockerfile) and expose the required port.
+4. **Keep-Alive**: Set up a free uptime monitor (e.g. UptimeRobot or Cron-Job) targeting `GET /health` every 10 minutes to prevent container sleep.
+
+---
+
+## 📚 Technical Documentation Links
+
+- [AI_ML_SPECIFICATION.md](file:///c:/Users/avira/SIH-26-AI-ML/AI_ML_SPECIFICATION.md) — System architecture, boundaries, and separation of concerns.
+- [API_CONTRACTS.md](file:///c:/Users/avira/SIH-26-AI-ML/API_CONTRACTS.md) — Detailed Pydantic schemas, validation rules, and status codes.
+- [PIPELINES.md](file:///c:/Users/avira/SIH-26-AI-ML/PIPELINES.md) — LLM prompt templates, multimodal OCR heuristics, and two-tier RAG architecture.

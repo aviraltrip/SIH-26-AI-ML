@@ -1,6 +1,6 @@
 # Pipeline Architectures & Prompts
 
-This document outlines the internal execution pipelines, Google Gemini LLM prompts, structured outputs, and computer vision routines running within the AI/ML microservice.
+This document outlines the internal execution pipelines, Google Gemini LLM prompts, structured schema enforcement, multimodal computer vision routines, and two-tier hybrid RAG architecture running within the AI/ML microservice.
 
 ---
 
@@ -13,12 +13,12 @@ Takes raw speech-to-text transcriptions or conversational text statements (in Hi
 ```mermaid
 graph LR
     Input[Raw Speech / Text Transcript] --> Prompt[Structured Extraction Prompt]
-    Prompt --> Gemini[Gemini 2.5 Flash with response_schema]
+    Prompt --> Gemini[Gemini 2.5 Flash / OpenRouter]
     Gemini --> Pydantic[Pydantic IntentResponse Validation]
     Pydantic --> Output[Structured JSON Profile]
 ```
 
-### System Prompt Template
+### System Prompt Template (`SYSTEM_PROMPT_INTENT`)
 
 ```text
 You are an expert financial counselor specializing in government social schemes.
@@ -37,35 +37,24 @@ Rules:
 - Ensure requested_amount and annual_income are non-negative numeric floats.
 ```
 
-### Implementation Architecture (`app/services/gemini_service.py`)
+### Implementation Highlights (`app/services/gemini_service.py`)
 
-```python
-client = genai.Client(api_key=api_key)
-response = client.models.generate_content(
-    model=settings.gemini_model,
-    contents=user_content,
-    config=types.GenerateContentConfig(
-        system_instruction=SYSTEM_PROMPT_INTENT,
-        temperature=0.1,
-        response_mime_type="application/json",
-        response_schema=IntentResponse,
-    ),
-)
-return IntentResponse.model_validate_json(response.text)
-```
+* **Google GenAI SDK**: Uses `client.models.generate_content` with `response_mime_type="application/json"` and `response_schema=IntentResponse`.
+* **OpenRouter Fallback**: Uses `client.chat.completions.create` with `response_format={"type": "json_object"}` and Pydantic model validation.
+* **Temperature**: Low (`0.1`) for strict deterministic parameter extraction.
 
 ---
 
 ## 2. Multimodal OCR Certificate Processing Pipeline
 
-Extracts applicant information from uploaded certificates (Caste or Income) to verify eligibility directly using PyMuPDF and Gemini Multimodal Vision API.
+Extracts applicant information from uploaded certificates (Caste or Income) to verify eligibility using PyMuPDF (rendering PDF pages at 300 DPI) and Gemini Multimodal Vision API.
 
 ### Preprocessing & Multimodal Flow
 
 ```mermaid
 graph TD
-    Upload[Uploaded File: PDF / JPEG / PNG] --> Detect{File Type}
-    Detect -->|PDF| PyMuPDF[Render First Page to PNG via PyMuPDF]
+    Upload[Uploaded File: PDF / JPEG / PNG / WEBP] --> Detect{File Type}
+    Detect -->|PDF| PyMuPDF[Render First Page to PNG at 300 DPI via PyMuPDF]
     Detect -->|Image| PIL[Validate & Format via Pillow]
     PyMuPDF --> Vision[Gemini Multimodal Vision API]
     PIL --> Vision
@@ -74,7 +63,7 @@ graph TD
     Verification --> Response[OCRResponse JSON]
 ```
 
-### OCR System Prompt Template
+### OCR System Prompt Template (`OCR_SYSTEM_PROMPT`)
 
 ```text
 You are an expert government document auditor specializing in verifying caste and income certificates.
@@ -92,7 +81,7 @@ Rules:
 3. Strict adherence to output JSON schema format is mandatory.
 ```
 
-### Deterministic Verification Logic
+### Deterministic Income Verification Rule
 
 ```python
 def is_income_verified(doc_type: str, annual_income: Optional[float]) -> bool:
@@ -106,19 +95,26 @@ def is_income_verified(doc_type: str, annual_income: Optional[float]) -> bool:
 
 ## 3. Multilingual Jargon Simplification
 
-Translates dry banking and policy terminology (e.g., *moratorium*, *collateral*, *promoter margin*) into conversational regional language explanations using intuitive everyday analogies.
+Translates dry banking and policy terminology (e.g. *Moratorium*, *Collateral*, *Promoter Margin*, *Working Capital*, *Debt-Equity Ratio*) into conversational regional language explanations using intuitive everyday analogies.
 
-### System Prompt Template
+### Supported Language Mappings
+Supports 12+ Indian regional languages: English (`en`), Hindi (`hi`), Marathi (`mr`), Tamil (`ta`), Telugu (`te`), Bengali (`bn`), Gujarati (`gu`), Kannada (`kn`), Punjabi (`pa`), Malayalam (`ml`), Odia (`or`), Urdu (`ur`).
+
+### System Prompt Template (`SYSTEM_PROMPT_TEMPLATE`)
 
 ```text
-You are a friendly, encouraging financial counselor explaining complex banking and government scheme terms to rural and semi-urban micro-entrepreneurs.
-
-Guidelines:
-1. Provide a simplified explanation of the financial or policy jargon term in the requested target language.
-2. The explanation must be conversational, warm, and easily understood by someone with no financial background.
-3. Use a simple, relatable everyday analogy or real-life example (e.g., relating moratorium to a harvest cycle or a payment holiday to set up a shop).
-4. Keep the explanation concise (2 to 3 sentences maximum).
-5. Do NOT include markdown bolding, greetings, or sign-offs in your response text. Output only the simplified explanation.
+You are a local community helper explaining banking and government-scheme terms to rural micro-entrepreneurs.
+Explain the financial jargon term clearly in simple, colloquial, conversational style using the requested target language.
+Avoid technical sub-jargon. Use real-life analogies (for example, compare 'moratorium' to a 'crop growing period before harvest' or a 'holiday from payment', or 'collateral' to a 'security item or guarantee pledged for a loan').
+Keep the response within 2-3 sentences.
+Rules:
+1. Preserve the correct meaning of the financial term.
+2. Do not invent policy rules, eligibility conditions, interest rates, or benefits.
+3. Do not provide financial or legal advice.
+4. Do not use complex vocabulary or dictionary-style definitions.
+5. Prefer natural, conversational tone in the requested language.
+6. Do NOT include preambles (such as 'Here is the explanation:'), headings, markdown bolding/formatting, or bullet points.
+7. Return ONLY the plain explanation text.
 ```
 
 ---
@@ -127,7 +123,7 @@ Guidelines:
 
 Generates a tailored narrative explaining why the top shortlisted scheme fits the applicant's profile and providing a brief comparison with runner-up options.
 
-### System Prompt Template
+### System Prompt Template (`SYSTEM_PROMPT_EXPLAINER`)
 
 ```text
 You are an expert government financial advisor assisting micro-entrepreneurs and artisans.
@@ -145,7 +141,7 @@ Rules:
 
 ## 5. Scheme Q&A Chatbot (Two-Tier Grounded RAG & Proactive Suggestions)
 
-Provides grounded, multi-turn conversational advisory based on consolidated government policy guidelines loaded from `app/resources/schemes_knowledge.txt`, coupled with a resilient two-tier hybrid fallback that answers general banking/procedural questions without dead-ending the user.
+Provides grounded, multi-turn conversational advisory based on consolidated government policy guidelines loaded from `app/resources/schemes_knowledge.txt`, coupled with a resilient two-tier hybrid fallback that answers general banking and procedural questions without dead-ending the user.
 
 ### Execution Flow
 
@@ -162,16 +158,16 @@ graph TD
     Parser --> Output["ChatResponse: { response, suggested_questions }"]
 ```
 
-### Knowledge Base Content Coverage
-* **Schemes (1 to 70)**: NBCFDC (MSY, MCS), PM Vishwakarma, PMEGP, Mudra (Shishu/Kishor/Tarun), Stand-Up India, SVANidhi, NHFDC, NMDFC, ELAS, and State-level concessional credit schemes.
+### Knowledge Base Content Coverage (`app/resources/schemes_knowledge.txt`)
+* **Schemes (1 to 70)**: NBCFDC (MSY, MCS, New Swarnima, Mahila Kisan Yojana), PM Vishwakarma, PMEGP, Mudra (Shishu, Kishor, Tarun), Stand-Up India, SVANidhi, NHFDC, NMDFC, ELAS, and State-level concessional credit schemes.
 * **Procedural Guidelines (71 to 75)**:
-  * Section 71: General Loan Application Procedures, CSC Workflows, and Jan Samarth Guidelines.
-  * Section 72: Universal Document Checklist and Paperwork Requirements.
-  * Section 73: Loan Disbursement, Moratorium Mechanics, and Subsidy Release Process.
-  * Section 74: Grievance Redressal, Nodal Officers, and Lead District Managers (LDM).
-  * Section 75: Cross-Scheme Eligibility, One Beneficiary per Family Norms, and Common FAQs.
+  - **Section 71**: General Loan Application Procedures, CSC Workflows, and Jan Samarth Guidelines.
+  - **Section 72**: Universal Document Checklist and Paperwork Requirements.
+  - **Section 73**: Loan Disbursement, Moratorium Mechanics, and Subsidy Release Process.
+  - **Section 74**: Grievance Redressal, Nodal Officers, and Lead District Managers (LDM).
+  - **Section 75**: Cross-Scheme Eligibility, One Beneficiary per Family Norms, and Common FAQs.
 
-### Output Format Specification
+### Output JSON Format Specification
 
 The model formats its output as structured JSON:
 ```json
@@ -185,3 +181,11 @@ The model formats its output as structured JSON:
 }
 ```
 
+---
+
+## 6. Security & Secret Redaction
+
+To prevent sensitive API keys or credentials from leaking into log aggregators (e.g., Render, Datadog), all service callers pass error messages and payload dumps through `_redact_secrets()`:
+- Redacts Google API keys (`AIza...`, `AQ...`)
+- Redacts OpenRouter API keys (`sk-or-...`)
+- Redacts HTTP Authorization Bearer tokens (`Bearer ...`)
